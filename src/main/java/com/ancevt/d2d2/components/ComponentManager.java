@@ -15,23 +15,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.ancevt.d2d2.components;
 
-import com.ancevt.d2d2.event.Event;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.SuperBuilder;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-@Data
-@SuperBuilder
-@EqualsAndHashCode(callSuper = true)
-public class UiTextInputEvent extends Event {
+public class ComponentManager {
 
-    public static final String TEXT_CHANGE = "textChange";
-    public static final String TEXT_ENTER = "textEnter";
-    public static final String TEXT_INPUT_KEY_DOWN = "textInputKeyDown";
+    private static ComponentManager instance;
 
-    private final String text;
-    private final int keyCode;
+    public static ComponentManager getInstance() {
+        return instance == null ? instance = new ComponentManager() : instance;
+    }
+
+    private final List<Component> componentList;
+
+    public ComponentManager() {
+        componentList = new CopyOnWriteArrayList<>();
+    }
+
+    public int getComponentCount() {
+        return componentList.size();
+    }
+
+    public void registerComponent(Component component) {
+        componentList.add(component);
+    }
+
+    public void unregisterComponent(Component component) {
+        componentList.remove(component);
+    }
 }

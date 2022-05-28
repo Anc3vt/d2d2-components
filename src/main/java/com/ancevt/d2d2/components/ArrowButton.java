@@ -1,3 +1,20 @@
+/**
+ * Copyright (C) 2022 the original author or authors.
+ * See the notice.md file distributed with this work for additional
+ * information regarding copyright ownership.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package com.ancevt.d2d2.components;
 
@@ -5,8 +22,8 @@ import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.DisplayObjectContainer;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.TouchButtonEvent;
-import com.ancevt.d2d2.interactive.TouchButton;
+import com.ancevt.d2d2.event.InteractiveButtonEvent;
+import com.ancevt.d2d2.interactive.InteractiveButton;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
@@ -15,7 +32,7 @@ public class ArrowButton extends DisplayObjectContainer {
 
     private final Sprite sprite;
     private final Sprite shadow;
-    private final TouchButton touchButton;
+    private final InteractiveButton interactiveButton;
     private int direction;
 
     public ArrowButton() {
@@ -26,10 +43,10 @@ public class ArrowButton extends DisplayObjectContainer {
         add(shadow, 1, 1);
         add(sprite);
 
-        touchButton = new TouchButton((int) sprite.getWidth(), (int) sprite.getHeight(), true);
-        add(touchButton);
+        interactiveButton = new InteractiveButton((int) sprite.getWidth(), (int) sprite.getHeight(), true);
+        add(interactiveButton);
 
-        touchButton.addEventListener(TouchButtonEvent.DOWN, this::touchButton_touchDown);
+        interactiveButton.addEventListener(InteractiveButtonEvent.DOWN, this::interactiveButton_down);
 
         setEnabled(true);
     }
@@ -40,12 +57,12 @@ public class ArrowButton extends DisplayObjectContainer {
     }
 
     public void setEnabled(boolean enabled) {
-        touchButton.setEnabled(enabled);
+        interactiveButton.setEnabled(enabled);
         sprite.setColor(enabled ? Color.WHITE : Color.GRAY);
     }
 
     public boolean isEnabled() {
-        return touchButton.isEnabled();
+        return interactiveButton.isEnabled();
     }
 
     public void setDirection(int direction) {
@@ -68,7 +85,7 @@ public class ArrowButton extends DisplayObjectContainer {
         return direction;
     }
 
-    private void touchButton_touchDown(Event event) {
+    private void interactiveButton_down(Event event) {
         dispatchEvent(
                 ArrowButtonEvent.builder()
                         .type(ArrowButtonEvent.ARROW_BUTTON_PRESS)
@@ -77,7 +94,7 @@ public class ArrowButton extends DisplayObjectContainer {
     }
 
     public void dispose() {
-        touchButton.setEnabled(false);
+        interactiveButton.setEnabled(false);
     }
 
     @Data
