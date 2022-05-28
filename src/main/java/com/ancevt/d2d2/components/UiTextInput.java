@@ -1,21 +1,36 @@
-
+/**
+ * Copyright (C) 2022 the original author or authors.
+ * See the notice.md file distributed with this work for additional
+ * information regarding copyright ownership.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.DisplayObjectContainer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.EventListener;
-import com.ancevt.d2d2.event.TouchButtonEvent;
+import com.ancevt.d2d2.event.InteractiveButtonEvent;
 import com.ancevt.d2d2.input.Clipboard;
 import com.ancevt.d2d2.input.KeyCode;
-import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
-import com.ancevt.d2d2.interactive.TouchButton;
+import com.ancevt.d2d2.interactive.InteractiveButton;
 import org.jetbrains.annotations.NotNull;
 
-public class UiTextInput extends DisplayObjectContainer implements EventListener {
+public class UiTextInput extends Component implements EventListener {
 
     private boolean enabled;
 
@@ -43,7 +58,7 @@ public class UiTextInput extends DisplayObjectContainer implements EventListener
 
     private final PlainRect background;
     private final PlainRect selection;
-    private final TouchButton touchButton;
+    private final InteractiveButton interactiveButton;
     private final UiText uiText;
     private final Caret caret;
     private boolean focused;
@@ -57,8 +72,8 @@ public class UiTextInput extends DisplayObjectContainer implements EventListener
         enabled = true;
         background = new PlainRect(DEFAULT_WIDTH, DEFAULT_HEIGHT, BACKGROUND_COLOR);
         selection = new PlainRect(0, DEFAULT_HEIGHT - 8, SELECTION_COLOR);
-        touchButton = new TouchButton(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        add(touchButton);
+        interactiveButton = new InteractiveButton(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        add(interactiveButton);
         uiText = new UiText();
         uiText.setShadowEnabled(false);
 
@@ -78,7 +93,7 @@ public class UiTextInput extends DisplayObjectContainer implements EventListener
 
         addEventListener(Event.ADD_TO_STAGE, this);
         addEventListener(Event.REMOVE_FROM_STAGE, this);
-        touchButton.addEventListener(TouchButtonEvent.DOWN, this);
+        interactiveButton.addEventListener(InteractiveButtonEvent.DOWN, this);
     }
 
     public void setColor(Color color) {
@@ -152,27 +167,23 @@ public class UiTextInput extends DisplayObjectContainer implements EventListener
         return (int) (caret.getX() / uiText.getCharWidth());
     }
 
-    public void dispose() {
-        removeEventListener(Event.ADD_TO_STAGE, this);
-        removeEventListener(Event.REMOVE_FROM_STAGE, this);
-        touchButton.removeEventListener(TouchButtonEvent.DOWN, this);
-        touchButton.setEnabled(false);
-        removeFromParent();
-        UiTextInputProcessor.INSTANCE.removeTextInput(this);
-    }
-
+    @Override
     public void setWidth(float width) {
+        super.setWidth(width);
         background.setWidth(width);
-        touchButton.setWidth(width);
+        interactiveButton.setWidth(width);
         align();
     }
 
+    @Override
     public void setHeight(float height) {
+        super.setHeight(height);
         background.setHeight(height);
-        touchButton.setHeight(height);
+        interactiveButton.setHeight(height);
         align();
     }
 
+    @Override
     public void setSize(float width, float height) {
         setWidth(width);
         setHeight(height);
@@ -180,12 +191,38 @@ public class UiTextInput extends DisplayObjectContainer implements EventListener
 
     @Override
     public float getWidth() {
-        return background.getWidth();
+        return super.getWidth();
     }
 
     @Override
     public float getHeight() {
-        return background.getHeight();
+        return super.getHeight();
+    }
+
+    @Override
+    public void setEnabled(boolean b) {
+        enabled = b;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        removeEventListener(Event.ADD_TO_STAGE, this);
+        removeEventListener(Event.REMOVE_FROM_STAGE, this);
+        interactiveButton.removeEventListener(InteractiveButtonEvent.DOWN, this);
+        interactiveButton.setEnabled(false);
+        removeFromParent();
+        UiTextInputProcessor.INSTANCE.removeTextInput(this);
+    }
+
+    @Override
+    public boolean isDisposed() {
+        return super.isDisposed();
     }
 
     private void align() {
@@ -202,24 +239,24 @@ public class UiTextInput extends DisplayObjectContainer implements EventListener
         switch (event.getType()) {
 
             case Event.ADD_TO_STAGE -> {
-                touchButton.setEnabled(true);
+                interactiveButton.setEnabled(true);
                 UiTextInputProcessor.INSTANCE.addTextInput(this);
                 UiTextInputProcessor.INSTANCE.focus(this);
             }
 
             case Event.REMOVE_FROM_STAGE -> {
-                touchButton.setEnabled(false);
+                interactiveButton.setEnabled(false);
                 UiTextInputProcessor.INSTANCE.removeTextInput(this);
                 if (isFocused()) UiTextInputProcessor.INSTANCE.resetFocus();
             }
 
-            case TouchButtonEvent.DOWN -> {
+            case InteractiveButtonEvent.DOWN -> {
                 if (!enabled) return;
 
-                TouchButtonEvent touchButtonEvent = (TouchButtonEvent) event;
+                InteractiveButtonEvent e = (InteractiveButtonEvent) event;
                 UiTextInputProcessor.INSTANCE.focus(this);
 
-                float x = touchButtonEvent.getX();
+                float x = e.getX();
                 float c = uiText.getCharWidth();
                 float s = uiText.getAbsoluteScaleX();
 
@@ -391,14 +428,6 @@ public class UiTextInput extends DisplayObjectContainer implements EventListener
         UiTextInputProcessor.INSTANCE.focus(this);
     }
 
-    public void setEnabled(boolean b) {
-        enabled = b;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
     private static class Caret extends PlainRect {
 
         public static final int BLINK_DELAY = 25;
@@ -413,7 +442,7 @@ public class UiTextInput extends DisplayObjectContainer implements EventListener
 
         @Override
         public void onEachFrame() {
-            if(uiTextInput.isEnabled()) {
+            if (uiTextInput.isEnabled()) {
                 blinkCounter--;
                 if (blinkCounter <= 0) {
                     blinkCounter = BLINK_DELAY;

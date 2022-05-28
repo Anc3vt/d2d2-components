@@ -1,3 +1,20 @@
+/**
+ * Copyright (C) 2022 the original author or authors.
+ * See the notice.md file distributed with this work for additional
+ * information regarding copyright ownership.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package com.ancevt.d2d2.components;
 
@@ -8,8 +25,8 @@ import com.ancevt.d2d2.display.DisplayObjectContainer;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.TouchButtonEvent;
-import com.ancevt.d2d2.interactive.TouchButton;
+import com.ancevt.d2d2.event.InteractiveButtonEvent;
+import com.ancevt.d2d2.interactive.InteractiveButton;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
@@ -25,7 +42,7 @@ public class Button extends DisplayObjectContainer {
     private final Sprite rightPart;
     private final Sprite middlePart;
     private final UiText uiText;
-    private final TouchButton touchButton;
+    private final InteractiveButton interactiveButton;
     private float width;
 
     public Button() {
@@ -39,9 +56,9 @@ public class Button extends DisplayObjectContainer {
 
         uiText = new UiText();
 
-        touchButton = new TouchButton(true);
-        touchButton.addEventListener(TouchButtonEvent.DOWN, this::touchButton_touchDown);
-        add(touchButton);
+        interactiveButton = new InteractiveButton(true);
+        interactiveButton.addEventListener(InteractiveButtonEvent.DOWN, this::interactiveButton_down);
+        add(interactiveButton);
 
         add(leftPart);
         add(middlePart);
@@ -53,17 +70,17 @@ public class Button extends DisplayObjectContainer {
         setText(text);
     }
 
-    private void touchButton_touchDown(Event event) {
+    private void interactiveButton_down(Event event) {
         dispatchEvent(ButtonEvent.builder().type(ButtonEvent.BUTTON_PRESSED).build());
     }
 
     public void setEnabled(boolean enabled) {
-        touchButton.setEnabled(enabled);
+        interactiveButton.setEnabled(enabled);
         uiText.setColor(enabled ? Color.WHITE : Color.GRAY);
     }
 
     public boolean isEnabled() {
-        return touchButton.isEnabled();
+        return interactiveButton.isEnabled();
     }
 
     public void setText(String text) {
@@ -77,7 +94,7 @@ public class Button extends DisplayObjectContainer {
 
     public void setWidth(float width) {
         this.width = width;
-        touchButton.setSize(width, leftPart.getTexture().height());
+        interactiveButton.setSize(width, leftPart.getTexture().height());
 
         middlePart.setX(leftPart.getTexture().width());
         middlePart.setScaleX(width - leftPart.getTexture().width() - rightPart.getTexture().width());
