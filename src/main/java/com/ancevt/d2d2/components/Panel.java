@@ -4,14 +4,17 @@ import com.ancevt.d2d2.common.PlainRect;
 
 public class Panel extends Component {
 
+    private static final float DEFAULT_WIDTH = 400.0f;
+    private static final float DEFAULT_HEIGHT = 200.0f;
+
     private final PlainRect bg;
 
     public Panel() {
         bg = new PlainRect();
         add(bg);
-        bg.setAlpha(D2D2Components.PANEL_BG_ALPHA);
-        bg.setColor(D2D2Components.PANEL_BG_COLOR);
-        setSize(D2D2Components.DEFAULT_PANEL_WIDTH, D2D2Components.DEFAULT_PANEL_HEIGHT);
+        bg.setAlpha(Component.PANEL_BG_ALPHA);
+        bg.setColor(Component.DEFAULT_BACKGROUND_COLOR);
+        setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
     @Override

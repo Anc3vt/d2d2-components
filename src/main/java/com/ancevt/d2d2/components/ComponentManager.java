@@ -17,10 +17,15 @@
  */
 package com.ancevt.d2d2.components;
 
+import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.event.EventDispatcher;
+
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class ComponentManager {
+import static com.ancevt.d2d2.D2D2.stage;
+
+public class ComponentManager extends EventDispatcher {
 
     private static ComponentManager instance;
 
@@ -32,6 +37,14 @@ public class ComponentManager {
 
     public ComponentManager() {
         componentList = new CopyOnWriteArrayList<>();
+    }
+
+    public void init() {
+        stage().addEventListener(Event.RESIZE, event -> resize(stage().getWidth(), stage().getHeight()));
+    }
+
+    private void resize(float width, float height) {
+        dispatchEvent(Event.builder().type(Event.RESIZE).build());
     }
 
     public int getComponentCount() {

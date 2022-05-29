@@ -17,56 +17,72 @@
  */
 package com.ancevt.d2d2.components;
 
-import com.ancevt.d2d2.display.DisplayObjectContainer;
+import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.interactive.InteractiveButton;
 
-public class Component extends DisplayObjectContainer {
+abstract public class Component extends InteractiveButton {
 
-    private float width;
-    private float height;
-    private boolean enabled;
+    public static final Color DEFAULT_FOREGROUND_COLOR = Color.GRAY;
+    public static final Color DEFAULT_BACKGROUND_COLOR = Color.BLACK;
+    public static final Color DEFAULT_TEXT_COLOR = Color.LIGHT_GRAY;
+    public static final Color DEFAULT_FOCUS_COLOR = Color.LIGHT_GREEN;
+    public static final float PANEL_BG_ALPHA = 0.75f;
+
     private boolean disposed;
+    private Color foregroundColor;
+    private Color backgroundColor;
+    private Color textColor;
 
     public Component() {
         addEventListener(Component.class, Event.ADD_TO_STAGE, this::this_addToStage);
+        super.setEnabled(true);
+    }
+
+    public Color getForegroundColor() {
+        return foregroundColor;
+    }
+
+    public void setForegroundColor(Color foregroundColor) {
+        this.foregroundColor = foregroundColor;
+    }
+
+    public Color getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public void setBackgroundColor(Color backgroundColor) {
+        this.backgroundColor = backgroundColor;
+    }
+
+    public Color getTextColor() {
+        return textColor;
+    }
+
+    public void setTextColor(Color textColor) {
+        this.textColor = textColor;
     }
 
     private void this_addToStage(Event event) {
         ComponentManager.getInstance().registerComponent(this);
     }
 
+    @Override
     public void setSize(float width, float height) {
-        this.width = width;
-        this.height = height;
+        super.setSize(width, height);
         dispatchEvent(Event.builder().type(Event.RESIZE).build());
     }
 
+    @Override
     public void setWidth(float width) {
-        this.width = width;
+        super.setWidth(width);
         dispatchEvent(Event.builder().type(Event.RESIZE).build());
     }
 
+    @Override
     public void setHeight(float height) {
-        this.height = height;
+        super.setHeight(height);
         dispatchEvent(Event.builder().type(Event.RESIZE).build());
-    }
-
-    @Override
-    public float getWidth() {
-        return width;
-    }
-
-    @Override
-    public float getHeight() {
-        return height;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
     }
 
     public void dispose() {
@@ -74,6 +90,7 @@ public class Component extends DisplayObjectContainer {
         ComponentManager.getInstance().unregisterComponent(this);
         removeFromParent();
         removeEventListener(Component.class, Event.ADD_TO_STAGE);
+        super.setEnabled(false);
     }
 
     public boolean isDisposed() {

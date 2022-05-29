@@ -17,18 +17,11 @@
  */
 package com.ancevt.d2d2.components;
 
-import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.texture.Texture;
 
 import static com.ancevt.d2d2.D2D2.getTextureManager;
 
 public class D2D2Components {
-
-    public static final Color PANEL_BG_COLOR = Color.BLACK;
-    public static final float PANEL_BG_ALPHA = 0.75f;
-    public static final float DEFAULT_PANEL_WIDTH = 400.0f;
-    public static final float DEFAULT_PANEL_HEIGHT = 300.0f;
-
     public static void load() {
         getTextureManager().loadTextureDataInfo("d2d2-components.inf");
     }
@@ -47,5 +40,9 @@ public class D2D2Components {
 
     public static Texture getButtonRightPartTexture() {
         return getTextureManager().getTexture("d2d2-components-button-right-part");
+    }
+
+    public static Texture getMouseCursorIdleTexture() {
+        return getTextureManager().getTexture("d2d2-components-mouse-cursor-idle");
     }
 }
