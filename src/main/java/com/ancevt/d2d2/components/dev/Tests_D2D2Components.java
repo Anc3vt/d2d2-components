@@ -19,15 +19,39 @@ package com.ancevt.d2d2.components.dev;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
+import com.ancevt.d2d2.components.Button;
+import com.ancevt.d2d2.components.D2D2ComponentAssets;
+import com.ancevt.d2d2.debug.DebugPanel;
+import com.ancevt.d2d2.display.Color;
+import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
+import com.ancevt.d2d2.interactive.InteractiveButton;
+
+import static com.ancevt.d2d2.components.D2D2ComponentAssets.MOUSE_CURSOR;
 
 public class Tests_D2D2Components {
 
     public static void main(String[] args) {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
+        D2D2ComponentAssets.load();
+        InteractiveButton.setTabbingEnabled(true);
+        DebugPanel.setEnabled(true);
+        stage.setBackgroundColor(Color.BLACK);
 
+        D2D2.setCursor(new Sprite(MOUSE_CURSOR));
 
+        for (int i = 0; i < 5; i++) {
+            Button button = new Button("Test " + i);
+            button.addEventListener(Button.ButtonEvent.BUTTON_PRESSED, event -> {
+                DebugPanel.show(Button.class.getName(), button.getName() + " pressed").ifPresent(debugPanel -> {
+                    debugPanel.setY(button.getY());
+                });
+            });
+            button.setWidth(150);
+            stage.add(button, 100, 50 + i * 30);
+        }
 
         D2D2.loop();
+        DebugPanel.saveAll();
     }
 }

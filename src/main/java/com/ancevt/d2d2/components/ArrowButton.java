@@ -28,6 +28,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
+import static com.ancevt.d2d2.components.D2D2ComponentAssets.ARROW_BUTTON;
+
 public class ArrowButton extends DisplayObjectContainer {
 
     private final Sprite sprite;
@@ -36,8 +38,8 @@ public class ArrowButton extends DisplayObjectContainer {
     private int direction;
 
     public ArrowButton() {
-        sprite = new Sprite(D2D2Components.getArrowButtonTexture());
-        shadow = new Sprite(D2D2Components.getArrowButtonTexture());
+        sprite = new Sprite(ARROW_BUTTON);
+        shadow = new Sprite(ARROW_BUTTON);
         shadow.setColor(Color.BLACK);
 
         add(shadow, 1, 1);

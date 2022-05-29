@@ -25,7 +25,7 @@ abstract public class Component extends InteractiveButton {
 
     public static final Color DEFAULT_FOREGROUND_COLOR = Color.GRAY;
     public static final Color DEFAULT_BACKGROUND_COLOR = Color.BLACK;
-    public static final Color DEFAULT_TEXT_COLOR = Color.LIGHT_GRAY;
+    public static final Color DEFAULT_TEXT_COLOR = Color.WHITE;
     public static final Color DEFAULT_FOCUS_COLOR = Color.LIGHT_GREEN;
     public static final float PANEL_BG_ALPHA = 0.75f;
 

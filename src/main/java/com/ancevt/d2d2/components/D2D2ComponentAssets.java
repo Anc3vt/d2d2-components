@@ -21,28 +21,20 @@ import com.ancevt.d2d2.display.texture.Texture;
 
 import static com.ancevt.d2d2.D2D2.getTextureManager;
 
-public class D2D2Components {
+public class D2D2ComponentAssets {
+
+    public static final String ARROW_BUTTON = "d2d2-components-arrow-button";
+    public static final String BUTTON_LEFT_PART = "d2d2-components-button-left-part";
+    public static final String BUTTON_RIGHT_PART = "d2d2-components-button-right-part";
+    public static final String BUTTON_MIDDLE_PART = "d2d2-components-button-middle-part";
+    public static final String MOUSE_CURSOR = "d2d2-components-mouse-cursor-idle";
+    public static final String WARNING_ICON = "d2d2-components-warning-icon";
+
     public static void load() {
         getTextureManager().loadTextureDataInfo("d2d2-components.inf");
     }
 
-    public static Texture getArrowButtonTexture() {
-        return getTextureManager().getTexture("d2d2-components-arrow-button");
-    }
-
-    public static Texture getButtonLeftPartTexture() {
-        return getTextureManager().getTexture("d2d2-components-button-left-part");
-    }
-
-    public static Texture getButtonMiddlePartTexture() {
-        return getTextureManager().getTexture("d2d2-components-button-middle-part");
-    }
-
-    public static Texture getButtonRightPartTexture() {
-        return getTextureManager().getTexture("d2d2-components-button-right-part");
-    }
-
-    public static Texture getMouseCursorIdleTexture() {
-        return getTextureManager().getTexture("d2d2-components-mouse-cursor-idle");
+    public static Texture getTexture(String textureKey) {
+        return getTextureManager().getTexture(textureKey);
     }
 }
