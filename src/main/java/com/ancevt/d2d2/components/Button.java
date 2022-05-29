@@ -18,19 +18,18 @@
 
 package com.ancevt.d2d2.components;
 
-import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
-import com.ancevt.d2d2.debug.DebugPanel;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Sprite;
-import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.FocusEvent;
 import com.ancevt.d2d2.event.InteractiveButtonEvent;
-import com.ancevt.d2d2.interactive.InteractiveButton;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
+
+import static com.ancevt.d2d2.components.D2D2ComponentAssets.BUTTON_LEFT_PART;
+import static com.ancevt.d2d2.components.D2D2ComponentAssets.BUTTON_MIDDLE_PART;
+import static com.ancevt.d2d2.components.D2D2ComponentAssets.BUTTON_RIGHT_PART;
 
 public class Button extends Component {
 
@@ -47,9 +46,9 @@ public class Button extends Component {
     }
 
     public Button(String text) {
-        leftPart = new Sprite(D2D2Components.getButtonLeftPartTexture());
-        rightPart = new Sprite(D2D2Components.getButtonRightPartTexture());
-        middlePart = new Sprite(D2D2Components.getButtonMiddlePartTexture());
+        leftPart = new Sprite(BUTTON_LEFT_PART);
+        rightPart = new Sprite(BUTTON_RIGHT_PART);
+        middlePart = new Sprite(BUTTON_MIDDLE_PART);
 
         uiText = new UiText();
 
@@ -142,28 +141,6 @@ public class Button extends Component {
         public static final String BUTTON_PRESSED = "buttonPressed";
     }
 
-    public static void main(String[] args) {
-        Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
-        D2D2Components.load();
-        InteractiveButton.setTabbingEnabled(true);
-        DebugPanel.setEnabled(true);
-
-        D2D2.setCursor(new Sprite(D2D2Components.getMouseCursorIdleTexture()));
-
-        for (int i = 0; i < 10; i++) {
-            Button button = new Button("Test " + i);
-            button.addEventListener(ButtonEvent.BUTTON_PRESSED, event -> {
-                DebugPanel.show(Button.class.getName(), button.getName() + " pressed").ifPresent(debugPanel -> {
-                    debugPanel.setY(button.getY());
-                });
-            });
-            button.setWidth(150);
-            stage.add(button, 100, 50 + i * 30);
-        }
-
-        D2D2.loop();
-        DebugPanel.saveAll();
-    }
 }
 
 

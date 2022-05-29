@@ -1,6 +1,16 @@
 :d2d2-components.png
-    d2d2-components-arrow-button        0  0  16 16
+    d2d2-components-warning-icon  48 0  32 32
+
+    d2d2-components-arrow-button  0  0  16 16
+
     d2d2-components-button-left-part    16 0  16 16
     d2d2-components-button-right-part   32 0  16 16
     d2d2-components-button-middle-part  32 0  1  16
-    d2d2-components-mouse-cursor-idle   0  16 16 32
+
+    d2d2-components-mouse-cursor-idle  0  16 16 32
+
+    d2d2-components-checkbox-enabled-unchecked  16 16 8  8
+    d2d2-components-checkbox-enabled-checked    24 16 8  8
+    d2d2-components-checkbox-disabled-unchecked 16 24 8  8 
+    d2d2-components-checkbox-disabled-checked   24 24 8  8
+
