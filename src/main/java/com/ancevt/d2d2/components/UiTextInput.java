@@ -365,7 +365,7 @@ public class UiTextInput extends Component implements EventListener {
         if (text.length() * uiText.getCharWidth() < getWidth() - 10) insertText(keyType);
     }
 
-    void focus() {
+    public void focus() {
         this.focused = true;
         add(caret);
     }

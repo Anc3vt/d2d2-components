@@ -20,20 +20,19 @@ package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
+import com.ancevt.d2d2.debug.DebugPanel;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.DisplayObjectContainer;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.event.FocusEvent;
 import com.ancevt.d2d2.event.InteractiveButtonEvent;
 import com.ancevt.d2d2.interactive.InteractiveButton;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
-import static com.ancevt.commons.unix.UnixDisplay.debug;
-
-public class Button extends DisplayObjectContainer {
+public class Button extends Component {
 
     private static final float DEFAULT_WIDTH = 80;
     private static final String DEFAULT_TEXT = "Button";
@@ -42,11 +41,9 @@ public class Button extends DisplayObjectContainer {
     private final Sprite rightPart;
     private final Sprite middlePart;
     private final UiText uiText;
-    private final InteractiveButton interactiveButton;
-    private float width;
 
     public Button() {
-        this("");
+        this(DEFAULT_TEXT);
     }
 
     public Button(String text) {
@@ -56,31 +53,47 @@ public class Button extends DisplayObjectContainer {
 
         uiText = new UiText();
 
-        interactiveButton = new InteractiveButton(true);
-        interactiveButton.addEventListener(InteractiveButtonEvent.DOWN, this::interactiveButton_down);
-        add(interactiveButton);
+        addEventListener(Button.class, InteractiveButtonEvent.DOWN, event -> {
+            dispatchEvent(ButtonEvent.builder().type(ButtonEvent.BUTTON_PRESSED).build());
+        });
+        addEventListener(Button.class, FocusEvent.FOCUS_IN, event -> setForegroundColor(DEFAULT_FOCUS_COLOR));
+        addEventListener(Button.class, FocusEvent.FOCUS_OUT, event -> setForegroundColor(DEFAULT_FOREGROUND_COLOR));
 
         add(leftPart);
         add(middlePart);
         add(rightPart);
 
+        middlePart.setVertexBleedingFix(0d);
+        middlePart.setTextureBleedingFix(0d);
+
+
         add(uiText);
 
-        setWidth(DEFAULT_WIDTH);
+        setSize(DEFAULT_WIDTH, leftPart.getHeight());
         setText(text);
+
+        setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
+        setForegroundColor(DEFAULT_FOREGROUND_COLOR);
+        setTextColor(DEFAULT_TEXT_COLOR);
     }
 
-    private void interactiveButton_down(Event event) {
-        dispatchEvent(ButtonEvent.builder().type(ButtonEvent.BUTTON_PRESSED).build());
+    @Override
+    public void setForegroundColor(Color foregroundColor) {
+        super.setForegroundColor(foregroundColor);
+        leftPart.setColor(foregroundColor);
+        middlePart.setColor(foregroundColor);
+        rightPart.setColor(foregroundColor);
+    }
+
+    @Override
+    public void setTextColor(Color textColor) {
+        super.setTextColor(textColor);
+        uiText.setColor(textColor);
     }
 
     public void setEnabled(boolean enabled) {
-        interactiveButton.setEnabled(enabled);
+        super.setEnabled(enabled);
         uiText.setColor(enabled ? Color.WHITE : Color.GRAY);
-    }
-
-    public boolean isEnabled() {
-        return interactiveButton.isEnabled();
     }
 
     public void setText(String text) {
@@ -92,9 +105,15 @@ public class Button extends DisplayObjectContainer {
         return uiText.getText();
     }
 
+    @Override
+    public void setSize(float width, float height) {
+        super.setSize(width, height);
+        setWidth(width);
+    }
+
+    @Override
     public void setWidth(float width) {
-        this.width = width;
-        interactiveButton.setSize(width, leftPart.getTexture().height());
+        super.setWidth(width);
 
         middlePart.setX(leftPart.getTexture().width());
         middlePart.setScaleX(width - leftPart.getTexture().width() - rightPart.getTexture().width());
@@ -103,14 +122,17 @@ public class Button extends DisplayObjectContainer {
         fixTextXY();
     }
 
-    @Override
-    public float getWidth() {
-        return width;
-    }
-
     private void fixTextXY() {
         float w = uiText.getTextWidth() - 5;
         uiText.setX((getWidth() - w) / 2);
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        removeEventListener(Button.class, InteractiveButtonEvent.DOWN);
+        removeEventListener(Button.class, FocusEvent.FOCUS_IN);
+        removeEventListener(Button.class, FocusEvent.FOCUS_IN);
     }
 
     @Data
@@ -123,12 +145,24 @@ public class Button extends DisplayObjectContainer {
     public static void main(String[] args) {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
         D2D2Components.load();
-        Button button = new Button("Test");
-        button.addEventListener(ButtonEvent.BUTTON_PRESSED, event -> {
-            debug("Button:104: <A>TEST");
-        });
-        stage.add(button, 100, 100);
+        InteractiveButton.setTabbingEnabled(true);
+        DebugPanel.setEnabled(true);
+
+        D2D2.setCursor(new Sprite(D2D2Components.getMouseCursorIdleTexture()));
+
+        for (int i = 0; i < 10; i++) {
+            Button button = new Button("Test " + i);
+            button.addEventListener(ButtonEvent.BUTTON_PRESSED, event -> {
+                DebugPanel.show(Button.class.getName(), button.getName() + " pressed").ifPresent(debugPanel -> {
+                    debugPanel.setY(button.getY());
+                });
+            });
+            button.setWidth(150);
+            stage.add(button, 100, 50 + i * 30);
+        }
+
         D2D2.loop();
+        DebugPanel.saveAll();
     }
 }
 
