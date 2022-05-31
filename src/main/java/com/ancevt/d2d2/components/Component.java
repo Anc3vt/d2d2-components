@@ -26,7 +26,7 @@ abstract public class Component extends InteractiveButton {
     public static final Color DEFAULT_FOREGROUND_COLOR = Color.GRAY;
     public static final Color DEFAULT_BACKGROUND_COLOR = Color.BLACK;
     public static final Color DEFAULT_TEXT_COLOR = Color.WHITE;
-    public static final Color DEFAULT_FOCUS_COLOR = Color.LIGHT_GREEN;
+    public static final Color DEFAULT_FOCUS_COLOR = Color.WHITE;
     public static final float PANEL_BG_ALPHA = 0.75f;
 
     private boolean disposed;
@@ -37,6 +37,7 @@ abstract public class Component extends InteractiveButton {
     public Component() {
         addEventListener(Component.class, Event.ADD_TO_STAGE, this::this_addToStage);
         super.setEnabled(true);
+        setTabbingEnabled(true);
     }
 
     public Color getForegroundColor() {

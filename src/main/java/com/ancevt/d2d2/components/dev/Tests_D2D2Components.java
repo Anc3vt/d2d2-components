@@ -34,7 +34,7 @@ public class Tests_D2D2Components {
     public static void main(String[] args) {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
         D2D2ComponentAssets.load();
-        InteractiveButton.setTabbingEnabled(true);
+        InteractiveButton.setGlobalTabbingEnabled(true);
         DebugPanel.setEnabled(true);
         stage.setBackgroundColor(Color.BLACK);
 
@@ -47,8 +47,8 @@ public class Tests_D2D2Components {
                     debugPanel.setY(button.getY());
                 });
             });
-            button.setWidth(150);
-            stage.add(button, 100, 50 + i * 30);
+            button.setWidth(100);
+            stage.add(button, 20, 50 + i * 30);
         }
 
         D2D2.loop();

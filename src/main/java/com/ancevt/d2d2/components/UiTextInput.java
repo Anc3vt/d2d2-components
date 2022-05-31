@@ -23,20 +23,20 @@ import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.EventListener;
+import com.ancevt.d2d2.event.FocusEvent;
 import com.ancevt.d2d2.event.InteractiveButtonEvent;
 import com.ancevt.d2d2.input.Clipboard;
 import com.ancevt.d2d2.input.KeyCode;
-import com.ancevt.d2d2.interactive.InteractiveButton;
 import org.jetbrains.annotations.NotNull;
 
-public class UiTextInput extends Component implements EventListener {
+public class UiTextInput extends Component {
 
     private boolean enabled;
 
     public static void main(String[] args) {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
-        stage.setBackgroundColor(Color.WHITE);
+
+        stage.setBackgroundColor(Color.GRAY);
 
         UiTextInput uiTextInput = new UiTextInput();
         stage.add(uiTextInput, 100, 100);
@@ -45,6 +45,8 @@ public class UiTextInput extends Component implements EventListener {
         UiTextInput uiTextInput1 = new UiTextInput();
         stage.add(uiTextInput1, 100, 140);
         uiTextInput1.setText("AAAAAAAAAAAAAAAAAAA");
+
+        stage.add(new UiText("Hello world"), 400, 100);
 
         UiTextInputProcessor.setEnabled(true);
         D2D2.loop();
@@ -58,7 +60,6 @@ public class UiTextInput extends Component implements EventListener {
 
     private final PlainRect background;
     private final PlainRect selection;
-    private final InteractiveButton interactiveButton;
     private final UiText uiText;
     private final Caret caret;
     private boolean focused;
@@ -72,8 +73,6 @@ public class UiTextInput extends Component implements EventListener {
         enabled = true;
         background = new PlainRect(DEFAULT_WIDTH, DEFAULT_HEIGHT, BACKGROUND_COLOR);
         selection = new PlainRect(0, DEFAULT_HEIGHT - 8, SELECTION_COLOR);
-        interactiveButton = new InteractiveButton(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        add(interactiveButton);
         uiText = new UiText();
         uiText.setShadowEnabled(false);
 
@@ -86,14 +85,48 @@ public class UiTextInput extends Component implements EventListener {
         caret = new Caret(this);
         caret.setXY(uiText.getX(), 4);
 
-        text = "";
-        setText(text);
+        setText("");
 
         align();
 
-        addEventListener(Event.ADD_TO_STAGE, this);
-        addEventListener(Event.REMOVE_FROM_STAGE, this);
-        interactiveButton.addEventListener(InteractiveButtonEvent.DOWN, this);
+        addEventListener(UiTextInput.class, Event.ADD_TO_STAGE, this::this_addToStage);
+        addEventListener(UiTextInput.class, Event.REMOVE_FROM_STAGE, this::this_removeFromStage);
+        addEventListener(UiTextInput.class, InteractiveButtonEvent.DOWN, this::this_down);
+        addEventListener(UiTextInput.class, FocusEvent.FOCUS_IN, this::this_focusIn);
+        addEventListener(UiTextInput.class, FocusEvent.FOCUS_OUT, this::this_focusOut);
+
+        setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    }
+
+    private void this_focusIn(Event event) {
+        UiTextInputProcessor.INSTANCE.focus(this);
+    }
+
+    private void this_focusOut(Event event) {
+        focusLost();
+    }
+
+    private void this_down(Event event) {
+        if (!enabled) return;
+
+        InteractiveButtonEvent e = (InteractiveButtonEvent) event;
+        UiTextInputProcessor.INSTANCE.focus(this);
+
+        float x = e.getX();
+        float c = uiText.getCharWidth();
+        float s = uiText.getAbsoluteScaleX();
+
+        setCaretPosition((int) ((x / c) / s));
+    }
+
+    private void this_addToStage(Event event) {
+        UiTextInputProcessor.INSTANCE.addTextInput(this);
+        UiTextInputProcessor.INSTANCE.focus(this);
+    }
+
+    private void this_removeFromStage(Event event) {
+        UiTextInputProcessor.INSTANCE.removeTextInput(this);
+        if (isFocused()) UiTextInputProcessor.INSTANCE.resetFocus();
     }
 
     public void setColor(Color color) {
@@ -171,7 +204,6 @@ public class UiTextInput extends Component implements EventListener {
     public void setWidth(float width) {
         super.setWidth(width);
         background.setWidth(width);
-        interactiveButton.setWidth(width);
         align();
     }
 
@@ -179,7 +211,6 @@ public class UiTextInput extends Component implements EventListener {
     public void setHeight(float height) {
         super.setHeight(height);
         background.setHeight(height);
-        interactiveButton.setHeight(height);
         align();
     }
 
@@ -212,10 +243,9 @@ public class UiTextInput extends Component implements EventListener {
     @Override
     public void dispose() {
         super.dispose();
-        removeEventListener(Event.ADD_TO_STAGE, this);
-        removeEventListener(Event.REMOVE_FROM_STAGE, this);
-        interactiveButton.removeEventListener(InteractiveButtonEvent.DOWN, this);
-        interactiveButton.setEnabled(false);
+        removeEventListener(UiTextInput.class, Event.ADD_TO_STAGE);
+        removeEventListener(UiTextInput.class, Event.REMOVE_FROM_STAGE);
+        removeEventListener(UiTextInput.class, InteractiveButtonEvent.DOWN);
         removeFromParent();
         UiTextInputProcessor.INSTANCE.removeTextInput(this);
     }
@@ -232,37 +262,8 @@ public class UiTextInput extends Component implements EventListener {
         uiText.setXY(alignLeft, alignTop);
         uiText.setWidth(getWidth() - (alignLeft * 2));
         uiText.setHeight(getHeight() - (alignTop * 2));
-    }
 
-    @Override
-    public void onEvent(Event event) {
-        switch (event.getType()) {
-
-            case Event.ADD_TO_STAGE -> {
-                interactiveButton.setEnabled(true);
-                UiTextInputProcessor.INSTANCE.addTextInput(this);
-                UiTextInputProcessor.INSTANCE.focus(this);
-            }
-
-            case Event.REMOVE_FROM_STAGE -> {
-                interactiveButton.setEnabled(false);
-                UiTextInputProcessor.INSTANCE.removeTextInput(this);
-                if (isFocused()) UiTextInputProcessor.INSTANCE.resetFocus();
-            }
-
-            case InteractiveButtonEvent.DOWN -> {
-                if (!enabled) return;
-
-                InteractiveButtonEvent e = (InteractiveButtonEvent) event;
-                UiTextInputProcessor.INSTANCE.focus(this);
-
-                float x = e.getX();
-                float c = uiText.getCharWidth();
-                float s = uiText.getAbsoluteScaleX();
-
-                setCaretPosition((int) ((x / c) / s));
-            }
-        }
+        System.out.println(uiText.getWidth() + ", " + uiText.getHeight());
     }
 
     public void key(int keyCode, char keyChar, boolean control, boolean shift, boolean alt, boolean down) {
