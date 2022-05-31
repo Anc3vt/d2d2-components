@@ -18,18 +18,28 @@
 
 package com.ancevt.d2d2.components;
 
+import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
+import com.ancevt.d2d2.debug.DebugPanel;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Sprite;
+import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.FocusEvent;
 import com.ancevt.d2d2.event.InteractiveButtonEvent;
+import com.ancevt.d2d2.interactive.InteractiveButton;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
-import static com.ancevt.d2d2.components.D2D2ComponentAssets.BUTTON_LEFT_PART;
-import static com.ancevt.d2d2.components.D2D2ComponentAssets.BUTTON_MIDDLE_PART;
-import static com.ancevt.d2d2.components.D2D2ComponentAssets.BUTTON_RIGHT_PART;
+import static com.ancevt.commons.unix.UnixDisplay.debug;
+import static com.ancevt.d2d2.components.D2D2ComponentAssets.BUTTON_LEFT_PART_DISABLED;
+import static com.ancevt.d2d2.components.D2D2ComponentAssets.BUTTON_LEFT_PART_ENABLED;
+import static com.ancevt.d2d2.components.D2D2ComponentAssets.BUTTON_MIDDLE_PART_DISABLED;
+import static com.ancevt.d2d2.components.D2D2ComponentAssets.BUTTON_MIDDLE_PART_ENABLED;
+import static com.ancevt.d2d2.components.D2D2ComponentAssets.BUTTON_RIGHT_PART_DISABLED;
+import static com.ancevt.d2d2.components.D2D2ComponentAssets.BUTTON_RIGHT_PART_ENABLED;
+import static com.ancevt.d2d2.components.D2D2ComponentAssets.MOUSE_CURSOR;
 
 public class Button extends Component {
 
@@ -46,9 +56,9 @@ public class Button extends Component {
     }
 
     public Button(String text) {
-        leftPart = new Sprite(BUTTON_LEFT_PART);
-        rightPart = new Sprite(BUTTON_RIGHT_PART);
-        middlePart = new Sprite(BUTTON_MIDDLE_PART);
+        leftPart = new Sprite(BUTTON_LEFT_PART_ENABLED);
+        rightPart = new Sprite(BUTTON_RIGHT_PART_ENABLED);
+        middlePart = new Sprite(BUTTON_MIDDLE_PART_ENABLED);
 
         uiText = new UiText();
 
@@ -64,7 +74,6 @@ public class Button extends Component {
 
         middlePart.setVertexBleedingFix(0d);
         middlePart.setTextureBleedingFix(0d);
-
 
         add(uiText);
 
@@ -91,8 +100,14 @@ public class Button extends Component {
     }
 
     public void setEnabled(boolean enabled) {
+        if (enabled == isEnabled()) return;
+
         super.setEnabled(enabled);
         uiText.setColor(enabled ? Color.WHITE : Color.GRAY);
+
+        leftPart.setTexture(enabled ? BUTTON_LEFT_PART_ENABLED : BUTTON_LEFT_PART_DISABLED);
+        rightPart.setTexture(enabled ? BUTTON_RIGHT_PART_ENABLED : BUTTON_RIGHT_PART_DISABLED);
+        middlePart.setTexture(enabled ? BUTTON_MIDDLE_PART_ENABLED : BUTTON_MIDDLE_PART_DISABLED);
     }
 
     public void setText(String text) {
@@ -139,6 +154,35 @@ public class Button extends Component {
     @EqualsAndHashCode(callSuper = true)
     public static class ButtonEvent extends Event {
         public static final String BUTTON_PRESSED = "buttonPressed";
+    }
+
+    public static void main(String[] args) {
+        Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
+        D2D2ComponentAssets.load();
+        InteractiveButton.setGlobalTabbingEnabled(true);
+        DebugPanel.setEnabled(true);
+        stage.setBackgroundColor(Color.BLACK);
+
+        D2D2.setCursor(new Sprite(MOUSE_CURSOR));
+
+        for (int i = 0; i < 5; i++) {
+            Button button = new Button("Test " + i);
+            button.addEventListener(Button.ButtonEvent.BUTTON_PRESSED, event -> {
+                DebugPanel.show(Button.class.getName() + button.getName(), button.getText() + " pressed").ifPresent(debugPanel -> {
+                    debugPanel.setY(button.getY());
+                    debugPanel.addButton("enable", () -> button.setEnabled(true));
+                    debugPanel.addButton("disable", () -> {
+                        debug("Button:175: <a><G>test");
+                        button.setEnabled(false);
+                    });
+                });
+            });
+            button.setWidth(100);
+            stage.add(button, 20, 50 + i * 30);
+        }
+
+        D2D2.loop();
+        DebugPanel.saveAll();
     }
 
 }

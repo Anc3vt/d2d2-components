@@ -18,9 +18,12 @@
 
 package com.ancevt.d2d2.components;
 
+import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.DisplayObjectContainer;
 import com.ancevt.d2d2.display.IDisplayObject;
+import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.BitmapText;
 
@@ -186,5 +189,13 @@ public class UiText extends DisplayObjectContainer {
 
     public BitmapFont getBitmapFont() {
         return Font.getBitmapFont();
+    }
+
+    public static void main(String[] args) {
+        Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
+
+        stage.add(new UiText("Hello world"), 100, 100);
+
+        D2D2.loop();
     }
 }

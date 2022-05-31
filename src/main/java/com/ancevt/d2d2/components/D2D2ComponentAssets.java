@@ -23,12 +23,19 @@ import static com.ancevt.d2d2.D2D2.getTextureManager;
 
 public class D2D2ComponentAssets {
 
-    public static final String ARROW_BUTTON = "d2d2-components-arrow-button";
-    public static final String BUTTON_LEFT_PART = "d2d2-components-button-left-part";
-    public static final String BUTTON_RIGHT_PART = "d2d2-components-button-right-part";
-    public static final String BUTTON_MIDDLE_PART = "d2d2-components-button-middle-part";
-    public static final String MOUSE_CURSOR = "d2d2-components-mouse-cursor-idle";
     public static final String WARNING_ICON = "d2d2-components-warning-icon";
+    public static final String ARROW_BUTTON = "d2d2-components-arrow-button";
+    public static final String BUTTON_LEFT_PART_ENABLED = "d2d2-components-button-left-part-enabled";
+    public static final String BUTTON_RIGHT_PART_ENABLED = "d2d2-components-button-right-part-enabled";
+    public static final String BUTTON_MIDDLE_PART_ENABLED = "d2d2-components-button-middle-part-enabled";
+    public static final String BUTTON_LEFT_PART_DISABLED = "d2d2-components-button-left-part-disabled";
+    public static final String BUTTON_RIGHT_PART_DISABLED = "d2d2-components-button-right-part-disabled";
+    public static final String BUTTON_MIDDLE_PART_DISABLED = "d2d2-components-button-middle-part-disabled";
+    public static final String MOUSE_CURSOR = "d2d2-components-mouse-cursor-idle";
+    public static final String CHECKBOX_UNCHECKED_ENABLED = "d2d2-components-checkbox-unchecked-enabled";
+    public static final String CHECKBOX_CHECKED_ENABLED = "d2d2-components-checkbox-checked-enabled";
+    public static final String CHECKBOX_UNCHECKED_DISABLED = "d2d2-components-checkbox-unchecked-disabled";
+    public static final String CHECKBOX_CHECKED_DISABLED = "d2d2-components-checkbox-checked-disabled";
 
     public static void load() {
         getTextureManager().loadTextureDataInfo("d2d2-components.inf");
