@@ -26,11 +26,11 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class UiTextInputEvent extends Event {
+public class TextInputEvent extends Event {
 
-    public static final String TEXT_CHANGE = "textChange";
-    public static final String TEXT_ENTER = "textEnter";
-    public static final String TEXT_INPUT_KEY_DOWN = "textInputKeyDown";
+    public static final String TEXT_CHANGE = "textInputChange";
+    public static final String ENTER = "textInputEnter";
+    public static final String KEY_DOWN = "textInputKeyDown";
 
     private final String text;
     private final int keyCode;

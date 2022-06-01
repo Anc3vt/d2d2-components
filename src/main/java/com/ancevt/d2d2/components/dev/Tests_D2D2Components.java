@@ -25,7 +25,7 @@ import com.ancevt.d2d2.debug.DebugPanel;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
-import com.ancevt.d2d2.interactive.InteractiveButton;
+import com.ancevt.d2d2.interactive.InteractiveManager;
 
 import static com.ancevt.d2d2.components.D2D2ComponentAssets.MOUSE_CURSOR;
 
@@ -34,7 +34,7 @@ public class Tests_D2D2Components {
     public static void main(String[] args) {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
         D2D2ComponentAssets.load();
-        InteractiveButton.setGlobalTabbingEnabled(true);
+        InteractiveManager.getInstance().setTabbingEnabled(true);
         DebugPanel.setEnabled(true);
         stage.setBackgroundColor(Color.BLACK);
 

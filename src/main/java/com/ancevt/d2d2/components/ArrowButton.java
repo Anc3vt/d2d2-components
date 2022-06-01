@@ -22,8 +22,8 @@ import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.DisplayObjectContainer;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveButtonEvent;
-import com.ancevt.d2d2.interactive.InteractiveButton;
+import com.ancevt.d2d2.event.InteractiveEvent;
+import com.ancevt.d2d2.interactive.InteractiveContainer;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
@@ -34,7 +34,7 @@ public class ArrowButton extends DisplayObjectContainer {
 
     private final Sprite sprite;
     private final Sprite shadow;
-    private final InteractiveButton interactiveButton;
+    private final InteractiveContainer interactiveButton;
     private int direction;
 
     public ArrowButton() {
@@ -45,10 +45,10 @@ public class ArrowButton extends DisplayObjectContainer {
         add(shadow, 1, 1);
         add(sprite);
 
-        interactiveButton = new InteractiveButton((int) sprite.getWidth(), (int) sprite.getHeight(), true);
+        interactiveButton = new InteractiveContainer((int) sprite.getWidth(), (int) sprite.getHeight(), true);
         add(interactiveButton);
 
-        interactiveButton.addEventListener(InteractiveButtonEvent.DOWN, this::interactiveButton_down);
+        interactiveButton.addEventListener(InteractiveEvent.DOWN, this::interactiveButton_down);
 
         setEnabled(true);
     }

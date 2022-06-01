@@ -22,7 +22,7 @@ import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.components.Button;
 import com.ancevt.d2d2.components.D2D2ComponentAssets;
-import com.ancevt.d2d2.components.UiText;
+import com.ancevt.d2d2.components.BitmapTextEx;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.DisplayObjectContainer;
 import com.ancevt.d2d2.display.Stage;
@@ -42,7 +42,7 @@ public class AlertWindow extends DisplayObjectContainer {
     private static final float PADDING_CONTROLS = 30f;
 
     private final PlainRect bg;
-    private final UiText uiText;
+    private final BitmapTextEx uiText;
     private Runnable onCloseFunction;
 
     public AlertWindow() {
@@ -50,7 +50,7 @@ public class AlertWindow extends DisplayObjectContainer {
         bg.setAlpha(0.95f);
         add(bg);
 
-        uiText = new UiText();
+        uiText = new BitmapTextEx();
         uiText.setSize(bg.getWidth() - PADDING * 2, bg.getHeight() - PADDING_CONTROLS);
         add(uiText, PADDING, PADDING);
 
