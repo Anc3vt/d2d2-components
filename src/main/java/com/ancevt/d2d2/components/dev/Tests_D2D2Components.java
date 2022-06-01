@@ -20,20 +20,20 @@ package com.ancevt.d2d2.components.dev;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.components.Button;
-import com.ancevt.d2d2.components.D2D2ComponentAssets;
+import com.ancevt.d2d2.components.ComponentAssets;
 import com.ancevt.d2d2.debug.DebugPanel;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.interactive.InteractiveManager;
 
-import static com.ancevt.d2d2.components.D2D2ComponentAssets.MOUSE_CURSOR;
+import static com.ancevt.d2d2.components.ComponentAssets.MOUSE_CURSOR;
 
 public class Tests_D2D2Components {
 
     public static void main(String[] args) {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
-        D2D2ComponentAssets.load();
+        ComponentAssets.load();
         InteractiveManager.getInstance().setTabbingEnabled(true);
         DebugPanel.setEnabled(true);
         stage.setBackgroundColor(Color.BLACK);

@@ -17,85 +17,71 @@
  */
 package com.ancevt.d2d2.components;
 
+import com.ancevt.d2d2.common.BorderedRect;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.interactive.InteractiveContainer;
 
 abstract public class Component extends InteractiveContainer {
 
-    public static final Color DEFAULT_FOREGROUND_COLOR = Color.GRAY;
-    public static final Color DEFAULT_BACKGROUND_COLOR = Color.BLACK;
-    public static final Color DEFAULT_TEXT_COLOR = Color.WHITE;
-    public static final Color DEFAULT_DISABLED_TEXT_COLOR = Color.GRAY;
-    public static final Color DEFAULT_FOCUS_COLOR = Color.WHITE;
+    public static final Color FOREGROUND_COLOR = Color.GRAY;
+    public static final Color BACKGROUND_COLOR = Color.BLACK;
+    public static final Color TEXT_COLOR = Color.WHITE;
+    public static final Color TEXT_COLOR_DISABLED = Color.GRAY;
+    public static final Color FOREGROUND_COLOR_DISABLED = Color.DARK_GRAY;
+    public static final Color FOCUS_RECT_COLOR = Color.YELLOW;
+    public static final Color HOVER_FOREGROUND_COLOR = Color.of(0xBBBBBB);
+    public static final float FOCUS_RECT_BORDER_WIDTH = 1.0f;
     public static final float PANEL_BG_ALPHA = 0.75f;
 
-    private boolean disposed;
-    private Color foregroundColor;
-    private Color backgroundColor;
-    private Color textColor;
+    private final BorderedRect focusRect;
 
     public Component() {
-        addEventListener(Component.class, Event.ADD_TO_STAGE, this::this_addToStage);
         super.setEnabled(true);
         setTabbingEnabled(true);
+
+        focusRect = new BorderedRect(0, 0, null, FOCUS_RECT_COLOR);
+        focusRect.setBorderWidth(FOCUS_RECT_BORDER_WIDTH);
+
+        addEventListener(Component.class, InteractiveEvent.FOCUS_IN, this::this_focusIn);
+        addEventListener(Component.class, InteractiveEvent.FOCUS_OUT, this::this_focusOut);
     }
 
-    public Color getForegroundColor() {
-        return foregroundColor;
+    private void this_focusIn(Event event) {
+        var e = (InteractiveEvent) event;
+        if (!e.isByMouseDown() && !focusRect.hasParent()) add(focusRect);
     }
 
-    public void setForegroundColor(Color foregroundColor) {
-        this.foregroundColor = foregroundColor;
-    }
-
-    public Color getBackgroundColor() {
-        return backgroundColor;
-    }
-
-    public void setBackgroundColor(Color backgroundColor) {
-        this.backgroundColor = backgroundColor;
-    }
-
-    public Color getTextColor() {
-        return textColor;
-    }
-
-    public void setTextColor(Color textColor) {
-        this.textColor = textColor;
-    }
-
-    private void this_addToStage(Event event) {
-        ComponentManager.getInstance().registerComponent(this);
+    private void this_focusOut(Event event) {
+        focusRect.removeFromParent();
     }
 
     @Override
     public void setSize(float width, float height) {
         super.setSize(width, height);
         dispatchEvent(Event.builder().type(Event.RESIZE).build());
+        focusRect.setSize(width, height);
     }
 
     @Override
     public void setWidth(float width) {
         super.setWidth(width);
         dispatchEvent(Event.builder().type(Event.RESIZE).build());
+        focusRect.setWidth(width);
     }
 
     @Override
     public void setHeight(float height) {
         super.setHeight(height);
         dispatchEvent(Event.builder().type(Event.RESIZE).build());
+        focusRect.setWidth(height);
     }
 
+    @Override
     public void dispose() {
-        this.disposed = true;
-        ComponentManager.getInstance().unregisterComponent(this);
-        removeFromParent();
-        removeEventListener(Component.class, Event.ADD_TO_STAGE);
-        super.setEnabled(false);
-    }
-
-    public boolean isDisposed() {
-        return disposed;
+        super.dispose();
+        removeEventListener(Component.class, InteractiveEvent.FOCUS_IN);
+        removeEventListener(Component.class, InteractiveEvent.FOCUS_OUT);
     }
 }

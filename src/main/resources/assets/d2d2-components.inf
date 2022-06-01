@@ -1,26 +1,13 @@
 :d2d2-components.png
-    d2d2-components-warning-icon  48 0  32 32
+    d2d2-components-mouse-cursor-idle  0  16 16 32
 
     d2d2-components-arrow-button  0  0  16 16
 
-    d2d2-components-button-left-part-enabled    16 0  16 16
-    d2d2-components-button-right-part-enabled   32 0  16 16
-    d2d2-components-button-middle-part-enabled  32 0  1  16
+    d2d2-components-button-left-part   48 0  16 24
+    d2d2-components-button-right-part  64 0  16 24
+    d2d2-components-button-middle-part 64 0  1  24
 
-    d2d2-components-button-left-part-disabled    16 16 16 16
-    d2d2-components-button-right-part-disabled   32 16 16 16
-    d2d2-components-button-middle-part-disabled  32 16 1  16
-
-    d2d2-components-mouse-cursor-idle  0  16 16 32
-
-    d2d2-components-checkbox-unchecked-enabled  80 0  8  8
-    d2d2-components-checkbox-checked-enabled    88 0  8  8
-    d2d2-components-checkbox-unchecked-enabled  80 8  8  8 
-    d2d2-components-checkbox-checked-enabled    88 8  8  8
-
-    d2d2-components-radio-unchecked-enabled  96  0  8  8
-    d2d2-components-radio-checked-enabled    104 0  8  8
-    d2d2-components-radio-unchecked-enabled  96  8  8  8 
-    d2d2-components-radio-checked-enabled    104 8  8  8
+    d2d2-components-checkbox-unchecked 16 0 16 16
+    d2d2-components-checkbox-checked   32 0 16 16
 
 
