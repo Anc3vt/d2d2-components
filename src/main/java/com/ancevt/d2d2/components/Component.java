@@ -75,12 +75,17 @@ abstract public class Component extends InteractiveContainer {
     public void setHeight(float height) {
         super.setHeight(height);
         dispatchEvent(Event.builder().type(Event.RESIZE).build());
-        focusRect.setWidth(height);
+        focusRect.setHeight(height);
+    }
+
+    public void disposeOnRemoveFromStage() {
+        addEventListener(Component.class, Event.REMOVE_FROM_STAGE, event -> dispose());
     }
 
     @Override
     public void dispose() {
         super.dispose();
+        removeEventListener(Component.class, Event.REMOVE_FROM_STAGE);
         removeEventListener(Component.class, InteractiveEvent.FOCUS_IN);
         removeEventListener(Component.class, InteractiveEvent.FOCUS_OUT);
     }
