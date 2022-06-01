@@ -149,12 +149,15 @@ public class TextInput extends Component {
 
             case KeyCode.END -> setCaretPosition(text.length());
 
-            case KeyCode.ENTER -> dispatchEvent(
-                    TextInputEvent.builder()
-                            .type(TextInputEvent.ENTER)
-                            .text(getText())
-                            .keyCode(e.getKeyCode())
-                            .build());
+            case KeyCode.ENTER -> {
+                dispatchEvent(TextInputEvent.builder()
+                                .type(TextInputEvent.ENTER)
+                                .text(getText())
+                                .keyCode(e.getKeyCode())
+                                .build());
+
+                setCaretPosition(Integer.MAX_VALUE);
+            }
         }
 
         if (e.isControl()) {
