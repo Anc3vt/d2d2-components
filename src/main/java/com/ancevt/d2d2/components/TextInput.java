@@ -52,7 +52,7 @@ public class TextInput extends Component {
         D2D2.loop();
     }
 
-    private static final Color BACKGROUND_COLOR = Component.DEFAULT_BACKGROUND_COLOR;
+    private static final Color BACKGROUND_COLOR = Component.BACKGROUND_COLOR;
     private static final Color SELECTION_COLOR = Color.DARK_GRAY;
     private static final float BACKGROUND_ALPHA = Component.PANEL_BG_ALPHA;
     private static final int DEFAULT_WIDTH = 200;
@@ -190,15 +190,13 @@ public class TextInput extends Component {
         if(enabled == isEnabled()) return;
 
         super.setEnabled(enabled);
-        bitmapText.setColor(enabled ? Component.DEFAULT_TEXT_COLOR : Component.DEFAULT_DISABLED_TEXT_COLOR);
+        bitmapText.setColor(enabled ? Component.TEXT_COLOR : Component.TEXT_COLOR_DISABLED);
     }
 
-    @Override
     public void setBackgroundColor(Color backgroundColor) {
         background.setColor(backgroundColor);
     }
 
-    @Override
     public Color getBackgroundColor() {
         return background.getColor();
     }
@@ -222,10 +220,12 @@ public class TextInput extends Component {
         setCaretPosition((int) ((x / c) / s));
     }
 
-    @Override
     public void setTextColor(Color textColor) {
-        super.setTextColor(textColor);
         bitmapText.setColor(textColor);
+    }
+
+    public Color getTextColor() {
+        return bitmapText.getColor();
     }
 
     public void setSelection(int fromIndex, int toIndex) {

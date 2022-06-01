@@ -13,7 +13,7 @@ public class Panel extends Component {
         bg = new PlainRect();
         add(bg);
         bg.setAlpha(Component.PANEL_BG_ALPHA);
-        bg.setColor(Component.DEFAULT_BACKGROUND_COLOR);
+        bg.setColor(Component.BACKGROUND_COLOR);
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 

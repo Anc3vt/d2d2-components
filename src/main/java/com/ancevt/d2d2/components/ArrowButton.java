@@ -28,7 +28,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
-import static com.ancevt.d2d2.components.D2D2ComponentAssets.ARROW_BUTTON;
+import static com.ancevt.d2d2.components.ComponentAssets.ARROW_BUTTON;
 
 public class ArrowButton extends DisplayObjectContainer {
 

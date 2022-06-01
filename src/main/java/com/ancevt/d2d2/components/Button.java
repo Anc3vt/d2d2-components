@@ -32,13 +32,10 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
 import static com.ancevt.commons.unix.UnixDisplay.debug;
-import static com.ancevt.d2d2.components.D2D2ComponentAssets.BUTTON_LEFT_PART_DISABLED;
-import static com.ancevt.d2d2.components.D2D2ComponentAssets.BUTTON_LEFT_PART_ENABLED;
-import static com.ancevt.d2d2.components.D2D2ComponentAssets.BUTTON_MIDDLE_PART_DISABLED;
-import static com.ancevt.d2d2.components.D2D2ComponentAssets.BUTTON_MIDDLE_PART_ENABLED;
-import static com.ancevt.d2d2.components.D2D2ComponentAssets.BUTTON_RIGHT_PART_DISABLED;
-import static com.ancevt.d2d2.components.D2D2ComponentAssets.BUTTON_RIGHT_PART_ENABLED;
-import static com.ancevt.d2d2.components.D2D2ComponentAssets.MOUSE_CURSOR;
+import static com.ancevt.d2d2.components.ComponentAssets.BUTTON_LEFT_PART;
+import static com.ancevt.d2d2.components.ComponentAssets.BUTTON_MIDDLE_PART;
+import static com.ancevt.d2d2.components.ComponentAssets.BUTTON_RIGHT_PART;
+import static com.ancevt.d2d2.components.ComponentAssets.MOUSE_CURSOR;
 
 public class Button extends Component {
 
@@ -48,24 +45,48 @@ public class Button extends Component {
     private final Sprite leftPart;
     private final Sprite rightPart;
     private final Sprite middlePart;
-    private final BitmapTextEx uiText;
+    private final BitmapTextEx bitmapText;
 
     public Button() {
         this(DEFAULT_TEXT);
     }
 
     public Button(String text) {
-        leftPart = new Sprite(BUTTON_LEFT_PART_ENABLED);
-        rightPart = new Sprite(BUTTON_RIGHT_PART_ENABLED);
-        middlePart = new Sprite(BUTTON_MIDDLE_PART_ENABLED);
+        leftPart = new Sprite(BUTTON_LEFT_PART);
+        rightPart = new Sprite(BUTTON_RIGHT_PART);
+        middlePart = new Sprite(BUTTON_MIDDLE_PART);
 
-        uiText = new BitmapTextEx();
+        bitmapText = new BitmapTextEx();
 
         addEventListener(Button.class, InteractiveEvent.DOWN, event -> {
+            leftPart.setY(1);
+            middlePart.setY(1);
+            rightPart.setY(1);
+            fixTextXY();
+            bitmapText.moveY(1);
             dispatchEvent(ButtonEvent.builder().type(ButtonEvent.BUTTON_PRESSED).build());
         });
-        addEventListener(Button.class, InteractiveEvent.FOCUS_IN, event -> setForegroundColor(DEFAULT_FOCUS_COLOR));
-        addEventListener(Button.class, InteractiveEvent.FOCUS_OUT, event -> setForegroundColor(DEFAULT_FOREGROUND_COLOR));
+
+        addEventListener(Button.class, InteractiveEvent.UP, event -> {
+            leftPart.setY(0);
+            middlePart.setY(0);
+            rightPart.setY(0);
+            fixTextXY();
+        });
+
+        addEventListener(Button.class, InteractiveEvent.HOVER, event -> {
+            Color color = HOVER_FOREGROUND_COLOR;
+            leftPart.setColor(color);
+            rightPart.setColor(color);
+            middlePart.setColor(color);
+        });
+
+        addEventListener(Button.class, InteractiveEvent.OUT, event -> {
+            Color color = FOREGROUND_COLOR;
+            leftPart.setColor(color);
+            rightPart.setColor(color);
+            middlePart.setColor(color);
+        });
 
         add(leftPart);
         add(middlePart);
@@ -74,48 +95,35 @@ public class Button extends Component {
         middlePart.setVertexBleedingFix(0d);
         middlePart.setTextureBleedingFix(0d);
 
-        add(uiText);
+        add(bitmapText);
 
         setSize(DEFAULT_WIDTH, leftPart.getHeight());
         setText(text);
 
-        setBackgroundColor(DEFAULT_BACKGROUND_COLOR);
-        setForegroundColor(DEFAULT_FOREGROUND_COLOR);
-        setTextColor(DEFAULT_TEXT_COLOR);
-    }
-
-    @Override
-    public void setForegroundColor(Color foregroundColor) {
-        super.setForegroundColor(foregroundColor);
-        leftPart.setColor(foregroundColor);
-        middlePart.setColor(foregroundColor);
-        rightPart.setColor(foregroundColor);
-    }
-
-    @Override
-    public void setTextColor(Color textColor) {
-        super.setTextColor(textColor);
-        uiText.setColor(textColor);
+        setCorrespondingColors();
     }
 
     public void setEnabled(boolean enabled) {
         if (enabled == isEnabled()) return;
-
         super.setEnabled(enabled);
-        uiText.setColor(enabled ? Color.WHITE : Color.GRAY);
+        setCorrespondingColors();
+    }
 
-        leftPart.setTexture(enabled ? BUTTON_LEFT_PART_ENABLED : BUTTON_LEFT_PART_DISABLED);
-        rightPart.setTexture(enabled ? BUTTON_RIGHT_PART_ENABLED : BUTTON_RIGHT_PART_DISABLED);
-        middlePart.setTexture(enabled ? BUTTON_MIDDLE_PART_ENABLED : BUTTON_MIDDLE_PART_DISABLED);
+    public void setCorrespondingColors() {
+        bitmapText.setColor(isEnabled() ? TEXT_COLOR : TEXT_COLOR_DISABLED);
+        Color color = isEnabled() ? FOREGROUND_COLOR : FOREGROUND_COLOR_DISABLED;
+        leftPart.setColor(color);
+        rightPart.setColor(color);
+        middlePart.setColor(color);
     }
 
     public void setText(String text) {
-        uiText.setText(text);
+        bitmapText.setText(text);
         fixTextXY();
     }
 
     public String getText() {
-        return uiText.getText();
+        return bitmapText.getText();
     }
 
     @Override
@@ -136,16 +144,18 @@ public class Button extends Component {
     }
 
     private void fixTextXY() {
-        float w = uiText.getTextWidth() - 5;
-        uiText.setX((getWidth() - w) / 2);
+        float w = bitmapText.getTextWidth() - 5;
+        float h = bitmapText.getBitmapFont().getCharHeight();
+        bitmapText.setXY((getWidth() - w) / 2, (getHeight() - h) / 2 + 1);
     }
 
     @Override
     public void dispose() {
         super.dispose();
         removeEventListener(Button.class, InteractiveEvent.DOWN);
-        removeEventListener(Button.class, InteractiveEvent.FOCUS_IN);
-        removeEventListener(Button.class, InteractiveEvent.FOCUS_IN);
+        removeEventListener(Button.class, InteractiveEvent.UP);
+        removeEventListener(Button.class, InteractiveEvent.HOVER);
+        removeEventListener(Button.class, InteractiveEvent.OUT);
     }
 
     @Data
@@ -157,7 +167,7 @@ public class Button extends Component {
 
     public static void main(String[] args) {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
-        D2D2ComponentAssets.load();
+        ComponentAssets.load();
         InteractiveManager.getInstance().setTabbingEnabled(true);
         DebugPanel.setEnabled(true);
         stage.setBackgroundColor(Color.BLACK);

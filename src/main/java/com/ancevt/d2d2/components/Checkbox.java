@@ -1,29 +1,46 @@
 package com.ancevt.d2d2.components;
 
+import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
+import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Sprite;
+import com.ancevt.d2d2.display.Stage;
+import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.event.InteractiveEvent;
+import com.ancevt.d2d2.interactive.InteractiveManager;
 
-import static com.ancevt.d2d2.components.D2D2ComponentAssets.CHECKBOX_CHECKED_DISABLED;
-import static com.ancevt.d2d2.components.D2D2ComponentAssets.CHECKBOX_UNCHECKED_DISABLED;
-import static com.ancevt.d2d2.components.D2D2ComponentAssets.CHECKBOX_CHECKED_ENABLED;
-import static com.ancevt.d2d2.components.D2D2ComponentAssets.CHECKBOX_UNCHECKED_ENABLED;
+import static com.ancevt.d2d2.components.ComponentAssets.CHECKBOX_CHECKED;
+import static com.ancevt.d2d2.components.ComponentAssets.CHECKBOX_UNCHECKED;
 
 public class Checkbox extends Component {
 
     private static final float PADDING = 7.0f;
+    private static final float DEFAULT_WIDTH = 200.0f;
+    private static final float DEFAULT_HEIGHT = 30.0f;
 
     private BitmapTextEx label;
     private final Sprite sprite;
     private boolean checked;
 
     public Checkbox() {
-        sprite = new Sprite(CHECKBOX_UNCHECKED_ENABLED);
+        sprite = new Sprite(CHECKBOX_UNCHECKED);
         add(sprite);
+        setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
     public Checkbox(String text) {
         this();
         label = new BitmapTextEx(text);
         add(label, sprite.getWidth() + PADDING, 0);
+        setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+
+        addEventListener(Checkbox.class, InteractiveEvent.DOWN, this::this_down);
+    }
+
+    private void this_down(Event event) {
+        if (!isEnabled()) return;
+
+        setChecked(!isChecked());
     }
 
     public void setText(String text) {
@@ -40,6 +57,33 @@ public class Checkbox extends Component {
         }
     }
 
+    @Override
+    public void setSize(float width, float height) {
+        super.setSize(width, height);
+        fixMarkup();
+    }
+
+    @Override
+    public void setWidth(float width) {
+        super.setWidth(width);
+        fixMarkup();
+    }
+
+    @Override
+    public void setHeight(float height) {
+        super.setHeight(height);
+        fixMarkup();
+    }
+
+    private void fixMarkup() {
+        sprite.setXY(PADDING, (getHeight() - sprite.getHeight()) / 2);
+        if (label != null) {
+            float h = label.getBitmapFont().getCharHeight();
+            label.setXY(PADDING + sprite.getWidth() + PADDING, (getHeight() - h) / 2 + 2);
+            label.setSize(getWidth() - PADDING - sprite.getWidth() - PADDING, h);
+        }
+    }
+
     public String getText() {
         if (label == null) {
             return "";
@@ -49,25 +93,38 @@ public class Checkbox extends Component {
     }
 
     public void setChecked(boolean checked) {
+        if (checked == isChecked()) return;
         this.checked = checked;
-        setCorrespondingTexture();
+        sprite.setTexture(checked ? CHECKBOX_CHECKED : CHECKBOX_UNCHECKED);
     }
 
     public boolean isChecked() {
         return checked;
     }
 
-    private void setCorrespondingTexture() {
-        if (isEnabled()) {
-            sprite.setTexture(isChecked() ? CHECKBOX_CHECKED_ENABLED : CHECKBOX_UNCHECKED_ENABLED);
-        } else {
-            sprite.setTexture(isChecked() ? CHECKBOX_CHECKED_DISABLED : CHECKBOX_UNCHECKED_DISABLED);
-        }
-    }
-
     @Override
     public void setEnabled(boolean enabled) {
+        if (enabled == isEnabled()) return;
         super.setEnabled(enabled);
+        if (label != null) {
+            label.setColor(enabled ? TEXT_COLOR : TEXT_COLOR_DISABLED);
+        }
+
+        sprite.setColor(enabled ? FOREGROUND_COLOR : FOREGROUND_COLOR_DISABLED);
+    }
+
+    public static void main(String[] args) {
+        Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
+        stage.setBackgroundColor(Color.of(0x112233));
+        InteractiveManager.getInstance().setTabbingEnabled(true);
+        ComponentAssets.load();
+
+        for (int i = 0; i < 10; i++) {
+            Checkbox checkbox = new Checkbox("Test checkbox #%d".formatted(i));
+            stage.add(checkbox, 100, 100 + i * 30);
+        }
+
+        D2D2.loop();
     }
 
 }
