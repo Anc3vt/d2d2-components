@@ -27,7 +27,7 @@ import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.BitmapText;
 
-public class UiText extends DisplayObjectContainer {
+public class BitmapTextEx extends DisplayObjectContainer {
 
     private static final Color DEFAULT_COLOR = Color.WHITE;
     private static final float DEFAULT_WIDTH = 200.0f;
@@ -46,7 +46,7 @@ public class UiText extends DisplayObjectContainer {
     private boolean autoSize;
     private double vertexBleedingFix;
 
-    public UiText() {
+    public BitmapTextEx() {
         color = DEFAULT_COLOR;
         width = DEFAULT_WIDTH;
         height = DEFAULT_HEIGHT;
@@ -55,7 +55,7 @@ public class UiText extends DisplayObjectContainer {
         //redraw();
     }
 
-    public UiText(Object text) {
+    public BitmapTextEx(Object text) {
         this();
         setText(text);
     }
@@ -194,7 +194,7 @@ public class UiText extends DisplayObjectContainer {
     public static void main(String[] args) {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
 
-        stage.add(new UiText("Hello world"), 100, 100);
+        stage.add(new BitmapTextEx("Hello world"), 100, 100);
 
         D2D2.loop();
     }

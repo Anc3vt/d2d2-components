@@ -19,13 +19,14 @@ package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.interactive.InteractiveButton;
+import com.ancevt.d2d2.interactive.InteractiveContainer;
 
-abstract public class Component extends InteractiveButton {
+abstract public class Component extends InteractiveContainer {
 
     public static final Color DEFAULT_FOREGROUND_COLOR = Color.GRAY;
     public static final Color DEFAULT_BACKGROUND_COLOR = Color.BLACK;
     public static final Color DEFAULT_TEXT_COLOR = Color.WHITE;
+    public static final Color DEFAULT_DISABLED_TEXT_COLOR = Color.GRAY;
     public static final Color DEFAULT_FOCUS_COLOR = Color.WHITE;
     public static final float PANEL_BG_ALPHA = 0.75f;
 

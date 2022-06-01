@@ -8,10 +8,10 @@ import com.ancevt.d2d2.event.Event;
 
 public class TestComponent extends Panel {
 
-    private final UiText uiText;
+    private final BitmapTextEx uiText;
 
     public TestComponent() {
-        uiText = new UiText("test !!!! text");
+        uiText = new BitmapTextEx("test !!!! text");
         add(uiText);
 
         addEventListener(TestComponent.class, ComponentEvent.FOCUS_IN, this::this_focusIn);
@@ -42,7 +42,7 @@ public class TestComponent extends Panel {
         stage.add(comp1, 50, 100);
         stage.add(comp2, 500, 100);
 
-        UiText uiText = new UiText("Test root text");
+        BitmapTextEx uiText = new BitmapTextEx("Test root text");
         stage.add(uiText);
 
         D2D2.loop();

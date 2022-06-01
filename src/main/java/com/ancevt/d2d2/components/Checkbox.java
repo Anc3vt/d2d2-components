@@ -11,7 +11,7 @@ public class Checkbox extends Component {
 
     private static final float PADDING = 7.0f;
 
-    private UiText label;
+    private BitmapTextEx label;
     private final Sprite sprite;
     private boolean checked;
 
@@ -22,7 +22,7 @@ public class Checkbox extends Component {
 
     public Checkbox(String text) {
         this();
-        label = new UiText(text);
+        label = new BitmapTextEx(text);
         add(label, sprite.getWidth() + PADDING, 0);
     }
 
@@ -34,7 +34,7 @@ public class Checkbox extends Component {
             }
         } else {
             if (label == null) {
-                label = new UiText(text);
+                label = new BitmapTextEx(text);
                 add(label, sprite.getWidth() + PADDING, 0);
             }
         }

@@ -25,9 +25,8 @@ import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.FocusEvent;
-import com.ancevt.d2d2.event.InteractiveButtonEvent;
-import com.ancevt.d2d2.interactive.InteractiveButton;
+import com.ancevt.d2d2.event.InteractiveEvent;
+import com.ancevt.d2d2.interactive.InteractiveManager;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
@@ -49,7 +48,7 @@ public class Button extends Component {
     private final Sprite leftPart;
     private final Sprite rightPart;
     private final Sprite middlePart;
-    private final UiText uiText;
+    private final BitmapTextEx uiText;
 
     public Button() {
         this(DEFAULT_TEXT);
@@ -60,13 +59,13 @@ public class Button extends Component {
         rightPart = new Sprite(BUTTON_RIGHT_PART_ENABLED);
         middlePart = new Sprite(BUTTON_MIDDLE_PART_ENABLED);
 
-        uiText = new UiText();
+        uiText = new BitmapTextEx();
 
-        addEventListener(Button.class, InteractiveButtonEvent.DOWN, event -> {
+        addEventListener(Button.class, InteractiveEvent.DOWN, event -> {
             dispatchEvent(ButtonEvent.builder().type(ButtonEvent.BUTTON_PRESSED).build());
         });
-        addEventListener(Button.class, FocusEvent.FOCUS_IN, event -> setForegroundColor(DEFAULT_FOCUS_COLOR));
-        addEventListener(Button.class, FocusEvent.FOCUS_OUT, event -> setForegroundColor(DEFAULT_FOREGROUND_COLOR));
+        addEventListener(Button.class, InteractiveEvent.FOCUS_IN, event -> setForegroundColor(DEFAULT_FOCUS_COLOR));
+        addEventListener(Button.class, InteractiveEvent.FOCUS_OUT, event -> setForegroundColor(DEFAULT_FOREGROUND_COLOR));
 
         add(leftPart);
         add(middlePart);
@@ -144,9 +143,9 @@ public class Button extends Component {
     @Override
     public void dispose() {
         super.dispose();
-        removeEventListener(Button.class, InteractiveButtonEvent.DOWN);
-        removeEventListener(Button.class, FocusEvent.FOCUS_IN);
-        removeEventListener(Button.class, FocusEvent.FOCUS_IN);
+        removeEventListener(Button.class, InteractiveEvent.DOWN);
+        removeEventListener(Button.class, InteractiveEvent.FOCUS_IN);
+        removeEventListener(Button.class, InteractiveEvent.FOCUS_IN);
     }
 
     @Data
@@ -159,7 +158,7 @@ public class Button extends Component {
     public static void main(String[] args) {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
         D2D2ComponentAssets.load();
-        InteractiveButton.setGlobalTabbingEnabled(true);
+        InteractiveManager.getInstance().setTabbingEnabled(true);
         DebugPanel.setEnabled(true);
         stage.setBackgroundColor(Color.BLACK);
 

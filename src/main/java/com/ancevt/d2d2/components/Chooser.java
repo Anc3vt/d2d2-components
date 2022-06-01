@@ -38,7 +38,7 @@ public class Chooser<T> extends DisplayObjectContainer {
 
     private final ArrowButton buttonLeft;
     private final ArrowButton buttonRight;
-    private final UiText uiText;
+    private final BitmapTextEx uiText;
     private final List<Pair<String, T>> items;
     private final Button buttonApply;
     private int index;
@@ -57,7 +57,7 @@ public class Chooser<T> extends DisplayObjectContainer {
         buttonRight.setDirection(1);
         buttonRight.addEventListener(ArrowButton.ArrowButtonEvent.ARROW_BUTTON_PRESS, this::buttonRight_arrowButtonPress);
 
-        uiText = new UiText();
+        uiText = new BitmapTextEx();
 
         buttonApply = new Button("Apply");
         buttonApply.addEventListener(Button.ButtonEvent.BUTTON_PRESSED, this::applyButton_buttonPressed);
