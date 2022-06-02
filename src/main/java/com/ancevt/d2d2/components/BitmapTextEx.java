@@ -21,13 +21,13 @@ package com.ancevt.d2d2.components;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.DisplayObjectContainer;
+import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.IDisplayObject;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.BitmapText;
 
-public class BitmapTextEx extends DisplayObjectContainer {
+public class BitmapTextEx extends Container {
 
     private static final Color DEFAULT_COLOR = Color.WHITE;
     private static final float DEFAULT_WIDTH = 200.0f;

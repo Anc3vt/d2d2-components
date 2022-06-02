@@ -24,7 +24,7 @@ import com.ancevt.d2d2.components.Button;
 import com.ancevt.d2d2.components.ComponentAssets;
 import com.ancevt.d2d2.components.BitmapTextEx;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.DisplayObjectContainer;
+import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InputEvent;
@@ -34,7 +34,7 @@ import org.jetbrains.annotations.NotNull;
 import static com.ancevt.d2d2.D2D2.stage;
 import static com.ancevt.d2d2.event.Event.ADD_TO_STAGE;
 
-public class DialogWindow extends DisplayObjectContainer {
+public class DialogWindow extends Container {
 
     private static final float DEFAULT_WIDTH = 400f;
     private static final float DEFAULT_HEIGHT = 200f;
@@ -151,7 +151,7 @@ public class DialogWindow extends DisplayObjectContainer {
         );
     }
 
-    public static @NotNull DialogWindow show(String text, @NotNull DisplayObjectContainer doc) {
+    public static @NotNull DialogWindow show(String text, @NotNull Container doc) {
         DialogWindow dialogWindow = new DialogWindow();
         dialogWindow.setText(text);
         doc.add(dialogWindow);
