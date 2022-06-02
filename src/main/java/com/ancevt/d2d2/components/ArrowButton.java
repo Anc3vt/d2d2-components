@@ -19,7 +19,7 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.DisplayObjectContainer;
+import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
@@ -30,7 +30,7 @@ import lombok.experimental.SuperBuilder;
 
 import static com.ancevt.d2d2.components.ComponentAssets.ARROW_BUTTON;
 
-public class ArrowButton extends DisplayObjectContainer {
+public class ArrowButton extends Container {
 
     private final Sprite sprite;
     private final Sprite shadow;
@@ -45,7 +45,7 @@ public class ArrowButton extends DisplayObjectContainer {
         add(shadow, 1, 1);
         add(sprite);
 
-        interactiveButton = new InteractiveContainer((int) sprite.getWidth(), (int) sprite.getHeight(), true);
+        interactiveButton = new InteractiveContainer(sprite.getWidth(), sprite.getHeight());
         add(interactiveButton);
 
         interactiveButton.addEventListener(InteractiveEvent.DOWN, this::interactiveButton_down);

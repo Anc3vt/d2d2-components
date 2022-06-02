@@ -22,7 +22,7 @@ import com.ancevt.commons.Pair;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.DisplayObjectContainer;
+import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
 import lombok.Data;
@@ -32,7 +32,7 @@ import lombok.experimental.SuperBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Chooser<T> extends DisplayObjectContainer {
+public class Chooser<T> extends Container {
 
     private static final float DEFAULT_WIDTH = 180;
 
