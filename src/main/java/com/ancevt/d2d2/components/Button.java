@@ -23,6 +23,7 @@ import com.ancevt.d2d2.debug.DebugPanel;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
+import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.interactive.InteractiveManager;
@@ -44,7 +45,7 @@ public class Button extends Component {
     private final Sprite leftPart;
     private final Sprite rightPart;
     private final Sprite middlePart;
-    private final BitmapTextEx bitmapText;
+    private final BitmapText bitmapText;
 
     public Button() {
         this(DEFAULT_TEXT);
@@ -55,7 +56,8 @@ public class Button extends Component {
         rightPart = new Sprite(BUTTON_RIGHT_PART);
         middlePart = new Sprite(BUTTON_MIDDLE_PART);
 
-        bitmapText = new BitmapTextEx();
+        bitmapText = new BitmapText();
+        bitmapText.setBitmapFont(Font.getBitmapFont());
 
         addEventListener(Button.class, InteractiveEvent.DOWN, event -> {
             leftPart.setY(1);

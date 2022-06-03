@@ -23,6 +23,7 @@ import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.Stage;
+import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -37,7 +38,7 @@ public class Chooser<T> extends Container {
 
     private final ArrowButton buttonLeft;
     private final ArrowButton buttonRight;
-    private final BitmapTextEx uiText;
+    private final BitmapText bitmapText;
     private final List<Pair<String, T>> items;
     private final Button buttonApply;
     private int index;
@@ -56,12 +57,13 @@ public class Chooser<T> extends Container {
         buttonRight.setDirection(1);
         buttonRight.addEventListener(ArrowButton.ArrowButtonEvent.ARROW_BUTTON_PRESS, this::buttonRight_arrowButtonPress);
 
-        uiText = new BitmapTextEx();
+        bitmapText = new BitmapText();
+        bitmapText.setBitmapFont(Font.getBitmapFont());
 
         buttonApply = new Button("Apply");
         buttonApply.addEventListener(Button.ButtonEvent.BUTTON_PRESSED, this::applyButton_buttonPressed);
 
-        add(uiText);
+        add(bitmapText);
 
         add(buttonLeft);
         add(buttonRight);
@@ -77,7 +79,7 @@ public class Chooser<T> extends Container {
     private void setCurrentItemAsSelected() {
         selectedItemPair = items.get(index);
         buttonApply.setEnabled(false);
-        uiText.setColor(Color.WHITE);
+        bitmapText.setColor(Color.WHITE);
         dispatchEvent(ChooserEvent.builder().type(ChooserEvent.CHOOSER_APPLY).build());
     }
 
@@ -156,14 +158,14 @@ public class Chooser<T> extends Container {
             buttonRight.setEnabled(true);
         }
 
-        uiText.setText(items.get(index).getFirst());
-        uiText.setWidth(getWidth());
+        bitmapText.setText(items.get(index).getFirst());
+        bitmapText.setBoundWidth(getWidth());
 
         float width = getWidth() - buttonLeft.getWidth() * 3;
 
-        if (uiText.getTextWidth() > width) {
-            String text = uiText.getText();
-            int l = (int) (width / uiText.getCharWidth()) - 5;
+        if (bitmapText.getTextWidth() > width) {
+            String text = bitmapText.getText();
+            int l = (int) (width / bitmapText.getCharWidth()) - 5;
             if (l <= text.length()) {
                 try {
                     text = text.substring(0, l).concat("...");
@@ -171,14 +173,14 @@ public class Chooser<T> extends Container {
                     text = "[!]";
                 }
             }
-            uiText.setText(text);
+            bitmapText.setText(text);
         }
 
-        float w = uiText.getTextWidth() + 8;
-        uiText.setX((getWidth() - w) / 2);
+        float w = bitmapText.getTextWidth() + 8;
+        bitmapText.setX((getWidth() - w) / 2);
 
         buttonApply.setEnabled(selectedItemPair != items.get(index));
-        uiText.setColor(selectedItemPair == items.get(index) ? Color.LIGHT_GREEN : Color.WHITE);
+        bitmapText.setColor(selectedItemPair == items.get(index) ? Color.LIGHT_GREEN : Color.WHITE);
     }
 
     public int getIndex() {
