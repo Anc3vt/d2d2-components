@@ -159,7 +159,7 @@ public class Chooser<T> extends Container {
         }
 
         bitmapText.setText(items.get(index).getFirst());
-        bitmapText.setBoundWidth(getWidth());
+        bitmapText.setWidth(getWidth());
 
         float width = getWidth() - buttonLeft.getWidth() * 3;
 
