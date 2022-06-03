@@ -22,10 +22,11 @@ import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.components.Button;
 import com.ancevt.d2d2.components.ComponentAssets;
-import com.ancevt.d2d2.components.BitmapTextEx;
+import com.ancevt.d2d2.components.Font;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.Stage;
+import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.input.KeyCode;
@@ -42,7 +43,7 @@ public class AlertWindow extends Container {
     private static final float PADDING_CONTROLS = 30f;
 
     private final PlainRect bg;
-    private final BitmapTextEx uiText;
+    private final BitmapText bitmapText;
     private Runnable onCloseFunction;
 
     public AlertWindow() {
@@ -50,9 +51,10 @@ public class AlertWindow extends Container {
         bg.setAlpha(0.95f);
         add(bg);
 
-        uiText = new BitmapTextEx();
-        uiText.setSize(bg.getWidth() - PADDING * 2, bg.getHeight() - PADDING_CONTROLS);
-        add(uiText, PADDING, PADDING);
+        bitmapText = new BitmapText();
+        bitmapText.setBitmapFont(Font.getBitmapFont());
+        bitmapText.setBounds(bg.getWidth() - PADDING * 2, bg.getHeight() - PADDING_CONTROLS);
+        add(bitmapText, PADDING, PADDING);
 
         Button buttonOk = new Button("OK");
         buttonOk.setXY((getWidth() - buttonOk.getWidth()) / 2, getHeight() - PADDING_CONTROLS);
@@ -85,11 +87,11 @@ public class AlertWindow extends Container {
     }
 
     public void setText(Object text) {
-        uiText.setText(text);
+        bitmapText.setText(text + "");
     }
 
     public String getText() {
-        return uiText.getText();
+        return bitmapText.getText();
     }
 
     public void setSize(float w, float h) {
@@ -99,12 +101,12 @@ public class AlertWindow extends Container {
 
     private void setWidth(float w) {
         bg.setWidth(w);
-        uiText.setWidth(w - PADDING * 2f);
+        bitmapText.setBoundWidth(w - PADDING * 2f);
     }
 
     private void setHeight(float h) {
         bg.setHeight(h);
-        uiText.setHeight(h - PADDING_CONTROLS - PADDING * 2f);
+        bitmapText.setBoundHeight(h - PADDING_CONTROLS - PADDING * 2f);
     }
 
     public float getWidth() {

@@ -47,7 +47,7 @@ public class Tests_ScrollPane {
         stage.add(scrollPane, 100, 100);
 
         for (int i = 0; i < 10; i++) {
-            Button button = new Button("test " + i);
+            Button button = new Button("Test " + i);
             button.setWidth(200);
             scrollPane.addScrollableItem(button);
         }

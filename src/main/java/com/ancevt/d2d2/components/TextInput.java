@@ -22,6 +22,7 @@ import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Stage;
+import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.Clipboard;
@@ -48,7 +49,9 @@ public class TextInput extends Component {
             }
         }
 
-        stage.add(new BitmapTextEx("Hello world"), 400, 100);
+        BitmapText bitmapText = new BitmapText("Hello world");
+        bitmapText.setBitmapFont(Font.getBitmapFont());
+        stage.add(bitmapText, 400, 100);
         D2D2.loop();
     }
 
@@ -60,7 +63,7 @@ public class TextInput extends Component {
 
     private final PlainRect background;
     private final PlainRect selection;
-    private final BitmapTextEx bitmapText;
+    private final BitmapText bitmapText;
     private final Caret caret;
     private boolean selecting;
     private int selectionFromIndex;
@@ -71,8 +74,8 @@ public class TextInput extends Component {
     public TextInput() {
         background = new PlainRect(DEFAULT_WIDTH, DEFAULT_HEIGHT, BACKGROUND_COLOR);
         selection = new PlainRect(0, DEFAULT_HEIGHT - 8, SELECTION_COLOR);
-        bitmapText = new BitmapTextEx();
-        bitmapText.setShadowEnabled(false);
+        bitmapText = new BitmapText();
+        bitmapText.setBitmapFont(Font.getBitmapFont());
 
         background.setAlpha(BACKGROUND_ALPHA);
 
@@ -346,8 +349,8 @@ public class TextInput extends Component {
         int alignLeft = 5;
 
         bitmapText.setXY(alignLeft, alignTop);
-        bitmapText.setWidth(getWidth() - (alignLeft * 2));
-        bitmapText.setHeight(getHeight() - (alignTop * 2));
+        bitmapText.setBoundWidth(getWidth() - (alignLeft * 2));
+        bitmapText.setBoundHeight(getHeight() - (alignTop * 2));
     }
 
     public void focus() {
