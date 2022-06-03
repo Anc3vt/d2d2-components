@@ -22,6 +22,7 @@ import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.interactive.InteractiveContainer;
+import org.jetbrains.annotations.NotNull;
 
 abstract public class Component extends InteractiveContainer {
 
@@ -34,28 +35,62 @@ abstract public class Component extends InteractiveContainer {
     public static final Color HOVER_FOREGROUND_COLOR = Color.of(0xBBBBBB);
     public static final float FOCUS_RECT_BORDER_WIDTH = 1.0f;
     public static final float PANEL_BG_ALPHA = 0.75f;
+    private static final float DEFAULT_PADDING_LEFT = 2.0f;
+    private static final float DEFAULT_PADDING_TOP = 2.0f;
+    private static final float DEFAULT_PADDING_RIGHT = 2.0f;
+    private static final float DEFAULT_PADDING_BOTTOM = 2.0f;
 
     private final BorderedRect focusRect;
+    private boolean focusRectEnabled;
+    private Padding padding;
 
     public Component() {
         super.setEnabled(true);
-        setTabbingEnabled(true);
+
+        focusRectEnabled = true;
 
         focusRect = new BorderedRect(0, 0, null, FOCUS_RECT_COLOR);
         focusRect.setBorderWidth(FOCUS_RECT_BORDER_WIDTH);
 
         addEventListener(Component.class, InteractiveEvent.FOCUS_IN, this::this_focusIn);
         addEventListener(Component.class, InteractiveEvent.FOCUS_OUT, this::this_focusOut);
+
+        padding = new Padding(DEFAULT_PADDING_LEFT, DEFAULT_PADDING_TOP, DEFAULT_PADDING_RIGHT, DEFAULT_PADDING_BOTTOM);
+
+        setTabbingEnabled(true);
     }
 
     private void this_focusIn(Event event) {
         var e = (InteractiveEvent) event;
-        if (!e.isByMouseDown() && !focusRect.hasParent()) add(focusRect);
+        if (focusRectEnabled && !e.isByMouseDown() && !focusRect.hasParent()) add(focusRect);
     }
 
     private void this_focusOut(Event event) {
         focusRect.removeFromParent();
     }
+
+    public void setPadding(@NotNull Padding padding) {
+        padding.setComponent(this);
+        this.padding = padding;
+        update();
+    }
+
+    public @NotNull Padding getPadding() {
+        return padding;
+    }
+
+    public void setFocusRectEnabled(boolean focusRectEnabled) {
+        this.focusRectEnabled = focusRectEnabled;
+        if (!focusRectEnabled) {
+            focusRect.removeFromParent();
+        }
+    }
+
+    public boolean isFocusRectEnabled() {
+        return focusRectEnabled;
+    }
+
+    abstract void update();
 
     @Override
     public void setSize(float width, float height) {

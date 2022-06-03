@@ -400,6 +400,11 @@ public class TextInput extends Component {
         setCaretPosition(Integer.MAX_VALUE);
     }
 
+    @Override
+    void update() {
+
+    }
+
     private static class Caret extends PlainRect {
 
         public static final int BLINK_DELAY = 25;

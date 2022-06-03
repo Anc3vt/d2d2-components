@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
@@ -147,6 +146,11 @@ public class Button extends Component {
         float w = bitmapText.getTextWidth() - 5;
         float h = bitmapText.getBitmapFont().getCharHeight();
         bitmapText.setXY((getWidth() - w) / 2, (getHeight() - h) / 2 + 1);
+    }
+
+    @Override
+    void update() {
+
     }
 
     @Override
