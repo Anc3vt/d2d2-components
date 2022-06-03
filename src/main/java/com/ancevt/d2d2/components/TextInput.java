@@ -349,8 +349,8 @@ public class TextInput extends Component {
         int alignLeft = 5;
 
         bitmapText.setXY(alignLeft, alignTop);
-        bitmapText.setBoundWidth(getWidth() - (alignLeft * 2));
-        bitmapText.setBoundHeight(getHeight() - (alignTop * 2));
+        bitmapText.setWidth(getWidth() - (alignLeft * 2));
+        bitmapText.setHeight(getHeight() - (alignTop * 2));
     }
 
     public void focus() {

@@ -56,7 +56,7 @@ public class DialogWindow extends Container {
 
         bitmapText = new BitmapText();
         bitmapText.setBitmapFont(Font.getBitmapFont());
-        bitmapText.setBounds(bg.getWidth() - PADDING * 2, bg.getHeight() - PADDING_CONTROLS);
+        bitmapText.setSize(bg.getWidth() - PADDING * 2, bg.getHeight() - PADDING_CONTROLS);
         add(bitmapText, PADDING, PADDING);
 
         buttonOk = new Button("OK");
@@ -114,12 +114,12 @@ public class DialogWindow extends Container {
 
     private void setWidth(float w) {
         bg.setWidth(w);
-        bitmapText.setBoundWidth(w - PADDING * 2f);
+        bitmapText.setWidth(w - PADDING * 2f);
     }
 
     private void setHeight(float h) {
         bg.setHeight(h);
-        bitmapText.setBoundHeight(h - PADDING_CONTROLS - PADDING * 2f);
+        bitmapText.setHeight(h - PADDING_CONTROLS - PADDING * 2f);
     }
 
     public float getWidth() {
