@@ -30,6 +30,7 @@ public class ComponentAssets {
     public static final String BUTTON_MIDDLE_PART = "d2d2-components-button-middle-part";
     public static final String CHECKBOX_UNCHECKED = "d2d2-components-checkbox-unchecked";
     public static final String CHECKBOX_CHECKED = "d2d2-components-checkbox-checked";
+    public static final String MENU_CHILD_ARROW = "d2d2-components-menu-child-arrow";
 
     public static void load() {
         getTextureManager().loadTextureDataInfo("d2d2-components.inf");

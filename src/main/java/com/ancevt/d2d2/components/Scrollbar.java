@@ -126,7 +126,7 @@ public class Scrollbar extends Component {
     }
 
     @Override
-    void update() {
+    public void update() {
 
     }
 

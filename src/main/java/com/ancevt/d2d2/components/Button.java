@@ -151,7 +151,7 @@ public class Button extends Component {
     }
 
     @Override
-    void update() {
+    public void update() {
 
     }
 

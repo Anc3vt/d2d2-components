@@ -53,7 +53,7 @@ public class Panel extends Component {
     }
 
     @Override
-    void update() {
+    public void update() {
 
     }
 }

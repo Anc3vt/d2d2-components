@@ -404,7 +404,7 @@ public class TextInput extends Component {
     }
 
     @Override
-    void update() {
+    public void update() {
 
     }
 
