@@ -134,7 +134,7 @@ public class Checkbox extends Component {
     }
 
     @Override
-    void update() {
+    public void update() {
 
     }
 

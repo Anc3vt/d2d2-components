@@ -166,7 +166,7 @@ public class ScrollPane extends Component {
     }
 
     @Override
-    void update() {
+    public void update() {
         rebuild();
     }
 

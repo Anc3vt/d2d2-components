@@ -28,6 +28,9 @@ abstract public class Component extends InteractiveContainer {
 
     public static final Color FOREGROUND_COLOR = Color.GRAY;
     public static final Color BACKGROUND_COLOR = Color.BLACK;
+    public static final Color MENU_BACKGROUND_COLOR = Color.BLACK;
+    public static final Color MENU_HOVER_BACKGROUND_COLOR = Color.of(0x111111);
+    public static final Color MENU_SEPARATOR_COLOR = Color.of(0x1111111);
     public static final Color TEXT_COLOR = Color.WHITE;
     public static final Color TEXT_COLOR_DISABLED = Color.GRAY;
     public static final Color FOREGROUND_COLOR_DISABLED = Color.DARK_GRAY;
@@ -90,13 +93,14 @@ abstract public class Component extends InteractiveContainer {
         return focusRectEnabled;
     }
 
-    abstract void update();
+    abstract public void update();
 
     @Override
     public void setSize(float width, float height) {
         super.setSize(width, height);
         dispatchEvent(Event.builder().type(Event.RESIZE).build());
         focusRect.setSize(width, height);
+        update();
     }
 
     @Override
@@ -104,6 +108,7 @@ abstract public class Component extends InteractiveContainer {
         super.setWidth(width);
         dispatchEvent(Event.builder().type(Event.RESIZE).build());
         focusRect.setWidth(width);
+        update();
     }
 
     @Override
@@ -111,6 +116,7 @@ abstract public class Component extends InteractiveContainer {
         super.setHeight(height);
         dispatchEvent(Event.builder().type(Event.RESIZE).build());
         focusRect.setHeight(height);
+        update();
     }
 
     public void disposeOnRemoveFromStage() {
