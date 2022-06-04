@@ -10,4 +10,14 @@
     d2d2-components-checkbox-unchecked 16 0 16 16
     d2d2-components-checkbox-checked   32 0 16 16
 
+    d2d2-components-button-9-side-top-left     80 0 8 8
+    d2d2-components-button-9-side-top-right    88 0 8 8
+    d2d2-components-button-9-side-bottom-left  80 8 8 8
+    d2d2-components-button-9-side-bottom-right 88 8 8 8
+    d2d2-components-button-9-side-top          88 0 1 8
+    d2d2-components-button-9-side-bottom       88 8 1 8
+    d2d2-components-button-9-side-left         80 8 8 1
+    d2d2-components-button-9-side-right        88 8 8 1
+    d2d2-components-button-9-side-center       88 8 1 1
+
 
