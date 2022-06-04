@@ -110,7 +110,7 @@ public class Button extends Component {
         setCorrespondingColors();
     }
 
-    public void setCorrespondingColors() {
+    private void setCorrespondingColors() {
         bitmapText.setColor(isEnabled() ? TEXT_COLOR : TEXT_COLOR_DISABLED);
         Color color = isEnabled() ? FOREGROUND_COLOR : FOREGROUND_COLOR_DISABLED;
         leftPart.setColor(color);
