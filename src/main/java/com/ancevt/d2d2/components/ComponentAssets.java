@@ -32,6 +32,26 @@ public class ComponentAssets {
     public static final String CHECKBOX_CHECKED = "d2d2-components-checkbox-checked";
     public static final String MENU_CHILD_ARROW = "d2d2-components-menu-child-arrow";
 
+    public static final String BUTTON_9_SIDE_TOP_LEFT = "d2d2-components-button-9-side-top-left";
+    public static final String BUTTON_9_SIDE_TOP = "d2d2-components-button-9-side-top";
+    public static final String BUTTON_9_SIDE_TOP_RIGHT = "d2d2-components-button-9-side-top-right";
+    public static final String BUTTON_9_SIDE_LEFT = "d2d2-components-button-9-side-left";
+    public static final String BUTTON_9_SIDE_CENTER = "d2d2-components-button-9-side-center";
+    public static final String BUTTON_9_SIDE_RIGHT = "d2d2-components-button-9-side-right";
+    public static final String BUTTON_9_SIDE_BOTTOM_LEFT = "d2d2-components-button-9-side-bottom-left";
+    public static final String BUTTON_9_SIDE_BOTTOM = "d2d2-components-button-9-side-bottom";
+    public static final String BUTTON_9_SIDE_BOTTOM_RIGHT = "d2d2-components-button-9-side-bottom-right";
+
+    public static final String BORDER_9_SIDE_TOP_LEFT     = "d2d2-components-border-9-side-top-left";
+    public static final String BORDER_9_SIDE_TOP          = "d2d2-components-border-9-side-top";
+    public static final String BORDER_9_SIDE_TOP_RIGHT    = "d2d2-components-border-9-side-top-right";
+    public static final String BORDER_9_SIDE_LEFT         = "d2d2-components-border-9-side-left";
+    public static final String BORDER_9_SIDE_CENTER       = "d2d2-components-border-9-side-center";
+    public static final String BORDER_9_SIDE_RIGHT        = "d2d2-components-border-9-side-right";
+    public static final String BORDER_9_SIDE_BOTTOM_LEFT  = "d2d2-components-border-9-side-bottom-left";
+    public static final String BORDER_9_SIDE_BOTTOM       = "d2d2-components-border-9-side-bottom";
+    public static final String BORDER_9_SIDE_BOTTOM_RIGHT = "d2d2-components-border-9-side-bottom-right";
+
     public static void load() {
         getTextureManager().loadTextureDataInfo("d2d2-components.inf");
     }

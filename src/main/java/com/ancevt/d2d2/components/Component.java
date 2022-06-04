@@ -35,7 +35,9 @@ abstract public class Component extends InteractiveContainer {
     public static final Color TEXT_COLOR_DISABLED = Color.GRAY;
     public static final Color FOREGROUND_COLOR_DISABLED = Color.DARK_GRAY;
     public static final Color FOCUS_RECT_COLOR = Color.YELLOW;
+    public static final float FOCUS_RECT_ALPHA = 0.75f;
     public static final Color HOVER_FOREGROUND_COLOR = Color.of(0xBBBBBB);
+    public static final Color TOGGLE_BUTTON_PUSHED_IN_BORDER_COLOR = Color.of(0x8080FF);
     public static final float FOCUS_RECT_BORDER_WIDTH = 1.0f;
     public static final float PANEL_BG_ALPHA = 0.75f;
     private static final float DEFAULT_PADDING_LEFT = 2.0f;
@@ -54,6 +56,7 @@ abstract public class Component extends InteractiveContainer {
 
         focusRect = new BorderedRect(0, 0, null, FOCUS_RECT_COLOR);
         focusRect.setBorderWidth(FOCUS_RECT_BORDER_WIDTH);
+        focusRect.setAlpha(FOCUS_RECT_ALPHA);
 
         addEventListener(Component.class, InteractiveEvent.FOCUS_IN, this::this_focusIn);
         addEventListener(Component.class, InteractiveEvent.FOCUS_OUT, this::this_focusOut);
