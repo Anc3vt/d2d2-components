@@ -17,6 +17,7 @@
  */
 package com.ancevt.d2d2.components;
 
+import com.ancevt.commons.Holder;
 import com.ancevt.d2d2.common.BorderedRect;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.event.Event;
@@ -92,9 +93,18 @@ abstract public class Component extends InteractiveContainer {
 
         if (tooltip != null) {
             addEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.HOVER, event -> {
-                runLater(1000, TimeUnit.MILLISECONDS, () -> {
 
-                    if (isHovering()) {
+                Holder<Boolean> tooltipCancelHover = new Holder<>(false);
+
+                removeEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.DOWN);
+                addEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.DOWN, event1 -> {
+                    tooltipCancelHover.setValue(true);
+                    removeEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.DOWN);
+                    tooltip.removeFromParent();
+                });
+
+                runLater(1000, TimeUnit.MILLISECONDS, () -> {
+                    if (!tooltipCancelHover.getValue() && isHovering()) {
                         stage().add(tooltip, Mouse.getX(), Mouse.getY());
                         if (tooltip.getX() + tooltip.getWidth() > stage().getWidth()) {
                             tooltip.setX(stage().getWidth() - tooltip.getWidth());
