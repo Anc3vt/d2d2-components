@@ -21,7 +21,7 @@ import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.components.Component;
 import com.ancevt.d2d2.components.ComponentAssets;
 import com.ancevt.d2d2.components.Font;
-import com.ancevt.d2d2.display.IDisplayObject;
+import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
@@ -36,10 +36,10 @@ public class MenuItem extends Component {
     private static final Runnable STUB_ACTION = () -> {
     };
 
-    private final PlainRect bg;
+    final PlainRect bg;
     private final BitmapText bitmapText;
 
-    private IDisplayObject childMenuArrow;
+    private Sprite childMenuArrow;
     private Menu childMenu;
     private Runnable action;
     private final Menu parentMenu;
@@ -53,7 +53,6 @@ public class MenuItem extends Component {
         action = STUB_ACTION;
 
         bitmapText = new BitmapText();
-        bitmapText.setAutosize(true);
         bitmapText.setBitmapFont(Font.getBitmapFont());
         bitmapText.setMulticolorEnabled(true);
         add(bitmapText, 10, (HEIGHT - bitmapText.getTextHeight()) / 2 + 1);
@@ -103,6 +102,7 @@ public class MenuItem extends Component {
 
         if (childMenu != null) {
             childMenuArrow = new Sprite(ComponentAssets.MENU_CHILD_ARROW);
+            childMenuArrow.setColor(Color.LIGHT_GRAY);
             add(childMenuArrow);
             update();
         }
@@ -131,5 +131,6 @@ public class MenuItem extends Component {
         if (childMenuArrow != null) {
             childMenuArrow.setXY(getWidth() - childMenuArrow.getWidth() - 5, (HEIGHT - childMenuArrow.getHeight()) / 2);
         }
+        bitmapText.setWidth(getWidth());
     }
 }
