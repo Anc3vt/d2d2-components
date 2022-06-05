@@ -82,7 +82,7 @@ public class Tooltip extends Component {
     }
 
     private void this_addToStage(Event event) {
-        if (tooltip != null) tooltip.removeFromParent();
+        if (tooltip != null && tooltip != this) tooltip.removeFromParent();
     }
 
     private void this_resize(Event event) {
@@ -148,14 +148,18 @@ public class Tooltip extends Component {
 
     public static void main(String[] args) {
         Stage stage = init(new LWJGLBackend(800, 600, "(floating)"));
+        D2D2.setSmoothMode(true);
         StarletSpace.haveFun();
         ComponentAssets.load();
 
-        Tooltip tooltip = new Tooltip();
+        Tooltip tooltip = Tooltip.createTooltip();
+        tooltip.addEventListener(Event.EACH_FRAME, event -> {
+            tooltip.rotate(1f);
+        });
         tooltip.setTexture(getTextureManager().getTexture("satellite"));
 
         tooltip.setText("""
-                #This is a tooltip
+                #This is a tooltip ϕϕϕϕϕϕϕ
                                 
                 <FF8000>Second line
                                 
