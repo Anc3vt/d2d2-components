@@ -21,8 +21,14 @@ import com.ancevt.d2d2.common.BorderedRect;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
+import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.interactive.InteractiveContainer;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.concurrent.TimeUnit;
+
+import static com.ancevt.commons.concurrent.Async.runLater;
+import static com.ancevt.d2d2.D2D2.stage;
 
 abstract public class Component extends InteractiveContainer {
 
@@ -35,9 +41,11 @@ abstract public class Component extends InteractiveContainer {
     public static final Color TEXT_COLOR_DISABLED = Color.GRAY;
     public static final Color FOREGROUND_COLOR_DISABLED = Color.DARK_GRAY;
     public static final Color FOCUS_RECT_COLOR = Color.YELLOW;
-    public static final float FOCUS_RECT_ALPHA = 0.75f;
     public static final Color HOVER_FOREGROUND_COLOR = Color.of(0xBBBBBB);
     public static final Color TOGGLE_BUTTON_PUSHED_IN_BORDER_COLOR = Color.of(0x8080FF);
+    public static final Color TOOLTIP_BORDER_COLOR = Color.GRAY;
+    public static final Color TOOLTIP_BACKGROUND_COLOR = Color.BLACK;
+    public static final float FOCUS_RECT_ALPHA = 0.75f;
     public static final float FOCUS_RECT_BORDER_WIDTH = 1.0f;
     public static final float PANEL_BG_ALPHA = 0.75f;
     private static final float DEFAULT_PADDING_LEFT = 2.0f;
@@ -48,6 +56,7 @@ abstract public class Component extends InteractiveContainer {
     private final BorderedRect focusRect;
     private boolean focusRectEnabled;
     private Padding padding;
+    private Tooltip tooltip;
 
     public Component() {
         super.setEnabled(true);
@@ -73,6 +82,49 @@ abstract public class Component extends InteractiveContainer {
 
     private void this_focusOut(Event event) {
         focusRect.removeFromParent();
+    }
+
+    public void setTooltip(Tooltip tooltip) {
+        this.tooltip = tooltip;
+
+        removeEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.HOVER);
+        removeEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.OUT);
+
+        if (tooltip != null) {
+            addEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.HOVER, event -> {
+                runLater(1000, TimeUnit.MILLISECONDS, () -> {
+
+                    if (isHovering()) {
+                        stage().add(tooltip, Mouse.getX(), Mouse.getY());
+                        if (tooltip.getX() + tooltip.getWidth() > stage().getWidth()) {
+                            tooltip.setX(stage().getWidth() - tooltip.getWidth());
+                        }
+
+                        if (tooltip.getY() + tooltip.getHeight() > stage().getHeight()) {
+                            tooltip.setY(stage().getHeight() - tooltip.getHeight());
+                        }
+
+                        tooltip.removeEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.OUT);
+                        tooltip.addEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.OUT, event1 -> {
+                            tooltip.removeFromParent();
+                        });
+                    }
+                });
+            });
+
+            addEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.OUT, event -> {
+                runLater(1000, TimeUnit.MILLISECONDS, () -> {
+                    if (!isHovering() && !tooltip.isHovering()) {
+                        tooltip.removeEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.OUT);
+                        tooltip.removeFromParent();
+                    }
+                });
+            });
+        }
+    }
+
+    public Tooltip getTooltip() {
+        return tooltip;
     }
 
     public void setPadding(@NotNull Padding padding) {
