@@ -35,19 +35,21 @@ import com.ancevt.d2d2.input.MouseButton;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ancevt.commons.concurrent.Async.runLater;
 import static com.ancevt.d2d2.D2D2.stage;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class Menu extends Component {
 
     private static final float DEFAULT_WIDTH = 200.0f;
     private static final float DEFAULT_HEIGHT = 400.0f;
 
+    private static Menu activeRootMenu;
+
     private final List<MenuItem> items;
     private final List<MenuItem> displayedItems;
 
     private Menu activeChildMenu;
+
+    private boolean backwardDirection;
 
     public Menu() {
         items = new ArrayList<>();
@@ -61,7 +63,7 @@ public class Menu extends Component {
         item.setText(text);
         item.setChildMenu(childMenu);
         item.addEventListener(this, InteractiveEvent.HOVER, this::item_hover);
-        runLater(10, MILLISECONDS, () -> item.addEventListener(this, InteractiveEvent.DOWN, this::item_down));
+        item.addEventListener(this, InteractiveEvent.DOWN, this::item_down);
         items.add(item);
         return this;
     }
@@ -70,7 +72,7 @@ public class Menu extends Component {
         MenuItem item = new MenuItem(this);
         item.setText(text);
         item.addEventListener(this, InteractiveEvent.HOVER, this::item_hover);
-        runLater(10, MILLISECONDS, () -> item.addEventListener(this, InteractiveEvent.DOWN, this::item_down));
+        item.addEventListener(this, InteractiveEvent.DOWN, this::item_down);
         items.add(item);
         item.setAction(action);
         return this;
@@ -95,9 +97,13 @@ public class Menu extends Component {
     }
 
     public Menu activate() {
+        if (activeChildMenu != null) {
+            deactivate(activeRootMenu);
+        }
+
         update();
         float x = Mouse.getX();
-        float y = Mouse.getY();
+        float y = Mouse.getY() + 1;
         stage().add(this, x, y);
 
         if (getX() + getWidth() > stage().getWidth()) {
@@ -109,9 +115,11 @@ public class Menu extends Component {
         }
 
         stage().addEventListener(this, InputEvent.MOUSE_DOWN, event -> {
-            runLater(10, MILLISECONDS, () -> deactivate(this));
+            deactivate(this);
             stage().removeEventListener(this, InputEvent.MOUSE_DOWN);
         });
+
+        activeRootMenu = this;
 
         return this;
     }
@@ -126,8 +134,9 @@ public class Menu extends Component {
             setY(y - getHeight() + MenuItem.HEIGHT);
         }
 
-        if (getX() + getWidth() > stage().getWidth()) {
+        if (getX() + getWidth() > stage().getWidth() || fromItem.getParentMenu().backwardDirection) {
             setX(fromItem.getParentMenu().getX() - getWidth());
+            backwardDirection = true;
         }
 
         return this;
@@ -192,7 +201,11 @@ public class Menu extends Component {
                         .addSeparator()
                         .addItem("third", createMenu()
                                 .addItem("second level first", () -> System.out.println("2"))
-                                .addItem("second level second", () -> System.out.println("3"))
+                                .addItem("second level second", createMenu()
+                                        .addItem("third level first", () -> System.out.println("2"))
+                                        .addItem("third level second", () -> System.out.println("2"))
+                                        .addItem("third level third", () -> System.out.println("2"))
+                                )
                                 .addItem("second level third", () -> System.out.println("4"))
                         )
                         .addItem("fourth", createMenu()
@@ -201,40 +214,8 @@ public class Menu extends Component {
                                 .addItem("second level third", () -> System.out.println("7"))
                         ).activate();
             }
-
         });
 
         D2D2.loop();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
