@@ -44,8 +44,6 @@ abstract public class Component extends InteractiveContainer {
     public static final Color FOCUS_RECT_COLOR = Color.YELLOW;
     public static final Color HOVER_FOREGROUND_COLOR = Color.of(0xBBBBBB);
     public static final Color TOGGLE_BUTTON_PUSHED_IN_BORDER_COLOR = Color.of(0x8080FF);
-    public static final Color TOOLTIP_BORDER_COLOR = Color.GRAY;
-    public static final Color TOOLTIP_BACKGROUND_COLOR = Color.BLACK;
     public static final float FOCUS_RECT_ALPHA = 0.75f;
     public static final float FOCUS_RECT_BORDER_WIDTH = 1.0f;
     public static final float PANEL_BG_ALPHA = 0.75f;
@@ -86,6 +84,9 @@ abstract public class Component extends InteractiveContainer {
     }
 
     public void setTooltip(Tooltip tooltip) {
+        if (this.tooltip != null)
+            this.tooltip.removeEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.OUT);
+
         this.tooltip = tooltip;
 
         removeEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.HOVER);
@@ -158,7 +159,9 @@ abstract public class Component extends InteractiveContainer {
         return focusRectEnabled;
     }
 
-    abstract public void update();
+    public void update() {
+
+    }
 
     @Override
     public void setSize(float width, float height) {

@@ -32,6 +32,7 @@ public class Panel extends Component {
         bg.setAlpha(Component.PANEL_BG_ALPHA);
         bg.setColor(Component.BACKGROUND_COLOR);
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        setFocusRectEnabled(false);
     }
 
     @Override
