@@ -17,9 +17,15 @@
  */
 package com.ancevt.d2d2.components;
 
+import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.common.PlainRect;
+import com.ancevt.d2d2.debug.DebugPanel;
+import com.ancevt.d2d2.display.Color;
+import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
+import com.ancevt.d2d2.interactive.DragUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +56,6 @@ public class ScrollPane extends Component {
 
         components = new ArrayList<>();
 
-        setItemHeight(DEFAULT_ITEM_HEIGHT);
-
         scrollbar = new Scrollbar();
         scrollbar.addEventListener(ScrollPane.class, Event.CHANGE, this::scrollbar_change);
         add(scrollbar);
@@ -60,6 +64,7 @@ public class ScrollPane extends Component {
         addEventListener(ScrollPane.class, InteractiveEvent.WHEEL, this::this_wheel);
 
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        setItemHeight(DEFAULT_ITEM_HEIGHT);
         setFocusRectEnabled(false);
     }
 
@@ -71,13 +76,32 @@ public class ScrollPane extends Component {
     }
 
     private void scrollbar_change(Event event) {
-        int position = (int) (components.size() * scrollbar.getScrollValue());
-        setScrollPosition(position);
+        int position = (int) ((components.size() - getHeight() / itemHeight) * scrollbar.getScrollValue());
+        setScrollPositionInternal(position);
+        rebuild();
+    }
+
+    private void setScrollPositionInternal(int scrollPosition) {
+        this.scrollPosition = scrollPosition;
+
+        if (this.scrollPosition < 0) {
+            this.scrollPosition = 0;
+        }
+
+        int max = (int) (components.size() - getHeight() / itemHeight);
+        if (this.scrollPosition >= max) {
+            this.scrollPosition = max;
+        }
     }
 
     private void this_wheel(Event event) {
         var e = (InteractiveEvent) event;
         scroll(-e.getDelta() * scrollStep);
+    }
+
+    public void clear() {
+        components.clear();
+        rebuild();
     }
 
     public void setBackgroundVisible(boolean backgroundVisible) {
@@ -109,6 +133,7 @@ public class ScrollPane extends Component {
 
     public void setItemHeight(float itemHeight) {
         this.itemHeight = itemHeight;
+        rebuild();
     }
 
     public float getItemHeight() {
@@ -121,16 +146,20 @@ public class ScrollPane extends Component {
         component.addEventListener(ScrollPane.class, Event.REMOVE, event -> {
             focus();
         });
+        setScrollPosition(Integer.MAX_VALUE);
+        scrollbar.setScrollValue(1.0f);
         rebuild();
     }
 
     public void removeScrollableItem(Component component) {
         components.remove(component);
+        setScrollPosition(0);
         rebuild();
     }
 
     public void removeScrollableItem(int index) {
         components.remove(index).removeFromParent();
+        setScrollPosition(0);
         rebuild();
     }
 
@@ -147,16 +176,9 @@ public class ScrollPane extends Component {
     }
 
     public void setScrollPosition(int scrollPosition) {
-        this.scrollPosition = scrollPosition;
+        setScrollPositionInternal(scrollPosition);
 
-        if (this.scrollPosition < 0) {
-            this.scrollPosition = 0;
-        }
-
-        int max = (int) (components.size() - getHeight() / itemHeight);
-        if (this.scrollPosition >= max) {
-            this.scrollPosition = max;
-        }
+        scrollbar.setScrollValue((float) this.scrollPosition / (float) components.size());
 
         rebuild();
     }
@@ -175,6 +197,7 @@ public class ScrollPane extends Component {
 
         float y = 0.0f;
         for (int i = scrollPosition; y < getHeight() && i < components.size(); i++) {
+            if (i < 0) continue;
             Component item = components.get(i);
             add(item, 0, y);
             item.move(getPadding().getLeft(), getPadding().getTop());
@@ -193,5 +216,45 @@ public class ScrollPane extends Component {
         }
 
         scrollbar.setRectLength(getHeight() * val);
+    }
+
+    public static void main(String[] args) {
+        Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
+
+        stage.setBackgroundColor(Color.DARK_GRAY);
+
+        DebugPanel.setEnabled(true);
+        ComponentAssets.load();
+
+        ScrollPane scrollPane = new ScrollPane();
+
+        scrollPane.setWidth(400);
+        scrollPane.getPadding().setRight(10);
+
+        DragUtil.enableDrag(scrollPane);
+
+        stage.add(scrollPane, 100, 100);
+
+        for (int i = 0; i < 10; i++) {
+            Button button = new Button("Test " + i);
+            button.setWidth(200);
+            scrollPane.addScrollableItem(button);
+        }
+
+        DebugPanel.show("test", "").ifPresent(debugPanel -> {
+            debugPanel.addButton("+", () -> {
+                Button button = new Button("test" + (int) (Math.random() * 100));
+                scrollPane.addScrollableItem(button);
+            });
+            debugPanel.addButton("-", () -> {
+                scrollPane.removeScrollableItem(0);
+            });
+            debugPanel.addButton("0", () -> {
+                scrollPane.setScrollPosition(0);
+            });
+        });
+
+        D2D2.loop();
+        DebugPanel.saveAll();
     }
 }

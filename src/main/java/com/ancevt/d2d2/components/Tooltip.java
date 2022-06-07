@@ -26,6 +26,8 @@ import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.display.texture.Texture;
 import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.event.InputEvent;
+import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.interactive.Combined9Sprites;
 import com.ancevt.d2d2.interactive.DragUtil;
 
@@ -46,7 +48,7 @@ public class Tooltip extends Component {
     private final Sprite sprite;
 
     private Tooltip() {
-        bg = new PlainRect(TOOLTIP_BACKGROUND_COLOR);
+        bg = new PlainRect(BACKGROUND_COLOR);
         add(bg);
 
         setEnabled(false);
@@ -62,7 +64,7 @@ public class Tooltip extends Component {
                 D2D2.getTextureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM),
                 D2D2.getTextureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_RIGHT)
         );
-        borders.setColor(TOOLTIP_BORDER_COLOR);
+        borders.setColor(FOREGROUND_COLOR);
         add(borders);
 
         sprite = new Sprite();
@@ -148,16 +150,11 @@ public class Tooltip extends Component {
 
     public static void main(String[] args) {
         Stage stage = init(new LWJGLBackend(800, 600, "(floating)"));
-        D2D2.setSmoothMode(true);
         StarletSpace.haveFun();
         ComponentAssets.load();
 
         Tooltip tooltip = Tooltip.createTooltip();
-        tooltip.addEventListener(Event.EACH_FRAME, event -> {
-            tooltip.rotate(1f);
-        });
         tooltip.setTexture(getTextureManager().getTexture("satellite"));
-
         tooltip.setText("""
                 #This is a tooltip ϕϕϕϕϕϕϕ
                                 
@@ -166,9 +163,20 @@ public class Tooltip extends Component {
                 <BBBBBB>Third line
                 One more line
                 And again""");
-
         tooltip.setImageScale(2f);
 
+        stage.addEventListener(InputEvent.KEY_DOWN, event -> {
+            var e = (InputEvent) event;
+
+            if(e.getKeyCode() == KeyCode.SPACE) {
+                D2D2.setSmoothMode(!D2D2.isSmoothMode());
+                System.out.println(D2D2.isSmoothMode());
+            }
+        });
+
+        stage.addEventListener(Event.EACH_FRAME, event -> {
+            tooltip.rotate(1);
+        });
 
         ButtonEx buttonEx = new ButtonEx();
         buttonEx.setIcon(getTextureManager().getTexture("satellite"));

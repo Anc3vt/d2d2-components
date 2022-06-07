@@ -31,6 +31,7 @@ public class ComponentAssets {
     public static final String CHECKBOX_UNCHECKED = "d2d2-components-checkbox-unchecked";
     public static final String CHECKBOX_CHECKED = "d2d2-components-checkbox-checked";
     public static final String MENU_CHILD_ARROW = "d2d2-components-menu-child-arrow";
+    public static final String DROP_DOWN_LIST_ARROW = "d2d2-components-drop-down-list-arrow";
 
     public static final String BUTTON_9_SIDE_TOP_LEFT = "d2d2-components-button-9-side-top-left";
     public static final String BUTTON_9_SIDE_TOP = "d2d2-components-button-9-side-top";
