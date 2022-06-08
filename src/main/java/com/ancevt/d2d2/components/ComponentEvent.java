@@ -29,4 +29,5 @@ public class ComponentEvent extends Event {
 
     public static final String FOCUS_IN = "componentFocusIn";
     public static final String FOCUS_OUT = "componentFocusOut";
+    public static final String ACTION = "componentAction";
 }

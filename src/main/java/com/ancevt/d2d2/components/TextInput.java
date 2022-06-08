@@ -484,7 +484,7 @@ public class TextInput extends Component {
 
     public static void main(String[] args) {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
-
+        ComponentAssets.load();
         InteractiveManager.getInstance().setTabbingEnabled(true);
 
         stage.setBackgroundColor(Color.GRAY);

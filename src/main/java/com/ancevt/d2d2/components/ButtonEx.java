@@ -55,6 +55,8 @@ public class ButtonEx extends Component implements IColored {
     private boolean selected;
 
     public ButtonEx() {
+        setPushEventsUp(false);
+
         bg = new Combined9Sprites(
                 D2D2.getTextureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_TOP_LEFT),
                 D2D2.getTextureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_TOP),
@@ -90,6 +92,9 @@ public class ButtonEx extends Component implements IColored {
         addEventListener(Button.class, InteractiveEvent.DOWN, event -> {
             if (toggleMode) {
                 setSelected(!isSelected());
+                dispatchEvent(Event.builder()
+                        .type(Event.CHANGE)
+                        .build());
             } else {
                 bg.setY(1);
                 if (bitmapText != null) bitmapText.moveY(1);
@@ -99,6 +104,12 @@ public class ButtonEx extends Component implements IColored {
 
         addEventListener(Button.class, InteractiveEvent.UP, event -> {
             var e = (InteractiveEvent) event;
+
+            if (e.isOnArea()) {
+                dispatchEvent(ComponentEvent.builder()
+                        .type(ComponentEvent.ACTION)
+                        .build());
+            }
 
             bg.setY(0);
             if (bitmapText != null) bitmapText.moveY(0);
