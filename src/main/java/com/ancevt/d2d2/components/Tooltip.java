@@ -70,7 +70,7 @@ public class Tooltip extends Component {
         sprite = new Sprite();
         add(sprite, 10, 10);
 
-        bitmapText = new BitmapText(Font.getBitmapFont());
+        bitmapText = new BitmapText(ComponentFont.getBitmapFont());
         bitmapText.setMulticolorEnabled(true);
         bitmapText.setAutosize(true);
         add(bitmapText, 10, 10);

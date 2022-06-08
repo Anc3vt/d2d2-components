@@ -57,7 +57,7 @@ public class Button extends Component {
         middlePart = new Sprite(BUTTON_MIDDLE_PART);
 
         bitmapText = new BitmapText();
-        bitmapText.setBitmapFont(Font.getBitmapFont());
+        bitmapText.setBitmapFont(ComponentFont.getBitmapFont());
 
         addEventListener(Button.class, InteractiveEvent.DOWN, event -> {
             leftPart.setY(1);

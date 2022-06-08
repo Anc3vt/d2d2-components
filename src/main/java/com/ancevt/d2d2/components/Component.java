@@ -43,10 +43,9 @@ abstract public class Component extends InteractiveContainer {
     public static final Color FOREGROUND_COLOR_DISABLED = Color.DARK_GRAY;
     public static final Color FOCUS_RECT_COLOR = Color.YELLOW;
     public static final Color HOVER_FOREGROUND_COLOR = Color.of(0xBBBBBB);
-    public static final Color TOGGLE_BUTTON_PUSHED_IN_BORDER_COLOR = Color.of(0x8080FF);
     public static final float FOCUS_RECT_ALPHA = 0.75f;
     public static final float FOCUS_RECT_BORDER_WIDTH = 1.0f;
-    public static final float PANEL_BG_ALPHA = 0.75f;
+    public static final float PANEL_BG_ALPHA = 0.9f;
     private static final float DEFAULT_PADDING_LEFT = 2.0f;
     private static final float DEFAULT_PADDING_TOP = 2.0f;
     private static final float DEFAULT_PADDING_RIGHT = 2.0f;

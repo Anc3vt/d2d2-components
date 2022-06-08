@@ -24,7 +24,7 @@ import com.ancevt.d2d2.components.ButtonEx;
 import com.ancevt.d2d2.components.Checkbox;
 import com.ancevt.d2d2.components.ComponentAssets;
 import com.ancevt.d2d2.components.DropDownList;
-import com.ancevt.d2d2.components.Panel;
+import com.ancevt.d2d2.components.Frame;
 import com.ancevt.d2d2.components.ScrollPane;
 import com.ancevt.d2d2.components.TextInput;
 import com.ancevt.d2d2.components.Tooltip;
@@ -46,7 +46,7 @@ public class Tests_D2D2Components {
         StarletSpace.haveFun();
         ComponentAssets.load();
 
-        Panel panel = new Panel();
+        Frame panel = new Frame();
         panel.setSize(700, 550);
         stage.add(panel, 10, 10);
 

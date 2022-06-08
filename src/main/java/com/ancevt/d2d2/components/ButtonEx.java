@@ -39,8 +39,15 @@ public class ButtonEx extends Component implements IColored {
     private static final float DEFAULT_WIDTH = 30.0f;
     private static final float DEFAULT_HEIGHT = 30.0f;
 
-    private final Combined9Sprites combined9Sprites;
+    private final Combined9Sprites bg;
     private final Combined9Sprites selectedBorder;
+
+    private Color colorTogglePushedInBorder = Color.of(0x8080FF);
+    private Color colorHoverBackground = Color.of(0xBBBBBB);
+    private Color colorBackground = Color.GRAY;
+    private Color colorBackgroundDisabled = Color.DARK_GRAY;
+    private Color colorText = Color.WHITE;
+    private Color colorTextDisabled = Color.GRAY;
 
     private Sprite iconSprite;
     private BitmapText bitmapText;
@@ -48,7 +55,7 @@ public class ButtonEx extends Component implements IColored {
     private boolean selected;
 
     public ButtonEx() {
-        combined9Sprites = new Combined9Sprites(
+        bg = new Combined9Sprites(
                 D2D2.getTextureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_TOP_LEFT),
                 D2D2.getTextureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_TOP),
                 D2D2.getTextureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_TOP_RIGHT),
@@ -60,8 +67,8 @@ public class ButtonEx extends Component implements IColored {
                 D2D2.getTextureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_BOTTOM_RIGHT)
         );
 
-        combined9Sprites.setEnabled(false);
-        add(combined9Sprites);
+        bg.setEnabled(false);
+        add(bg);
 
         selectedBorder = new Combined9Sprites(
                 D2D2.getTextureManager().getTexture(ComponentAssets.BORDER_9_SIDE_TOP_LEFT),
@@ -77,38 +84,104 @@ public class ButtonEx extends Component implements IColored {
 
         selectedBorder.setEnabled(false);
         selectedBorder.setVisible(false);
-        selectedBorder.setColor(TOGGLE_BUTTON_PUSHED_IN_BORDER_COLOR);
+        selectedBorder.setColor(colorTogglePushedInBorder);
         add(selectedBorder);
 
         addEventListener(Button.class, InteractiveEvent.DOWN, event -> {
             if (toggleMode) {
                 setSelected(!isSelected());
             } else {
-                combined9Sprites.setY(1);
+                bg.setY(1);
                 if (bitmapText != null) bitmapText.moveY(1);
                 if (iconSprite != null) iconSprite.moveY(1);
             }
         });
 
         addEventListener(Button.class, InteractiveEvent.UP, event -> {
-            combined9Sprites.setY(0);
+            var e = (InteractiveEvent) event;
+
+            bg.setY(0);
             if (bitmapText != null) bitmapText.moveY(0);
             if (iconSprite != null) iconSprite.moveY(0);
             update();
-            combined9Sprites.setColor(HOVER_FOREGROUND_COLOR);
+            bg.setColor(e.isOnArea() ? colorHoverBackground : colorBackground);
         });
 
-        addEventListener(Button.class, InteractiveEvent.HOVER, event -> combined9Sprites.setColor(HOVER_FOREGROUND_COLOR));
-        addEventListener(Button.class, InteractiveEvent.OUT, event -> combined9Sprites.setColor(FOREGROUND_COLOR));
+        addEventListener(Button.class, InteractiveEvent.HOVER, event -> bg.setColor(colorHoverBackground));
+        addEventListener(Button.class, InteractiveEvent.OUT, event -> bg.setColor(colorBackground));
 
         addEventListener(Event.RESIZE, this::this_resize);
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         setCorrespondingColors();
     }
 
+    public void setBackgroundTextures(String[] textureKeys) {
+        bg.setTextures(textureKeys);
+    }
+
+    public void setSelectedBorderTextures(String[] textureKeys) {
+        selectedBorder.setTextures(textureKeys);
+    }
+
     private void this_resize(Event event) {
-        combined9Sprites.setSize(getWidth(), getHeight());
+        bg.setSize(getWidth(), getHeight());
         selectedBorder.setSize(getWidth(), getHeight());
+    }
+
+    public Color getColorTogglePushedInBorder() {
+        return colorTogglePushedInBorder;
+    }
+
+    public void setColorTogglePushedInBorder(Color colorTogglePushedInBorder) {
+        this.colorTogglePushedInBorder = colorTogglePushedInBorder;
+
+        if (isSelected()) {
+            selectedBorder.setColor(colorTogglePushedInBorder);
+        }
+    }
+
+    public Color getColorHoverBackground() {
+        return colorHoverBackground;
+    }
+
+    public void setColorHoverBackground(Color colorHoverBackground) {
+        this.colorHoverBackground = colorHoverBackground;
+    }
+
+    public Color getColorBackground() {
+        return colorBackground;
+    }
+
+    public void setColorBackground(Color colorBackground) {
+        this.colorBackground = colorBackground;
+        if (isEnabled()) bg.setColor(colorBackground);
+    }
+
+    public Color getColorBackgroundDisabled() {
+        return colorBackgroundDisabled;
+    }
+
+    public void setColorBackgroundDisabled(Color colorBackgroundDisabled) {
+        this.colorBackgroundDisabled = colorBackgroundDisabled;
+        if (!isEnabled()) bg.setColor(colorBackgroundDisabled);
+    }
+
+    public Color getColorText() {
+        return colorText;
+    }
+
+    public void setColorText(Color colorText) {
+        this.colorText = colorText;
+        if (isEnabled() && bitmapText != null) bitmapText.setColor(colorText);
+    }
+
+    public Color getColorTextDisabled() {
+        return colorTextDisabled;
+    }
+
+    public void setColorTextDisabled(Color colorTextDisabled) {
+        this.colorTextDisabled = colorTextDisabled;
+        if (!isEnabled() && bitmapText != null) bitmapText.setColor(colorTextDisabled);
     }
 
     public void setToggleMode(boolean toggleMode) {
@@ -137,18 +210,18 @@ public class ButtonEx extends Component implements IColored {
     }
 
     private void setCorrespondingColors() {
-        if (bitmapText != null) bitmapText.setColor(isEnabled() ? TEXT_COLOR : TEXT_COLOR_DISABLED);
+        if (bitmapText != null) bitmapText.setColor(isEnabled() ? colorText : colorTextDisabled);
         if (iconSprite != null) {
             iconSprite.setColor(isEnabled() ? Color.WHITE : Color.DARK_GRAY);
             iconSprite.setAlpha(isEnabled() ? 1.0f : 0.5f);
         }
-        combined9Sprites.setColor(isEnabled() ? FOREGROUND_COLOR : FOREGROUND_COLOR_DISABLED);
+        bg.setColor(isEnabled() ? colorBackground : colorBackgroundDisabled);
     }
 
     public void setText(Object text) {
         if (bitmapText == null) {
             bitmapText = new BitmapText();
-            bitmapText.setBitmapFont(Font.getBitmapFont());
+            bitmapText.setBitmapFont(ComponentFont.getBitmapFont());
             bitmapText.setMulticolorEnabled(true);
             add(bitmapText);
         }
@@ -180,17 +253,17 @@ public class ButtonEx extends Component implements IColored {
 
     @Override
     public void setColor(Color color) {
-        combined9Sprites.setColor(color);
+        bg.setColor(color);
     }
 
     @Override
     public void setColor(int rgb) {
-        combined9Sprites.setColor(rgb);
+        bg.setColor(rgb);
     }
 
     @Override
     public Color getColor() {
-        return combined9Sprites.getColor();
+        return bg.getColor();
     }
 
     @Override
