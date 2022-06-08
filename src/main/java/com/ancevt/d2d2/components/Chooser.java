@@ -58,7 +58,7 @@ public class Chooser<T> extends Container {
         buttonRight.addEventListener(ArrowButton.ArrowButtonEvent.ARROW_BUTTON_PRESS, this::buttonRight_arrowButtonPress);
 
         bitmapText = new BitmapText();
-        bitmapText.setBitmapFont(Font.getBitmapFont());
+        bitmapText.setBitmapFont(ComponentFont.getBitmapFont());
 
         buttonApply = new Button("Apply");
         buttonApply.addEventListener(Button.ButtonEvent.BUTTON_PRESSED, this::applyButton_buttonPressed);

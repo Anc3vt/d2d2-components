@@ -308,7 +308,7 @@ public class DropDownList<T> extends Component {
         StarletSpace.haveFun();
         ComponentAssets.load();
 
-        Panel panel = new Panel();
+        Frame panel = new Frame();
         panel.setSize(500, 500);
         stage.add(panel, 100, 250);
 

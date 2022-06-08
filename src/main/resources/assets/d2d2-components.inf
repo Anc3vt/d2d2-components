@@ -3,6 +3,8 @@
 
     d2d2-components-arrow-button  0  0  16 16
 
+    d2d2-components-close-button 32 16 8 8
+
     d2d2-components-button-left-part   48 0  16 24
     d2d2-components-button-right-part  64 0  16 24
     d2d2-components-button-middle-part 64 0  1  24
@@ -39,6 +41,16 @@
     d2d2-components-rborder-9-side-left         112 8 8 1
     d2d2-components-rborder-9-side-right        120 8 8 1
     d2d2-components-rborder-9-side-center       120 8 1 1
+
+    d2d2-components-rounded-9-side-top-left     128 0 8 8
+    d2d2-components-rounded-9-side-top-right    136 0 8 8
+    d2d2-components-rounded-9-side-bottom-left  128 8 8 8
+    d2d2-components-rounded-9-side-bottom-right 136 8 8 8
+    d2d2-components-rounded-9-side-top          136 0 1 8
+    d2d2-components-rounded-9-side-bottom       136 8 1 8
+    d2d2-components-rounded-9-side-left         128 8 8 1
+    d2d2-components-rounded-9-side-right        136 8 8 1
+    d2d2-components-rounded-9-side-center       136 8 1 1
 
     d2d2-components-menu-child-arrow 16 16 8 8
     d2d2-components-drop-down-list-arrow 24 16 8 8

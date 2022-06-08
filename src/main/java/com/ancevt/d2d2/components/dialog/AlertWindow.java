@@ -22,7 +22,7 @@ import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.components.Button;
 import com.ancevt.d2d2.components.ComponentAssets;
-import com.ancevt.d2d2.components.Font;
+import com.ancevt.d2d2.components.ComponentFont;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.Stage;
@@ -52,7 +52,7 @@ public class AlertWindow extends Container {
         add(bg);
 
         bitmapText = new BitmapText();
-        bitmapText.setBitmapFont(Font.getBitmapFont());
+        bitmapText.setBitmapFont(ComponentFont.getBitmapFont());
         bitmapText.setSize(bg.getWidth() - PADDING * 2, bg.getHeight() - PADDING_CONTROLS);
         add(bitmapText, PADDING, PADDING);
 

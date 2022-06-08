@@ -27,43 +27,25 @@ import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.Clipboard;
 import com.ancevt.d2d2.input.KeyCode;
+import com.ancevt.d2d2.interactive.Combined9Sprites;
 import com.ancevt.d2d2.interactive.InteractiveManager;
 import org.jetbrains.annotations.NotNull;
 
 public class TextInput extends Component {
 
-    public static void main(String[] args) {
-        Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
-
-        InteractiveManager.getInstance().setTabbingEnabled(true);
-
-        stage.setBackgroundColor(Color.GRAY);
-
-        for(int i = 0; i < 10; i ++) {
-            TextInput textInput = new TextInput();
-            textInput.setText("" + Math.random());
-            stage.add(textInput, 50, 50 + i * 35);
-
-            if(i == 5) {
-                textInput.setEnabled(false);
-            }
-        }
-
-        BitmapText bitmapText = new BitmapText("Hello world");
-        bitmapText.setBitmapFont(Font.getBitmapFont());
-        stage.add(bitmapText, 400, 100);
-        D2D2.loop();
-    }
-
-    private static final Color BACKGROUND_COLOR = Component.BACKGROUND_COLOR;
-    private static final Color SELECTION_COLOR = Color.DARK_GRAY;
-    private static final float BACKGROUND_ALPHA = Component.PANEL_BG_ALPHA;
     private static final int DEFAULT_WIDTH = 200;
     private static final int DEFAULT_HEIGHT = 30;
 
-    private final PlainRect background;
+
+    private Color colorBackground = Component.BACKGROUND_COLOR;
+    private Color colorSelection = Color.DARK_GRAY;
+    private Color colorFocusRect = Color.of(0x515256);
+    private float backgroundAlpha = Component.PANEL_BG_ALPHA;
+
+    private final PlainRect bg;
     private final PlainRect selection;
     private final BitmapText bitmapText;
+    private final Combined9Sprites focusRect;
     private final Caret caret;
     private boolean selecting;
     private int selectionFromIndex;
@@ -71,24 +53,38 @@ public class TextInput extends Component {
     private int selectionStartIndex;
     private String text;
 
+    private Padding padding = new Padding(10, 0, 10, 0);
+
     public TextInput() {
-        background = new PlainRect(DEFAULT_WIDTH, DEFAULT_HEIGHT, BACKGROUND_COLOR);
-        selection = new PlainRect(0, DEFAULT_HEIGHT - 8, SELECTION_COLOR);
+        bg = new PlainRect(DEFAULT_WIDTH, DEFAULT_HEIGHT, colorBackground);
+        selection = new PlainRect(0, DEFAULT_HEIGHT - 8, colorSelection);
         bitmapText = new BitmapText();
-        bitmapText.setBitmapFont(Font.getBitmapFont());
+        bitmapText.setBitmapFont(ComponentFont.getBitmapFont());
 
-        background.setAlpha(BACKGROUND_ALPHA);
+        bg.setAlpha(backgroundAlpha);
 
-        add(background);
+        add(bg);
         // add(selection, uiText.getX(), 4); // selection is completely not implemented yet
         add(bitmapText);
 
         caret = new Caret(this);
         caret.setXY(bitmapText.getX(), 4);
 
-        setText("");
+        focusRect = new Combined9Sprites(new String[]{
+                ComponentAssets.RECT_BORDER_9_SIDE_TOP_LEFT,
+                ComponentAssets.RECT_BORDER_9_SIDE_TOP,
+                ComponentAssets.RECT_BORDER_9_SIDE_TOP_RIGHT,
+                ComponentAssets.RECT_BORDER_9_SIDE_LEFT,
+                ComponentAssets.RECT_BORDER_9_SIDE_CENTER,
+                ComponentAssets.RECT_BORDER_9_SIDE_RIGHT,
+                ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_LEFT,
+                ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM,
+                ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_RIGHT
+        });
+        focusRect.setColor(colorFocusRect);
+        focusRect.setVisible(false);
 
-        align();
+        setText("");
 
         addEventListener(TextInput.class, InteractiveEvent.DOWN, this::this_down);
         addEventListener(TextInput.class, InteractiveEvent.FOCUS_IN, this::this_focusIn);
@@ -97,8 +93,70 @@ public class TextInput extends Component {
         addEventListener(TextInput.class, InteractiveEvent.KEY_UP, this::this_keyUp);
         addEventListener(TextInput.class, InteractiveEvent.KEY_TYPE, this::this_keyType);
 
+        addEventListener(TextInput.class, Event.RESIZE, this::this_resize);
+
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         setEnabled(true);
+    }
+
+    @Override
+    public void setPadding(@NotNull Padding padding) {
+        this.padding = padding;
+        this_resize(null);
+    }
+
+    @Override
+    public @NotNull Padding getPadding() {
+        return padding;
+    }
+
+    private void this_resize(Event event) {
+        caret.setHeight(getHeight() - 6);
+        caret.setY((getHeight() - caret.getHeight()) / 2);
+        bitmapText.setXY(padding.getLeft(), (getHeight() - bitmapText.getCharHeight()) / 2 + 1);
+        bitmapText.setWidth(getWidth() - padding.getLeft() - padding.getRight());
+        focusRect.setSize(getWidth(), getHeight());
+    }
+
+    @Override
+    public void setFocusRectEnabled(boolean focusRectEnabled) {
+        if (focusRectEnabled) {
+            add(focusRect);
+        } else {
+            focusRect.removeFromParent();
+        }
+    }
+
+    @Override
+    public boolean isFocusRectEnabled() {
+        return focusRect.hasParent();
+    }
+
+    public void setColorFocusRect(Color colorFocusRect) {
+        this.colorFocusRect = colorFocusRect;
+        focusRect.setColor(colorFocusRect);
+    }
+
+    public Color getColorFocusRect() {
+        return colorFocusRect;
+    }
+
+    public Color getColorBackground() {
+        return colorBackground;
+    }
+
+    public void setColorBackground(Color colorBackground) {
+        this.colorBackground = colorBackground;
+        bg.setColor(colorBackground);
+    }
+
+    public Color getColorSelection() {
+        return colorSelection;
+    }
+
+    public void setColorSelection(Color colorSelection) {
+        this.colorSelection = colorSelection;
+        selection.setColor(colorSelection);
     }
 
     private void this_keyType(Event event) {
@@ -154,10 +212,10 @@ public class TextInput extends Component {
 
             case KeyCode.ENTER -> {
                 dispatchEvent(TextInputEvent.builder()
-                                .type(TextInputEvent.ENTER)
-                                .text(getText())
-                                .keyCode(e.getKeyCode())
-                                .build());
+                        .type(TextInputEvent.ENTER)
+                        .text(getText())
+                        .keyCode(e.getKeyCode())
+                        .build());
 
                 setCaretPosition(Integer.MAX_VALUE);
             }
@@ -193,33 +251,35 @@ public class TextInput extends Component {
 
     @Override
     public void setEnabled(boolean enabled) {
-        if(enabled == isEnabled()) return;
+        if (enabled == isEnabled()) return;
 
         super.setEnabled(enabled);
         bitmapText.setColor(enabled ? Component.TEXT_COLOR : Component.TEXT_COLOR_DISABLED);
     }
 
     public void setBackgroundColor(Color backgroundColor) {
-        background.setColor(backgroundColor);
+        bg.setColor(backgroundColor);
     }
 
     public Color getBackgroundColor() {
-        return background.getColor();
+        return bg.getColor();
     }
 
     private void this_focusIn(Event event) {
+        focusRect.setVisible(true);
         setCaretPosition(Integer.MAX_VALUE);
         focus();
     }
 
     private void this_focusOut(Event event) {
+        focusRect.setVisible(false);
         caret.removeFromParent();
     }
 
     private void this_down(Event event) {
         InteractiveEvent e = (InteractiveEvent) event;
 
-        float x = e.getX();
+        float x = e.getX() - padding.getLeft();
         float c = bitmapText.getCharWidth();
         float s = bitmapText.getAbsoluteScaleX();
 
@@ -278,7 +338,7 @@ public class TextInput extends Component {
 
     public void setCaretPosition(int index) {
         index = fixIndex(index);
-        caret.setX(bitmapText.getX() + (index * bitmapText.getCharWidth()) + 1);
+        caret.setX(padding.getLeft() + (index * bitmapText.getCharWidth()) - 1);
         caret.setAlpha(1f);
     }
 
@@ -294,27 +354,25 @@ public class TextInput extends Component {
     }
 
     public int getCaretPosition() {
-        return (int) (caret.getX() / bitmapText.getCharWidth());
+        return (int) ((caret.getX() - padding.getLeft() + 1) / bitmapText.getCharWidth());
     }
 
     @Override
     public void setWidth(float width) {
         super.setWidth(width);
-        background.setWidth(width);
-        align();
+        bg.setWidth(width);
     }
 
     @Override
     public void setHeight(float height) {
         super.setHeight(height);
-        background.setHeight(height);
-        align();
+        bg.setHeight(height);
     }
 
     @Override
     public void setSize(float width, float height) {
-        setWidth(width);
-        setHeight(height);
+        super.setSize(width, height);
+        bg.setSize(width, height);
     }
 
     @Override
@@ -344,15 +402,6 @@ public class TextInput extends Component {
         return super.isDisposed();
     }
 
-    private void align() {
-        int alignTop = 10;
-        int alignLeft = 5;
-
-        bitmapText.setXY(alignLeft, alignTop);
-        bitmapText.setWidth(getWidth() - (alignLeft * 2));
-        bitmapText.setHeight(getHeight() - (alignTop * 2));
-    }
-
     public void focus() {
         super.focus();
         add(caret);
@@ -366,7 +415,7 @@ public class TextInput extends Component {
         setText(text.substring(0, index) + textToInsert + text.substring(index));
         setCaretPosition(getCaretPosition() + textToInsert.length());
 
-        while (text.length() * bitmapText.getCharWidth() > getWidth() - 10) {
+        while (text.length() * bitmapText.getCharWidth() > getWidth() - padding.getLeft() - padding.getRight()) {
             removeChar();
         }
     }
@@ -431,5 +480,30 @@ public class TextInput extends Component {
             }
         }
     }
+
+
+    public static void main(String[] args) {
+        Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
+
+        InteractiveManager.getInstance().setTabbingEnabled(true);
+
+        stage.setBackgroundColor(Color.GRAY);
+
+        for (int i = 0; i < 10; i++) {
+            TextInput textInput = new TextInput();
+            textInput.setText("" + Math.random());
+            stage.add(textInput, 50, 50 + i * 35);
+
+            if (i == 5) {
+                textInput.setEnabled(false);
+            }
+        }
+
+        BitmapText bitmapText = new BitmapText("Hello world");
+        bitmapText.setBitmapFont(ComponentFont.getBitmapFont());
+        stage.add(bitmapText, 400, 100);
+        D2D2.loop();
+    }
+
 
 }

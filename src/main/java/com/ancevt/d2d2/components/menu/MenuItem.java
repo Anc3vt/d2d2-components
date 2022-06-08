@@ -20,7 +20,7 @@ package com.ancevt.d2d2.components.menu;
 import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.components.Component;
 import com.ancevt.d2d2.components.ComponentAssets;
-import com.ancevt.d2d2.components.Font;
+import com.ancevt.d2d2.components.ComponentFont;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.text.BitmapText;
@@ -53,7 +53,7 @@ public class MenuItem extends Component {
         action = STUB_ACTION;
 
         bitmapText = new BitmapText();
-        bitmapText.setBitmapFont(Font.getBitmapFont());
+        bitmapText.setBitmapFont(ComponentFont.getBitmapFont());
         bitmapText.setMulticolorEnabled(true);
         add(bitmapText, 10, (HEIGHT - bitmapText.getTextHeight()) / 2 + 1);
 
