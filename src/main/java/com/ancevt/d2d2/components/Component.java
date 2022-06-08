@@ -20,6 +20,7 @@ package com.ancevt.d2d2.components;
 import com.ancevt.commons.Holder;
 import com.ancevt.d2d2.common.BorderedRect;
 import com.ancevt.d2d2.display.Color;
+import com.ancevt.d2d2.display.IDisplayObject;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.Mouse;
@@ -193,8 +194,16 @@ abstract public class Component extends InteractiveContainer {
     @Override
     public void dispose() {
         super.dispose();
+
         removeEventListener(Component.class, Event.REMOVE_FROM_STAGE);
         removeEventListener(Component.class, InteractiveEvent.FOCUS_IN);
         removeEventListener(Component.class, InteractiveEvent.FOCUS_OUT);
+
+        for (int i = 0; i < getChildCount(); i++) {
+            IDisplayObject child = getChild(i);
+            if(child instanceof Component component) {
+                component.dispose();
+            }
+        }
     }
 }

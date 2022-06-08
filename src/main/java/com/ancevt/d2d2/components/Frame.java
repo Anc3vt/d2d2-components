@@ -28,6 +28,8 @@ import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.interactive.Combined9Sprites;
 import com.ancevt.d2d2.interactive.DragUtil;
 
+import static com.ancevt.d2d2.D2D2.stage;
+
 public class Frame extends Component {
 
     private static final float DEFAULT_WIDTH = 600.0f;
@@ -81,8 +83,18 @@ public class Frame extends Component {
 
         setFocusRectEnabled(false);
 
+        addEventListener(Frame.class, Event.ADD_TO_STAGE, this::this_addToStage);
         addEventListener(Event.RESIZE, this::this_resize);
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+    }
+
+    private void this_addToStage(Event event) {
+        removeEventListener(Frame.class, Event.ADD_TO_STAGE);
+        center();
+    }
+
+    public void center() {
+        setXY((stage().getWidth() - getWidth()) / 2, (stage().getHeight() - getHeight()) / 2);
     }
 
     private void this_resize(Event event) {

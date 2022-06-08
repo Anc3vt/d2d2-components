@@ -143,9 +143,7 @@ public class ScrollPane extends Component {
     public void addScrollableItem(Component component) {
         components.add(component);
         component.removeEventListener(ScrollPane.class, Event.REMOVE);
-        component.addEventListener(ScrollPane.class, Event.REMOVE, event -> {
-            focus();
-        });
+        component.addEventListener(ScrollPane.class, Event.REMOVE, event -> focus());
         setScrollPosition(Integer.MAX_VALUE);
         scrollbar.setScrollValue(1.0f);
         rebuild();
