@@ -52,7 +52,7 @@ public class AlertWindow extends Container {
         add(bg);
 
         bitmapText = new BitmapText();
-        bitmapText.setBitmapFont(ComponentFont.getBitmapFont());
+        bitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddle());
         bitmapText.setSize(bg.getWidth() - PADDING * 2, bg.getHeight() - PADDING_CONTROLS);
         add(bitmapText, PADDING, PADDING);
 

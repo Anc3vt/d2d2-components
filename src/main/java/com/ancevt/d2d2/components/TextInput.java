@@ -59,7 +59,7 @@ public class TextInput extends Component {
         bg = new PlainRect(DEFAULT_WIDTH, DEFAULT_HEIGHT, colorBackground);
         selection = new PlainRect(0, DEFAULT_HEIGHT - 8, colorSelection);
         bitmapText = new BitmapText();
-        bitmapText.setBitmapFont(ComponentFont.getBitmapFont());
+        bitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddle());
 
         bg.setAlpha(backgroundAlpha);
 
@@ -512,7 +512,7 @@ public class TextInput extends Component {
         }
 
         BitmapText bitmapText = new BitmapText("Hello world");
-        bitmapText.setBitmapFont(ComponentFont.getBitmapFont());
+        bitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddle());
         stage.add(bitmapText, 400, 100);
         D2D2.loop();
     }

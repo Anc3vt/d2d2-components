@@ -53,9 +53,9 @@ public class MenuItem extends Component {
         action = STUB_ACTION;
 
         bitmapText = new BitmapText();
-        bitmapText.setBitmapFont(ComponentFont.getBitmapFont());
+        bitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddle());
         bitmapText.setMulticolorEnabled(true);
-        add(bitmapText, 10, (HEIGHT - bitmapText.getTextHeight()) / 2 + 1);
+        add(bitmapText, 10, (HEIGHT - bitmapText.getTextHeight()) / 2);
 
         addEventListener(Event.RESIZE, this::this_resize);
         addEventListener(InteractiveEvent.HOVER, this::this_hover);

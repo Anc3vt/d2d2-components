@@ -49,7 +49,7 @@ public class Checkbox extends Component {
     public Checkbox(String text) {
         this();
         label = new BitmapText(text);
-        label.setBitmapFont(ComponentFont.getBitmapFont());
+        label.setBitmapFont(ComponentFont.getBitmapFontMiddle());
         add(label, sprite.getWidth() + PADDING, 0);
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
@@ -71,7 +71,7 @@ public class Checkbox extends Component {
         } else {
             if (label == null) {
                 label = new BitmapText(text);
-                label.setBitmapFont(ComponentFont.getBitmapFont());
+                label.setBitmapFont(ComponentFont.getBitmapFontMiddle());
                 add(label, sprite.getWidth() + PADDING, 0);
             }
         }

@@ -85,7 +85,7 @@ public class DropDownList<T> extends Component {
         add(borders);
 
         bitmapText = new BitmapText();
-        bitmapText.setBitmapFont(BitmapFont.getDefaultBitmapFont());
+        bitmapText.setBitmapFont(ComponentFont.getBitmapFontSmall());
         add(bitmapText);
 
         arrow = new Sprite(ComponentAssets.DROP_DOWN_LIST_ARROW);
