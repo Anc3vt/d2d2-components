@@ -28,8 +28,10 @@ public class ComponentFont {
 
     private static final String FONT_ASSET_MIDDLE = "terminus/Terminus-16-Bold";
     private static final String FONT_ASSET_SMALL = "terminus/Terminus-12";
+    private static final String FONT_ASSET_MIDDLE_GLOW = "Terminus-16-Bold-Glow";
 
     private static BitmapFont bitmapFontMiddle;
+    private static BitmapFont bitmapFontMiddleGlow;
     private static BitmapFont bitmapFontSmall;
 
     public static BitmapFont getBitmapFontMiddle() {
@@ -38,6 +40,14 @@ public class ComponentFont {
             bitmapFontMiddle.setPaddingTop(-3f);
         }
         return bitmapFontMiddle;
+    }
+
+    public static BitmapFont getBitmapFontMiddleGlow() {
+        if (bitmapFontMiddleGlow == null) {
+            bitmapFontMiddleGlow = BitmapFont.loadBitmapFont(FONT_ASSET_MIDDLE_GLOW);
+            bitmapFontMiddleGlow.setPaddingTop(-3f);
+        }
+        return bitmapFontMiddleGlow;
     }
 
     public static BitmapFont getBitmapFontSmall() {
