@@ -70,7 +70,7 @@ public class Tooltip extends Component {
         sprite = new Sprite();
         add(sprite, 10, 10);
 
-        bitmapText = new BitmapText(ComponentFont.getBitmapFont());
+        bitmapText = new BitmapText(ComponentFont.getBitmapFontMiddle());
         bitmapText.setMulticolorEnabled(true);
         bitmapText.setAutosize(true);
         add(bitmapText, 10, 10);
@@ -172,10 +172,6 @@ public class Tooltip extends Component {
                 D2D2.setSmoothMode(!D2D2.isSmoothMode());
                 System.out.println(D2D2.isSmoothMode());
             }
-        });
-
-        stage.addEventListener(Event.EACH_FRAME, event -> {
-            tooltip.rotate(1);
         });
 
         ButtonEx buttonEx = new ButtonEx();

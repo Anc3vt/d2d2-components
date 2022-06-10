@@ -60,7 +60,7 @@ public class Frame extends Component {
         add(titleBg);
 
         titleBitmapText = new BitmapText();
-        titleBitmapText.setBitmapFont(ComponentFont.getBitmapFont());
+        titleBitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddle());
         titleBitmapText.setMulticolorEnabled(true);
         add(titleBitmapText, 10, 10);
 
@@ -115,7 +115,7 @@ public class Frame extends Component {
         bg2.setAlpha(backgroundAlpha);
 
         titleBitmapText.setX((getWidth() - titleBitmapText.getTextWidth()) / 2);
-        titleBitmapText.setY((TITLE_HEIGHT - titleBitmapText.getTextHeight()) / 2 + 1);
+        titleBitmapText.setY((TITLE_HEIGHT - titleBitmapText.getTextHeight()) / 2 - 3);
         borders.setSize(getWidth(), getHeight());
     }
 

@@ -57,7 +57,7 @@ public class Button extends Component {
         middlePart = new Sprite(BUTTON_MIDDLE_PART);
 
         bitmapText = new BitmapText();
-        bitmapText.setBitmapFont(ComponentFont.getBitmapFont());
+        bitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddle());
 
         addEventListener(Button.class, InteractiveEvent.DOWN, event -> {
             leftPart.setY(1);
@@ -147,7 +147,7 @@ public class Button extends Component {
     private void fixTextXY() {
         float w = bitmapText.getTextWidth() - 5;
         float h = bitmapText.getBitmapFont().getCharHeight();
-        bitmapText.setXY((getWidth() - w) / 2, (getHeight() - h) / 2 + 1);
+        bitmapText.setXY((getWidth() - w) / 2, (getHeight() - h) / 2 - 3);
     }
 
     @Override

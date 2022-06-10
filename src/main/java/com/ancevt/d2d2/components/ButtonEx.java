@@ -232,7 +232,7 @@ public class ButtonEx extends Component implements IColored {
     public void setText(Object text) {
         if (bitmapText == null) {
             bitmapText = new BitmapText();
-            bitmapText.setBitmapFont(ComponentFont.getBitmapFont());
+            bitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddle());
             bitmapText.setMulticolorEnabled(true);
             add(bitmapText);
         }
@@ -301,7 +301,7 @@ public class ButtonEx extends Component implements IColored {
             float h = getHeight();
             float tw = bitmapText.getTextWidth();
             float th = bitmapText.getCharHeight();
-            bitmapText.setXY((w - tw) / 2, (h - th) / 2 + 1);
+            bitmapText.setXY((w - tw) / 2, (h - th) / 2  - 3);
         }
     }
 

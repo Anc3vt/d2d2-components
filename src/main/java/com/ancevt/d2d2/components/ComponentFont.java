@@ -26,14 +26,26 @@ import com.ancevt.d2d2.display.text.BitmapText;
 
 public class ComponentFont {
 
-    private static final String BMF_FILE_NAME = "Terminus_Bold_8x16_spaced_shadowed_v1.bmf";
-    private static BitmapFont bitmapFont;
+    private static final String FONT_ASSET_MIDDLE = "terminus/Terminus-16-Bold";
+    private static final String FONT_ASSET_SMALL = "terminus/Terminus-12";
 
-    public static BitmapFont getBitmapFont() {
-        if (bitmapFont == null) {
-            bitmapFont = BitmapFont.loadBitmapFont(BMF_FILE_NAME);
+    private static BitmapFont bitmapFontMiddle;
+    private static BitmapFont bitmapFontSmall;
+
+    public static BitmapFont getBitmapFontMiddle() {
+        if (bitmapFontMiddle == null) {
+            bitmapFontMiddle = BitmapFont.loadBitmapFont(FONT_ASSET_MIDDLE);
+            bitmapFontMiddle.setPaddingTop(-3f);
         }
-        return bitmapFont;
+        return bitmapFontMiddle;
+    }
+
+    public static BitmapFont getBitmapFontSmall() {
+        if (bitmapFontSmall == null) {
+            bitmapFontSmall = BitmapFont.loadBitmapFont(FONT_ASSET_SMALL);
+            bitmapFontSmall.setPaddingTop(-1f);
+        }
+        return bitmapFontSmall;
     }
 
     public static void main(String[] args) {
@@ -41,12 +53,12 @@ public class ComponentFont {
         StarletSpace.haveFun();
 
         BitmapText bitmapText = new BitmapText();
-        bitmapText.setBitmapFont(ComponentFont.getBitmapFont());
+        bitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddle());
         bitmapText.setMulticolorEnabled(true);
         bitmapText.setAutosize(true);
 
         bitmapText.setText("""
-                #<FFFF00>Yello line
+                #<FFFF00>Yellow line
                 <0000FF>BLUE LINE
                 <FFFFFF>White line
                 
