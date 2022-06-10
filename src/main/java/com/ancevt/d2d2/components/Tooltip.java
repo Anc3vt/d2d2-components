@@ -151,7 +151,7 @@ public class Tooltip extends Component {
     public static void main(String[] args) {
         Stage stage = init(new LWJGLBackend(800, 600, "(floating)"));
         StarletSpace.haveFun();
-        ComponentAssets.load();
+        ComponentAssets.init();
 
         Tooltip tooltip = Tooltip.createTooltip();
         tooltip.setTexture(getTextureManager().getTexture("satellite"));

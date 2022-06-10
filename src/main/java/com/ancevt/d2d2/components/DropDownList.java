@@ -306,7 +306,7 @@ public class DropDownList<T> extends Component {
     public static void main(String[] args) {
         Stage stage = init(new LWJGLBackend(800, 600, "(floating)"));
         StarletSpace.haveFun();
-        ComponentAssets.load();
+        ComponentAssets.init();
 
         Frame panel = new Frame();
         panel.setSize(500, 500);

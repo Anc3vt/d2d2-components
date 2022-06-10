@@ -163,7 +163,7 @@ public class DialogWindow extends Container {
 
     public static void main(String[] args) {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
-        ComponentAssets.load();
+        ComponentAssets.init();
         stage.setBackgroundColor(Color.GRAY);
 
         DialogWindow dialogWindow = new DialogWindow();

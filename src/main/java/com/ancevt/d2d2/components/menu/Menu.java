@@ -189,7 +189,7 @@ public class Menu extends Component {
         StarletSpace.haveFun();
         stage.setBackgroundColor(Color.of(0x001122));
 
-        ComponentAssets.load();
+        ComponentAssets.init();
 
         stage.addEventListener(InputEvent.MOUSE_DOWN, event -> {
             var e = (InputEvent) event;

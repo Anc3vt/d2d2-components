@@ -226,7 +226,7 @@ public class Chooser<T> extends Container {
 
     public static void main(String[] args) {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
-        ComponentAssets.load();
+        ComponentAssets.init();
 
         Chooser<String> chooser = new Chooser<>();
         chooser.setWidth(180f);

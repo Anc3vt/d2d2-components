@@ -181,7 +181,7 @@ public class Frame extends Component {
     public static void main(String[] args) {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
         StarletSpace.haveFun();
-        ComponentAssets.load();
+        ComponentAssets.init();
 
         Frame panel = new Frame();
         panel.setTitle("Title");

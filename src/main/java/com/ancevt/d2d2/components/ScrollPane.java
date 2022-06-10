@@ -222,7 +222,7 @@ public class ScrollPane extends Component {
         stage.setBackgroundColor(Color.DARK_GRAY);
 
         DebugPanel.setEnabled(true);
-        ComponentAssets.load();
+        ComponentAssets.init();
 
         ScrollPane scrollPane = new ScrollPane();
 

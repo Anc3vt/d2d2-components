@@ -20,26 +20,26 @@ package com.ancevt.d2d2.components;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ComponentHitTestManager {
+public class FrameManager {
 
-    private static ComponentHitTestManager instance;
+    private static FrameManager instance;
 
-    public static ComponentHitTestManager getInstance() {
-        return instance == null ? instance = new ComponentHitTestManager() : instance;
+    public static FrameManager getInstance() {
+        return instance == null ? instance = new FrameManager() : instance;
     }
 
-    private final List<Component> componentList;
+    private final List<Component> frameList;
 
-    private ComponentHitTestManager() {
-        componentList = new ArrayList<>();
+    private FrameManager() {
+        frameList = new ArrayList<>();
     }
 
     public void register(Component component) {
-        componentList.add(component);
+        frameList.add(component);
     }
 
     public void unregister(Component component) {
-        componentList.remove(component);
+        frameList.remove(component);
     }
 
     public boolean hitTest(float x, float y) {
@@ -47,7 +47,7 @@ public class ComponentHitTestManager {
     }
 
     public boolean hitTest(int x, int y) {
-        for (Component component : componentList) {
+        for (Component component : frameList) {
             if (component.isOnScreen() && component.isVisible() &&
                     x >= component.getX() && x < component.getX() + component.getWidth() &&
                     y >= component.getY() && y < component.getY() + component.getHeight()) {

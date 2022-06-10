@@ -308,7 +308,7 @@ public class ButtonEx extends Component implements IColored {
     public static void main(String[] args) {
         Stage stage = init(new LWJGLBackend(800, 600, "(floating)"));
         StarletSpace.haveFun();
-        ComponentAssets.load();
+        ComponentAssets.init();
 
         InteractiveManager.getInstance().setTabbingEnabled(true);
 

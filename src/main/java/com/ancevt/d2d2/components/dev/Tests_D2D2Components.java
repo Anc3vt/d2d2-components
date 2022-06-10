@@ -44,7 +44,7 @@ public class Tests_D2D2Components {
     public static void main(String[] args) {
         Stage stage = init(new LWJGLBackend(800, 600, "(floating)"));
         StarletSpace.haveFun();
-        ComponentAssets.load();
+        ComponentAssets.init();
 
         Frame panel = new Frame();
         panel.setSize(700, 550);
@@ -118,7 +118,7 @@ public class Tests_D2D2Components {
         Tooltip tooltip = Tooltip.createTooltip();
         tooltip.setTexture(getTextureManager().getTexture("satellite"));
         tooltip.setText("""
-                #This is a tooltip ϕϕϕϕϕϕϕ
+                #This is a tooltip 
                                 
                 <FF8000>Second line
                                 

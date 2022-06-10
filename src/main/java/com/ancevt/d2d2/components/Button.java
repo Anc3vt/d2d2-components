@@ -35,7 +35,7 @@ import static com.ancevt.commons.unix.UnixDisplay.debug;
 import static com.ancevt.d2d2.components.ComponentAssets.BUTTON_LEFT_PART;
 import static com.ancevt.d2d2.components.ComponentAssets.BUTTON_MIDDLE_PART;
 import static com.ancevt.d2d2.components.ComponentAssets.BUTTON_RIGHT_PART;
-import static com.ancevt.d2d2.components.ComponentAssets.MOUSE_CURSOR;
+import static com.ancevt.d2d2.components.ComponentAssets.MOUSE_CURSOR_IDLE;
 
 public class Button extends Component {
 
@@ -173,12 +173,12 @@ public class Button extends Component {
 
     public static void main(String[] args) {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
-        ComponentAssets.load();
+        ComponentAssets.init();
         InteractiveManager.getInstance().setTabbingEnabled(true);
         DebugPanel.setEnabled(true);
         stage.setBackgroundColor(Color.BLACK);
 
-        D2D2.setCursor(new Sprite(MOUSE_CURSOR));
+        D2D2.setCursor(new Sprite(MOUSE_CURSOR_IDLE));
 
         for (int i = 0; i < 5; i++) {
             Button button = new Button("Test " + i);
