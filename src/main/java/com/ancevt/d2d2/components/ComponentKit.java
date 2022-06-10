@@ -70,7 +70,7 @@ public class ComponentKit {
     public static void main(String[] args) {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
         StarletSpace.haveFun();
-        ComponentAssets.load();
+        ComponentAssets.init();
 
         var b1 = createButtonEx2();
         b1.setText("OK");

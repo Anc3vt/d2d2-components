@@ -142,7 +142,7 @@ public class AlertWindow extends Container {
 
     public static void main(String[] args) {
         Stage root = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
-        ComponentAssets.load();
+        ComponentAssets.init();
         root.setBackgroundColor(Color.GRAY);
 
         AlertWindow alertWindow = new AlertWindow();

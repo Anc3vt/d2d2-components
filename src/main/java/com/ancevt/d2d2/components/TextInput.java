@@ -92,11 +92,21 @@ public class TextInput extends Component {
         addEventListener(TextInput.class, InteractiveEvent.KEY_DOWN, this::this_keyDown);
         addEventListener(TextInput.class, InteractiveEvent.KEY_UP, this::this_keyUp);
         addEventListener(TextInput.class, InteractiveEvent.KEY_TYPE, this::this_keyType);
+        addEventListener(TextInput.class, InteractiveEvent.HOVER, this::this_hover);
+        addEventListener(TextInput.class, InteractiveEvent.OUT, this::this_out);
 
         addEventListener(TextInput.class, Event.RESIZE, this::this_resize);
 
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         setEnabled(true);
+    }
+
+    private void this_hover(Event event) {
+        if(isEnabled()) Cursor.switchToText();
+    }
+
+    private void this_out(Event event) {
+        Cursor.switchToIdle();
     }
 
     @Override
@@ -111,9 +121,9 @@ public class TextInput extends Component {
     }
 
     private void this_resize(Event event) {
-        caret.setHeight(getHeight() - 6);
+        caret.setHeight(getHeight() - getHeight() / 3f);
         caret.setY((getHeight() - caret.getHeight()) / 2);
-        bitmapText.setXY(padding.getLeft(), (getHeight() - bitmapText.getCharHeight()) / 2 + 1);
+        bitmapText.setXY(padding.getLeft(), (getHeight() - bitmapText.getCharHeight()) / 2 + 2);
         bitmapText.setWidth(getWidth() - padding.getLeft() - padding.getRight());
         focusRect.setSize(getWidth(), getHeight());
     }
@@ -483,20 +493,22 @@ public class TextInput extends Component {
 
 
     public static void main(String[] args) {
-        Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
-        ComponentAssets.load();
+        Stage stage = D2D2.init(new LWJGLBackend(800, 800, "(floating)"));
+        ComponentAssets.init();
         InteractiveManager.getInstance().setTabbingEnabled(true);
 
-        stage.setBackgroundColor(Color.GRAY);
+        stage.setBackgroundColor(Color.of(0x112233));
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
             TextInput textInput = new TextInput();
-            textInput.setText("" + Math.random());
-            stage.add(textInput, 50, 50 + i * 35);
+            textInput.setText((15 + i) + " " + Math.random());
+            textInput.setHeight(15 + i);
 
             if (i == 5) {
                 textInput.setEnabled(false);
             }
+
+            stage.add(textInput, 50, 10 + i * 35);
         }
 
         BitmapText bitmapText = new BitmapText("Hello world");

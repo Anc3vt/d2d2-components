@@ -142,7 +142,7 @@ public class Checkbox extends Component {
         Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
         stage.setBackgroundColor(Color.of(0x112233));
         InteractiveManager.getInstance().setTabbingEnabled(true);
-        ComponentAssets.load();
+        ComponentAssets.init();
 
         for (int i = 0; i < 10; i++) {
             Checkbox checkbox = new Checkbox("Test checkbox #%d".formatted(i));
