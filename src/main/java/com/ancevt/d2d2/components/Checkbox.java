@@ -98,7 +98,7 @@ public class Checkbox extends Component {
     private void fixMarkup() {
         sprite.setXY(PADDING, (getHeight() - sprite.getHeight()) / 2);
         if (label != null) {
-            float h = label.getBitmapFont().getCharHeight();
+            float h = label.getBitmapFont().getZeroCharHeight();
             label.setXY(PADDING + sprite.getWidth() + PADDING, (getHeight() - h) / 2 + 2);
             label.setSize(getWidth() - PADDING - sprite.getWidth() - PADDING, h);
         }
