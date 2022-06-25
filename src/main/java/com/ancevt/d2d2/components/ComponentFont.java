@@ -37,7 +37,7 @@ public class ComponentFont {
 
     public static BitmapFont getBitmapFontMiddle() {
         if (bitmapFontMiddle == null) {
-            bitmapFontMiddle = BitmapFontManager.getInstance().load(FONT_ASSET_MIDDLE);
+            bitmapFontMiddle = BitmapFontManager.getInstance().loadBitmapFont(FONT_ASSET_MIDDLE);
             bitmapFontMiddle.setPaddingTop(-3f);
         }
         return bitmapFontMiddle;
@@ -45,7 +45,7 @@ public class ComponentFont {
 
     public static BitmapFont getBitmapFontMiddleGlow() {
         if (bitmapFontMiddleGlow == null) {
-            bitmapFontMiddleGlow = BitmapFontManager.getInstance().load(FONT_ASSET_MIDDLE_GLOW);
+            bitmapFontMiddleGlow = BitmapFontManager.getInstance().loadBitmapFont(FONT_ASSET_MIDDLE_GLOW);
             bitmapFontMiddleGlow.setPaddingTop(-3f);
         }
         return bitmapFontMiddleGlow;
@@ -53,7 +53,7 @@ public class ComponentFont {
 
     public static BitmapFont getBitmapFontSmall() {
         if (bitmapFontSmall == null) {
-            bitmapFontSmall = BitmapFontManager.getInstance().load(FONT_ASSET_SMALL);
+            bitmapFontSmall = BitmapFontManager.getInstance().loadBitmapFont(FONT_ASSET_SMALL);
             bitmapFontSmall.setPaddingTop(-1f);
         }
         return bitmapFontSmall;
