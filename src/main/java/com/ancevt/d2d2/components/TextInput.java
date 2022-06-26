@@ -22,7 +22,9 @@ import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Stage;
+import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.BitmapText;
+import com.ancevt.d2d2.display.text.StandardBitmapFonts;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.Clipboard;
@@ -101,8 +103,16 @@ public class TextInput extends Component {
         setEnabled(true);
     }
 
+    public void setBitmapFont(BitmapFont bitmapFont) {
+        bitmapText.setBitmapFont(bitmapFont);
+    }
+
+    public BitmapFont getBitmapFont() {
+        return bitmapText.getBitmapFont();
+    }
+
     private void this_hover(Event event) {
-        if(isEnabled()) Cursor.switchToText();
+        if (isEnabled()) Cursor.switchToText();
     }
 
     private void this_out(Event event) {
@@ -507,6 +517,8 @@ public class TextInput extends Component {
             if (i == 5) {
                 textInput.setEnabled(false);
             }
+
+            textInput.setBitmapFont(D2D2.getBitmapFontManager().loadBitmapFont(StandardBitmapFonts.OPEN_SANS_16));
 
             stage.add(textInput, 50, 10 + i * 35);
         }
