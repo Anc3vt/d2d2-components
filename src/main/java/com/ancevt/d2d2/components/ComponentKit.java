@@ -63,7 +63,7 @@ public class ComponentKit {
         textInput.setPadding(new Padding(15, 0, 15, 0));
         textInput.setColorBackground(Color.of(0x0D0D0D));
         //textInput.setColorFocusRect();
-        textInput.setFocusRectEnabled(true);
+        textInput.setComponentFocusRectVisibleEnabled(true);
         return textInput;
     }
 
