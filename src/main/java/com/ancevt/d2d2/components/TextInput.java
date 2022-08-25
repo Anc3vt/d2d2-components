@@ -138,8 +138,7 @@ public class TextInput extends Component {
         focusRect.setSize(getWidth(), getHeight());
     }
 
-    @Override
-    public void setFocusRectEnabled(boolean focusRectEnabled) {
+    public void setFocusRectVisibleEnabled(boolean focusRectEnabled) {
         if (focusRectEnabled) {
             add(focusRect);
         } else {
@@ -148,7 +147,7 @@ public class TextInput extends Component {
     }
 
     @Override
-    public boolean isFocusRectEnabled() {
+    public boolean isComponentFocusRectVisibleEnabled() {
         return focusRect.hasParent();
     }
 

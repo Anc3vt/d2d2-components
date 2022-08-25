@@ -81,7 +81,7 @@ public class Frame extends Component {
         borders.setColor(colorBorder);
         add(borders);
 
-        setFocusRectEnabled(false);
+        setComponentFocusRectVisibleEnabled(false);
 
         addEventListener(Frame.class, Event.ADD_TO_STAGE, this::this_addToStage);
         addEventListener(Event.RESIZE, this::this_resize);

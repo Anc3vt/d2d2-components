@@ -65,7 +65,7 @@ public class ScrollPane extends Component {
 
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         setItemHeight(DEFAULT_ITEM_HEIGHT);
-        setFocusRectEnabled(false);
+        setComponentFocusRectVisibleEnabled(false);
     }
 
     private void this_resize(Event event) {

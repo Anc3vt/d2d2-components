@@ -52,19 +52,19 @@ abstract public class Component extends InteractiveContainer {
     private static final float DEFAULT_PADDING_RIGHT = 2.0f;
     private static final float DEFAULT_PADDING_BOTTOM = 2.0f;
 
-    private final BorderedRect focusRect;
-    private boolean focusRectEnabled;
+    private final BorderedRect componentFocusRect;
+    private boolean componentFocusRectEnabled;
     private Padding padding;
     private Tooltip tooltip;
 
     public Component() {
         super.setEnabled(true);
 
-        focusRectEnabled = true;
+        componentFocusRectEnabled = false;
 
-        focusRect = new BorderedRect(0, 0, null, FOCUS_RECT_COLOR);
-        focusRect.setBorderWidth(FOCUS_RECT_BORDER_WIDTH);
-        focusRect.setAlpha(FOCUS_RECT_ALPHA);
+        componentFocusRect = new BorderedRect(0, 0, null, FOCUS_RECT_COLOR);
+        componentFocusRect.setBorderWidth(FOCUS_RECT_BORDER_WIDTH);
+        componentFocusRect.setAlpha(FOCUS_RECT_ALPHA);
 
         addEventListener(Component.class, InteractiveEvent.FOCUS_IN, this::this_focusIn);
         addEventListener(Component.class, InteractiveEvent.FOCUS_OUT, this::this_focusOut);
@@ -76,11 +76,11 @@ abstract public class Component extends InteractiveContainer {
 
     private void this_focusIn(Event event) {
         var e = (InteractiveEvent) event;
-        if (focusRectEnabled && !e.isByMouseDown() && !focusRect.hasParent()) add(focusRect);
+        if (componentFocusRectEnabled && !e.isByMouseDown() && !componentFocusRect.hasParent()) add(componentFocusRect);
     }
 
     private void this_focusOut(Event event) {
-        focusRect.removeFromParent();
+        componentFocusRect.removeFromParent();
     }
 
     public void setTooltip(Tooltip tooltip) {
@@ -148,15 +148,15 @@ abstract public class Component extends InteractiveContainer {
         return padding;
     }
 
-    public void setFocusRectEnabled(boolean focusRectEnabled) {
-        this.focusRectEnabled = focusRectEnabled;
+    public void setComponentFocusRectVisibleEnabled(boolean focusRectEnabled) {
+        this.componentFocusRectEnabled = focusRectEnabled;
         if (!focusRectEnabled) {
-            focusRect.removeFromParent();
+            componentFocusRect.removeFromParent();
         }
     }
 
-    public boolean isFocusRectEnabled() {
-        return focusRectEnabled;
+    public boolean isComponentFocusRectVisibleEnabled() {
+        return componentFocusRectEnabled;
     }
 
     public void update() {
@@ -167,7 +167,7 @@ abstract public class Component extends InteractiveContainer {
     public void setSize(float width, float height) {
         super.setSize(width, height);
         dispatchEvent(Event.builder().type(Event.RESIZE).build());
-        focusRect.setSize(width, height);
+        componentFocusRect.setSize(width, height);
         update();
     }
 
@@ -175,7 +175,7 @@ abstract public class Component extends InteractiveContainer {
     public void setWidth(float width) {
         super.setWidth(width);
         dispatchEvent(Event.builder().type(Event.RESIZE).build());
-        focusRect.setWidth(width);
+        componentFocusRect.setWidth(width);
         update();
     }
 
@@ -183,7 +183,7 @@ abstract public class Component extends InteractiveContainer {
     public void setHeight(float height) {
         super.setHeight(height);
         dispatchEvent(Event.builder().type(Event.RESIZE).build());
-        focusRect.setHeight(height);
+        componentFocusRect.setHeight(height);
         update();
     }
 
