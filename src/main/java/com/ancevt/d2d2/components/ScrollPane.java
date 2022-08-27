@@ -66,6 +66,9 @@ public class ScrollPane extends Component {
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         setItemHeight(DEFAULT_ITEM_HEIGHT);
         setComponentFocusRectVisibleEnabled(false);
+
+        setPushEventsUp(true);
+        scrollbar.setPushEventsUp(true);
     }
 
     private void this_resize(Event event) {
@@ -194,7 +197,7 @@ public class ScrollPane extends Component {
         components.forEach(Component::removeFromParent);
 
         float y = 0.0f;
-        for (int i = scrollPosition; y < getHeight() && i < components.size(); i++) {
+        for (int i = scrollPosition; y < getHeight()- itemHeight && i < components.size(); i++) {
             if (i < 0) continue;
             Component item = components.get(i);
             add(item, 0, y);

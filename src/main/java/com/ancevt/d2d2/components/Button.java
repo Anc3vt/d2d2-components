@@ -155,15 +155,6 @@ public class Button extends Component {
 
     }
 
-    @Override
-    public void dispose() {
-        super.dispose();
-        removeEventListener(Button.class, InteractiveEvent.DOWN);
-        removeEventListener(Button.class, InteractiveEvent.UP);
-        removeEventListener(Button.class, InteractiveEvent.HOVER);
-        removeEventListener(Button.class, InteractiveEvent.OUT);
-    }
-
     @Data
     @SuperBuilder
     @EqualsAndHashCode(callSuper = true)

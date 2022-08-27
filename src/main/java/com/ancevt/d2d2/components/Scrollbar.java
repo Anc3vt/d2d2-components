@@ -164,7 +164,7 @@ public class Scrollbar extends Component {
             this.scrollbar = scrollbar;
             setHeight(DEFAULT_HEIGHT);
 
-            setPushEventsUp(false);
+            setPushEventsUp(true);
 
             addEventListener(ScrollbarRect.class, InteractiveEvent.DOWN, this::this_down);
             addEventListener(ScrollbarRect.class, InteractiveEvent.DRAG, this::this_drag);

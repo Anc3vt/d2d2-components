@@ -29,6 +29,9 @@ import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.interactive.Combined9Sprites;
 import com.ancevt.d2d2.interactive.DragUtil;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
 
 import static com.ancevt.d2d2.D2D2.stage;
 
@@ -39,7 +42,7 @@ public class Frame extends Component {
 
     private static final float DEFAULT_TITLE_HEIGHT = 25.0f;
 
-    private static final float RESIZE_SPREAD = 10.0f;
+    private static final float RESIZE_SPREAD = 3.0f;
 
     private final FrameTitle frameTitle;
     private final PlainRect bg1;
@@ -60,6 +63,8 @@ public class Frame extends Component {
     private boolean manualResizeTop;
     private float manualResizeY;
     private float manualResizeHeight;
+    private boolean manualResizingNow;
+
 
     public Frame() {
         bg1 = new PlainRect();
@@ -94,6 +99,10 @@ public class Frame extends Component {
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
         setDragEnabled(true);
+    }
+
+    public float getTitleHeight() {
+        return frameTitle.getHeight();
     }
 
     private void this_activate(Event event) {
@@ -156,6 +165,11 @@ public class Frame extends Component {
             manualResizeHeight = getHeight();
             manualResizeTop = isResizeCursorOnTop();
         }
+
+        if(!isResizeCursorInCenter()) {
+            manualResizingNow = true;
+            dispatchEvent(FrameEvent.builder().type(FrameEvent.RESIZE_START).build());
+        }
     }
 
     private void this_manualResizeDrag(Event event) {
@@ -182,6 +196,11 @@ public class Frame extends Component {
 
     private void this_manualResizeUp(Event event) {
         manualResizeRight = manualResizeBottom = manualResizeLeft = manualResizeTop = false;
+        Cursor.switchToIdle();
+
+        if(manualResizingNow) {
+            dispatchEvent(FrameEvent.builder().type(FrameEvent.RESIZE_COMPLETE).build());
+        }
     }
 
     private void this_manualResizeEachFrame(Event event) {
@@ -196,7 +215,6 @@ public class Frame extends Component {
             frameTitle.setEnabled(false);
         } else if (isResizeCursorOnTopRight()) {
             Cursor.switchToResize(320.0f);
-            frameTitle.setEnabled(true);
             frameTitle.setEnabled(false);
         } else if (isResizeCursorOnRight()) {
             Cursor.switchToResize(0.0f);
@@ -350,6 +368,14 @@ public class Frame extends Component {
     @Override
     public void update() {
 
+    }
+
+    @Data
+    @SuperBuilder
+    @EqualsAndHashCode(callSuper = true)
+    public static class FrameEvent extends Event {
+        public static final String RESIZE_START = "frameResizeStart";
+        public static final String RESIZE_COMPLETE = "frameResizeComplete";
     }
 
     public static void main(String[] args) {

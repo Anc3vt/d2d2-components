@@ -80,7 +80,7 @@ abstract public class Component extends InteractiveContainer {
 
         padding = new Padding(DEFAULT_PADDING_LEFT, DEFAULT_PADDING_TOP, DEFAULT_PADDING_RIGHT, DEFAULT_PADDING_BOTTOM);
 
-        setTabbingEnabled(true);
+        setTabbingEnabled(false);
     }
 
     private void this_focusIn(Event event) {
