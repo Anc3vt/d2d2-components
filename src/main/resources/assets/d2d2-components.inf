@@ -1,6 +1,7 @@
 :d2d2-components.png
     d2d2-components-mouse-cursor-idle  0  16 16 32
     d2d2-components-mouse-cursor-text  0 48 16 20
+    d2d2-components-mouse-cursor-resize 16 24 24 8
 
     d2d2-components-arrow-button  0  0  16 16
 

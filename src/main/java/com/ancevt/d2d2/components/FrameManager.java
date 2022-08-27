@@ -17,6 +17,8 @@
  */
 package com.ancevt.d2d2.components;
 
+import com.ancevt.d2d2.display.IContainer;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +32,8 @@ public class FrameManager {
 
     private final List<Component> frameList;
 
+    private Frame activeFrame;
+
     private FrameManager() {
         frameList = new ArrayList<>();
     }
@@ -42,11 +46,7 @@ public class FrameManager {
         frameList.remove(component);
     }
 
-    public boolean hitTest(float x, float y) {
-        return hitTest((int) x, (int) y);
-    }
-
-    public boolean hitTest(int x, int y) {
+    public boolean isPointUnderAnyFrame(float x, float y) {
         for (Component component : frameList) {
             if (component.isOnScreen() && component.isVisible() &&
                     x >= component.getX() && x < component.getX() + component.getWidth() &&
@@ -57,5 +57,28 @@ public class FrameManager {
         }
 
         return false;
+    }
+
+    public Frame getActiveFrame() {
+        return activeFrame;
+    }
+
+    void activateFrame(Frame frame) {
+        if(frame == activeFrame) return;
+
+        if(activeFrame != null) {
+            activeFrame.dispatchEvent(ComponentEvent.builder().type(ComponentEvent.DEACTIVATE).build());
+        }
+
+        activeFrame = frame;
+
+        if(activeFrame != null) {
+            IContainer parent = activeFrame.getParent();
+            parent.remove(activeFrame);
+            parent.add(activeFrame);
+
+            activeFrame.dispatchEvent(ComponentEvent.builder().type(ComponentEvent.ACTIVATE).build());
+        }
+
     }
 }

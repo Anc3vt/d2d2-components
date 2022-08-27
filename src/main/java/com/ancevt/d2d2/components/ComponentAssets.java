@@ -25,6 +25,7 @@ public class ComponentAssets {
 
     public static final String MOUSE_CURSOR_IDLE = "d2d2-components-mouse-cursor-idle";
     public static final String MOUSE_CURSOR_TEXT = "d2d2-components-mouse-cursor-text";
+    public static final String MOUSE_CURSOR_RESIZE = "d2d2-components-mouse-cursor-resize";
     public static final String ARROW_BUTTON = "d2d2-components-arrow-button";
     public static final String BUTTON_LEFT_PART = "d2d2-components-button-left-part";
     public static final String BUTTON_RIGHT_PART = "d2d2-components-button-right-part";
@@ -76,8 +77,7 @@ public class ComponentAssets {
 
     public static void init() {
         getTextureManager().loadTextureDataInfo("d2d2-components.inf");
-        Cursor.setupDefaultIdleCursor();
-        Cursor.setupDefaultTextCursor();
+        Cursor.setDefaultCursorTheme();
     }
 
     public static Texture getTexture(String textureKey) {

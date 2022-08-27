@@ -20,6 +20,7 @@ package com.ancevt.d2d2.components;
 import com.ancevt.commons.Holder;
 import com.ancevt.d2d2.common.BorderedRect;
 import com.ancevt.d2d2.display.Color;
+import com.ancevt.d2d2.display.IContainer;
 import com.ancevt.d2d2.display.IDisplayObject;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
@@ -44,6 +45,9 @@ abstract public class Component extends InteractiveContainer {
     public static final Color FOREGROUND_COLOR_DISABLED = Color.DARK_GRAY;
     public static final Color FOCUS_RECT_COLOR = Color.YELLOW;
     public static final Color HOVER_FOREGROUND_COLOR = Color.of(0xBBBBBB);
+    public static final Color ACTIVE_FRAME_TITLE_COLOR = Color.WHITE;
+    public static final Color INACTIVE_FRAME_TITLE_COLOR = Color.GRAY;
+
     public static final float FOCUS_RECT_ALPHA = 0.75f;
     public static final float FOCUS_RECT_BORDER_WIDTH = 1.0f;
     public static final float PANEL_BG_ALPHA = 0.9f;
@@ -56,6 +60,11 @@ abstract public class Component extends InteractiveContainer {
     private boolean componentFocusRectEnabled;
     private Padding padding;
     private Tooltip tooltip;
+
+    private float minWidth;
+    private float minHeight;
+    private float maxWidth;
+    private float maxHeight;
 
     public Component() {
         super.setEnabled(true);
@@ -77,6 +86,8 @@ abstract public class Component extends InteractiveContainer {
     private void this_focusIn(Event event) {
         var e = (InteractiveEvent) event;
         if (componentFocusRectEnabled && !e.isByMouseDown() && !componentFocusRect.hasParent()) add(componentFocusRect);
+
+        FrameManager.getInstance().activateFrame(getFrame());
     }
 
     private void this_focusOut(Event event) {
@@ -165,6 +176,11 @@ abstract public class Component extends InteractiveContainer {
 
     @Override
     public void setSize(float width, float height) {
+        if (maxWidth != 0.0f && width > maxWidth) width = maxWidth;
+        if (minWidth != 0.0f && width < minWidth) width = minWidth;
+        if (maxHeight != 0.0f && height > maxHeight) height = maxHeight;
+        if (minHeight != 0.0f && height < minHeight) height = minHeight;
+
         super.setSize(width, height);
         dispatchEvent(Event.builder().type(Event.RESIZE).build());
         componentFocusRect.setSize(width, height);
@@ -173,6 +189,9 @@ abstract public class Component extends InteractiveContainer {
 
     @Override
     public void setWidth(float width) {
+        if (maxWidth != 0.0f && width > maxWidth) width = maxWidth;
+        if (minWidth != 0.0f && width < minWidth) width = minWidth;
+
         super.setWidth(width);
         dispatchEvent(Event.builder().type(Event.RESIZE).build());
         componentFocusRect.setWidth(width);
@@ -181,29 +200,71 @@ abstract public class Component extends InteractiveContainer {
 
     @Override
     public void setHeight(float height) {
+        if (maxHeight != 0.0f && height > maxHeight) height = maxHeight;
+        if (minHeight != 0.0f && height < minHeight) height = minHeight;
+
         super.setHeight(height);
         dispatchEvent(Event.builder().type(Event.RESIZE).build());
         componentFocusRect.setHeight(height);
         update();
     }
 
+    public void applyResize() {
+        dispatchEvent(Event.builder().type(Event.RESIZE).build());
+    }
+
     public void disposeOnRemoveFromStage() {
         addEventListener(Component.class, Event.REMOVE_FROM_STAGE, event -> dispose());
     }
+
+    public void setMinWidth(float value) {
+        minWidth = value;
+        applyResize();
+    }
+
+    public float getMinWidth() {
+        return minWidth;
+    }
+
+    public void setMinHeight(float value) {
+        minHeight = value;
+        applyResize();
+    }
+
+    public void setMinSize(float width, float height) {
+        minWidth = width;
+        minHeight = height;
+        applyResize();
+    }
+
+    public void setMaxSize(float width, float height) {
+        maxWidth = width;
+        maxHeight = height;
+        applyResize();
+    }
+
+    public Frame getFrame() {
+        IContainer container = this;
+        while (container != null) {
+            if (container instanceof Frame frame) return frame;
+            container = container.getParent();
+        }
+
+        return null;
+    }
+
 
     @Override
     public void dispose() {
         super.dispose();
 
-        removeEventListener(Component.class, Event.REMOVE_FROM_STAGE);
-        removeEventListener(Component.class, InteractiveEvent.FOCUS_IN);
-        removeEventListener(Component.class, InteractiveEvent.FOCUS_OUT);
-
         for (int i = 0; i < getChildCount(); i++) {
             IDisplayObject child = getChild(i);
-            if(child instanceof Component component) {
+            if (child instanceof Component component) {
                 component.dispose();
             }
         }
+
+
     }
 }
