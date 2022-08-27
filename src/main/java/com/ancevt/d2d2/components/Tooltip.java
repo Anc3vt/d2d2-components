@@ -46,6 +46,8 @@ public class Tooltip extends Component {
     private final Combined9Sprites borders;
     private final BitmapText bitmapText;
     private final Sprite sprite;
+    private float maxImageWidth;
+    private float maxImageHeight;
 
     private Tooltip() {
         bg = new PlainRect(BACKGROUND_COLOR);
@@ -135,7 +137,35 @@ public class Tooltip extends Component {
 
     public void setImageScale(float scale) {
         sprite.setScale(scale, scale);
+
+        if(sprite.getTexture() != null) {
+            if (maxImageWidth != 0) {
+                while (sprite.getWidth() * sprite.getScaleX() > maxImageWidth) {
+                    sprite.toScale(0.09f, 0.09f);
+                }
+            }
+
+            if (maxImageHeight != 0) {
+                while (sprite.getHeight() * sprite.getScaleY() > maxImageHeight) {
+                    sprite.toScale(0.09f, 0.09f);
+                }
+            }
+        }
+
         rebuild();
+    }
+
+    public void setMaxImageSize(float width, float height) {
+        maxImageWidth = width;
+        maxImageHeight = height;
+    }
+
+    public float getMaxImageWidth() {
+        return maxImageWidth;
+    }
+
+    public float getMaxImageHeight() {
+        return maxImageHeight;
     }
 
     @Override

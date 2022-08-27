@@ -74,8 +74,10 @@ public class FrameManager {
 
         if(activeFrame != null) {
             IContainer parent = activeFrame.getParent();
-            parent.remove(activeFrame);
-            parent.add(activeFrame);
+            if(parent != null) {
+                parent.remove(activeFrame);
+                parent.add(activeFrame);
+            }
 
             activeFrame.dispatchEvent(ComponentEvent.builder().type(ComponentEvent.ACTIVATE).build());
         }
