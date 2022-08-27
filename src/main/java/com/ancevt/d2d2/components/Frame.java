@@ -20,11 +20,13 @@ package com.ancevt.d2d2.components;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.common.PlainRect;
+import com.ancevt.d2d2.debug.DebugPanel;
 import com.ancevt.d2d2.debug.StarletSpace;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Stage;
-import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.event.InteractiveEvent;
+import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.interactive.Combined9Sprites;
 import com.ancevt.d2d2.interactive.DragUtil;
 
@@ -32,23 +34,32 @@ import static com.ancevt.d2d2.D2D2.stage;
 
 public class Frame extends Component {
 
-    private static final float DEFAULT_WIDTH = 600.0f;
+    private static final float DEFAULT_WIDTH = 200.0f;
     private static final float DEFAULT_HEIGHT = 400.0f;
 
-    private static final float TITLE_HEIGHT = 25.0f;
-    private static final float BACKGROUND_2_HEIGHT = 47.0f;
+    private static final float DEFAULT_TITLE_HEIGHT = 25.0f;
 
-    private final BitmapText titleBitmapText;
-    private final PlainRect titleBg;
+    private static final float RESIZE_SPREAD = 10.0f;
+
+    private final FrameTitle frameTitle;
     private final PlainRect bg1;
-    private final PlainRect bg2;
     private final Combined9Sprites borders;
 
     private Color colorBackground1 = Color.of(0x161A1D);
     private Color colorBackground2 = Color.of(0x000306);
     private Color colorBorder = Color.of(0x7E7E7E);
-    private Color colorTitleBackground = Color.of(0x505050);
     private float backgroundAlpha = 0.9f;
+    private boolean dragEnabled;
+
+    private boolean manualResizable;
+    private boolean manualResizeRight;
+    private boolean manualResizeBottom;
+    private boolean manualResizeLeft;
+    private float manualResizeX;
+    private float manualResizeWidth;
+    private boolean manualResizeTop;
+    private float manualResizeY;
+    private float manualResizeHeight;
 
     public Frame() {
         bg1 = new PlainRect();
@@ -56,16 +67,9 @@ public class Frame extends Component {
         bg1.setColor(colorBackground1);
         add(bg1);
 
-        titleBg = new PlainRect(colorTitleBackground);
-        add(titleBg);
-
-        titleBitmapText = new BitmapText();
-        titleBitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddle());
-        titleBitmapText.setMulticolorEnabled(true);
-        add(titleBitmapText, 10, 10);
-
-        bg2 = new PlainRect((colorBackground2));
-        add(bg2);
+        frameTitle = new FrameTitle();
+        frameTitle.setTextColor(Component.INACTIVE_FRAME_TITLE_COLOR);
+        add(frameTitle);
 
         borders = new Combined9Sprites(new String[]{
                 ComponentAssets.RECT_BORDER_9_SIDE_TOP_LEFT,
@@ -84,12 +88,200 @@ public class Frame extends Component {
         setComponentFocusRectVisibleEnabled(false);
 
         addEventListener(Frame.class, Event.ADD_TO_STAGE, this::this_addToStage);
-        addEventListener(Event.RESIZE, this::this_resize);
+        addEventListener(Frame.class, Event.RESIZE, this::this_resize);
+        addEventListener(Frame.class, ComponentEvent.ACTIVATE, this::this_activate);
+        addEventListener(Frame.class, ComponentEvent.DEACTIVATE, this::this_deactivate);
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+
+        setDragEnabled(true);
+    }
+
+    private void this_activate(Event event) {
+        frameTitle.setTextColor(Component.ACTIVE_FRAME_TITLE_COLOR);
+    }
+
+    private void this_deactivate(Event event) {
+        frameTitle.setTextColor(Component.INACTIVE_FRAME_TITLE_COLOR);
+    }
+
+    public void setDragEnabled(boolean value) {
+        if (dragEnabled == value) return;
+        this.dragEnabled = value;
+
+        if (dragEnabled) {
+            DragUtil.enableDrag(this, frameTitle);
+        } else {
+            DragUtil.disableDrag(this, frameTitle);
+        }
+    }
+
+    public boolean isDragEnabled() {
+        return dragEnabled;
+    }
+
+    public void setManualResizable(boolean manualResizable) {
+        if (manualResizable == this.manualResizable) return;
+        this.manualResizable = manualResizable;
+
+        if (manualResizable) {
+            addEventListener("manualResize", Event.EACH_FRAME, this::this_manualResizeEachFrame);
+            addEventListener("manualResize", InteractiveEvent.DOWN, this::this_manualResizeDown);
+            addEventListener("manualResize", InteractiveEvent.UP, this::this_manualResizeUp);
+            addEventListener("manualResize", InteractiveEvent.DRAG, this::this_manualResizeDrag);
+            addEventListener("manualResize", InteractiveEvent.OUT, this::this_manualResizeOut);
+        } else {
+            removeEventListener("manualResize", Event.EACH_FRAME);
+            removeEventListener("manualResize", InteractiveEvent.DOWN);
+            removeEventListener("manualResize", InteractiveEvent.UP);
+            removeEventListener("manualResize", InteractiveEvent.DRAG);
+            removeEventListener("manualResize", InteractiveEvent.OUT);
+        }
+    }
+
+    private void this_manualResizeOut(Event event) {
+        Cursor.switchToIdle();
+        frameTitle.setEnabled(true);
+    }
+
+    private void this_manualResizeDown(Event event) {
+        manualResizeRight = isResizeCursorOnRight();
+        manualResizeBottom = isResizeCursorOnBottom();
+        if (isResizeCursorOnLeft()) {
+            manualResizeX = Mouse.getX();
+            manualResizeWidth = getWidth();
+            manualResizeLeft = isResizeCursorOnLeft();
+        }
+        if (isResizeCursorOnTop()) {
+            manualResizeY = Mouse.getY();
+            manualResizeHeight = getHeight();
+            manualResizeTop = isResizeCursorOnTop();
+        }
+    }
+
+    private void this_manualResizeDrag(Event event) {
+        float mouseX = Mouse.getX();
+        float mouseY = Mouse.getY();
+
+        if (manualResizeRight) {
+            setWidth(mouseX - getAbsoluteX() + 1);
+        }
+        if (manualResizeBottom) {
+            setHeight(mouseY - getAbsoluteY() + 1);
+        }
+        if (manualResizeLeft) {
+            float oldWidth = getWidth();
+            setWidth(manualResizeWidth - (mouseX - manualResizeX));
+            if (oldWidth != getWidth()) setX(mouseX - 1);
+        }
+        if (manualResizeTop) {
+            float oldHeight = getHeight();
+            setHeight(manualResizeHeight - (mouseY - manualResizeY));
+            if (oldHeight != getHeight()) setY(mouseY - 1);
+        }
+    }
+
+    private void this_manualResizeUp(Event event) {
+        manualResizeRight = manualResizeBottom = manualResizeLeft = manualResizeTop = false;
+    }
+
+    private void this_manualResizeEachFrame(Event event) {
+        if (isResizeCursorOnBottomRight()) {
+            Cursor.switchToResize(45.0f);
+            frameTitle.setEnabled(true);
+        } else if (isResizeCursorOnBottomLeft()) {
+            Cursor.switchToResize(140.0f);
+            frameTitle.setEnabled(true);
+        } else if (isResizeCursorOnTopLeft()) {
+            Cursor.switchToResize(220.f);
+            frameTitle.setEnabled(false);
+        } else if (isResizeCursorOnTopRight()) {
+            Cursor.switchToResize(320.0f);
+            frameTitle.setEnabled(true);
+            frameTitle.setEnabled(false);
+        } else if (isResizeCursorOnRight()) {
+            Cursor.switchToResize(0.0f);
+            frameTitle.setEnabled(true);
+        } else if (isResizeCursorOnBottom()) {
+            Cursor.switchToResize(90.0f);
+            frameTitle.setEnabled(true);
+        } else if (isResizeCursorOnLeft()) {
+            frameTitle.setEnabled(true);
+            Cursor.switchToResize(180.0f);
+        } else if (isResizeCursorOnTop()) {
+            Cursor.switchToResize(270.0f);
+            frameTitle.setEnabled(false);
+        } else if (isResizeCursorInCenter()) {
+            Cursor.switchToIdle();
+            frameTitle.setEnabled(true);
+        }
+    }
+
+    private boolean isResizeCursorInCenter() {
+        float mouseX = Mouse.getX();
+        float mouseY = Mouse.getY();
+
+        return mouseX > getAbsoluteX() + RESIZE_SPREAD &&
+                mouseX < getAbsoluteX() + getWidth() - RESIZE_SPREAD &&
+                mouseY > getAbsoluteY() + RESIZE_SPREAD &&
+                mouseY < getAbsoluteY() + getHeight() - RESIZE_SPREAD;
+
+    }
+
+    private boolean isResizeCursorOnRight() {
+        float mouseX = Mouse.getX();
+        float mouseY = Mouse.getY();
+
+        return mouseY > getAbsoluteY() && mouseY < getAbsoluteY() + getHeight() &&
+                mouseX >= getAbsoluteX() + getWidth() - RESIZE_SPREAD && mouseX <= getAbsoluteX() + getWidth();
+    }
+
+    private boolean isResizeCursorOnBottomRight() {
+        return isResizeCursorOnBottom() && isResizeCursorOnRight();
+    }
+
+    private boolean isResizeCursorOnBottom() {
+        float mouseX = Mouse.getX();
+        float mouseY = Mouse.getY();
+
+        return mouseX > getAbsoluteX() && mouseX < getAbsoluteX() + getWidth() &&
+                mouseY >= getAbsoluteY() + getHeight() - RESIZE_SPREAD && mouseY <= getAbsoluteY() + getHeight();
+    }
+
+    private boolean isResizeCursorOnBottomLeft() {
+        return isResizeCursorOnBottom() && isResizeCursorOnLeft();
+    }
+
+    private boolean isResizeCursorOnLeft() {
+        float mouseX = Mouse.getX();
+        float mouseY = Mouse.getY();
+
+        return mouseY > getAbsoluteY() && mouseY < getAbsoluteY() + getHeight() &&
+                mouseX > getAbsoluteX() && mouseX < getAbsoluteX() + RESIZE_SPREAD;
+    }
+
+    private boolean isResizeCursorOnTopLeft() {
+        return isResizeCursorOnTop() && isResizeCursorOnLeft();
+    }
+
+    private boolean isResizeCursorOnTop() {
+        float mouseX = Mouse.getX();
+        float mouseY = Mouse.getY();
+
+        return mouseX > getAbsoluteX() && mouseX < getAbsoluteX() + getWidth() &&
+                mouseY > getAbsoluteY() && mouseY < getAbsoluteY() + RESIZE_SPREAD;
+    }
+
+    private boolean isResizeCursorOnTopRight() {
+        return isResizeCursorOnTop() && isResizeCursorOnRight();
+    }
+
+    public boolean isManualResizable() {
+        return manualResizable;
     }
 
     private void this_addToStage(Event event) {
         removeEventListener(Frame.class, Event.ADD_TO_STAGE);
+        FrameManager.getInstance().activateFrame(this);
         center();
     }
 
@@ -98,24 +290,15 @@ public class Frame extends Component {
     }
 
     private void this_resize(Event event) {
-        titleBg.setSize(getWidth(), TITLE_HEIGHT);
+        frameTitle.setSize(getWidth(), DEFAULT_TITLE_HEIGHT);
 
-        bg1.setSize(getWidth(), getHeight() - TITLE_HEIGHT - BACKGROUND_2_HEIGHT);
-        bg1.setXY(0, TITLE_HEIGHT);
+        frameTitle.setAlpha(backgroundAlpha);
 
-        bg2.setSize(getWidth(), BACKGROUND_2_HEIGHT);
-        bg2.setXY(0, TITLE_HEIGHT + bg1.getHeight());
-
-        titleBg.setColor(colorTitleBackground);
+        bg1.setSize(getWidth(), getHeight() - frameTitle.getHeight());
+        bg1.setXY(0, frameTitle.getHeight());
         bg1.setColor(colorBackground1);
-        bg2.setColor(colorBackground2);
-
-        titleBg.setAlpha(backgroundAlpha);
         bg1.setAlpha(backgroundAlpha);
-        bg2.setAlpha(backgroundAlpha);
 
-        titleBitmapText.setX((getWidth() - titleBitmapText.getTextWidth()) / 2);
-        titleBitmapText.setY((TITLE_HEIGHT - titleBitmapText.getTextHeight()) / 2 - 3);
         borders.setSize(getWidth(), getHeight());
     }
 
@@ -146,15 +329,6 @@ public class Frame extends Component {
         this_resize(null);
     }
 
-    public Color getColorTitleBackground() {
-        return colorTitleBackground;
-    }
-
-    public void setColorTitleBackground(Color colorTitleBackground) {
-        this.colorTitleBackground = colorTitleBackground;
-        this_resize(null);
-    }
-
     public float getBackgroundAlpha() {
         return backgroundAlpha;
     }
@@ -165,12 +339,12 @@ public class Frame extends Component {
     }
 
     public void setTitle(String title) {
-        titleBitmapText.setText(title);
+        frameTitle.setText(title);
         this_resize(null);
     }
 
     public String getTitle() {
-        return titleBitmapText.getText();
+        return frameTitle.getText();
     }
 
     @Override
@@ -183,13 +357,58 @@ public class Frame extends Component {
         StarletSpace.haveFun();
         ComponentAssets.init();
 
-        Frame panel = new Frame();
-        panel.setTitle("Title");
+        for (int i = 0; i < 3; i++) {
+            Frame panel = new Frame();
+            panel.setManualResizable(true);
+            panel.setDragEnabled(true);
+            panel.setTitle("Window #" + (i + 1));
+            panel.setMinSize(100, 100);
+            panel.setMaxSize(400, 400);
+            stage.add(panel);
 
-        DragUtil.enableDrag(panel);
+            panel.setXY(100 + i * 100, 100 + i * 100);
 
-        stage.add(panel, 100, 100);
+            ButtonEx buttonEx = new ButtonEx();
+            buttonEx.setSize(100, 40);
+            buttonEx.setText("Button #" + (i + 1));
+            panel.add(buttonEx, 20, 50);
+        }
+
 
         D2D2.loop();
+
+        DebugPanel.saveAll();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

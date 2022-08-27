@@ -25,8 +25,15 @@ import com.ancevt.d2d2.input.Mouse;
 
 public class Cursor {
 
+    public static final int MODE_IDLE = 0;
+    public static final int MODE_TEXT = 1;
+    public static final int MODE_RESIZE = 2;
+
     private static IDisplayObject idleCursor;
     private static IDisplayObject textCursor;
+    private static IDisplayObject resizeCursor;
+
+    private static int mode;
 
     public static void setIdleCursor(IDisplayObject cursor) {
         D2D2.setCursor(cursor);
@@ -45,18 +52,52 @@ public class Cursor {
         return Cursor.textCursor;
     }
 
-    public static void setupDefaultIdleCursor() {
-        setIdleCursor(new Sprite(ComponentAssets.MOUSE_CURSOR_IDLE));
+    private static void setResizeCursor(IDisplayObject resizeCursor) {
+        Cursor.resizeCursor = resizeCursor;
     }
 
-    public static void setupDefaultTextCursor() {
+    public static IDisplayObject getResizeCursor() {
+        return resizeCursor;
+    }
+
+    public static void setDefaultCursorTheme() {
+        setIdleCursor(new Sprite(ComponentAssets.MOUSE_CURSOR_IDLE));
+
+
+        Container resizeCursorContainer = new Container();
+        Sprite resizeCursorSprite = new Sprite(ComponentAssets.MOUSE_CURSOR_RESIZE);
+        resizeCursorSprite.setXY(-resizeCursorSprite.getWidth() / 2, -resizeCursorSprite.getHeight() / 2);
+        resizeCursorContainer.add(resizeCursorSprite);
+        setResizeCursor(resizeCursorContainer);
+
+
         Container container = new Container();
-        Sprite sprite = new Sprite(ComponentAssets.MOUSE_CURSOR_TEXT);
-        container.add(sprite, -sprite.getWidth() / 2, -sprite.getHeight() / 2);
+        Sprite textCursorSprite = new Sprite(ComponentAssets.MOUSE_CURSOR_TEXT);
+        container.add(textCursorSprite, -textCursorSprite.getWidth() / 2, -textCursorSprite.getHeight() / 2);
         setTextCursor(container);
     }
 
+    public static int getMode() {
+        return mode;
+    }
+
+    public static void switchToResize(float angle) {
+        if(resizeCursor != null) resizeCursor.setRotation(angle);
+
+        if (mode == MODE_RESIZE) return;
+        mode = MODE_RESIZE;
+        if (resizeCursor != null) {
+            Mouse.setVisible(false);
+            D2D2.setCursor(resizeCursor);
+        } else {
+            D2D2.setCursor(null);
+            Mouse.setVisible(true);
+        }
+    }
+
     public static void switchToIdle() {
+        if (mode == MODE_IDLE) return;
+        mode = MODE_IDLE;
         if (idleCursor != null) {
             Mouse.setVisible(false);
             D2D2.setCursor(getIdleCursor());
@@ -67,6 +108,8 @@ public class Cursor {
     }
 
     public static void switchToText() {
+        if (mode == MODE_TEXT) return;
+        mode = MODE_TEXT;
         if (textCursor != null) {
             Mouse.setVisible(false);
             D2D2.setCursor(getTextCursor());
