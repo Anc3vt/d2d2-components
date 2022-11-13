@@ -24,7 +24,6 @@ import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.BitmapText;
-import com.ancevt.d2d2.display.text.StandardBitmapFonts;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.Clipboard;
@@ -517,7 +516,7 @@ public class TextInput extends Component {
                 textInput.setEnabled(false);
             }
 
-            textInput.setBitmapFont(D2D2.getBitmapFontManager().loadBitmapFont(StandardBitmapFonts.OPEN_SANS_16));
+            //textInput.setBitmapFont(D2D2.getBitmapFontManager().loadBitmapFont(StandardBitmapFonts.TERMINUS_16));
 
             stage.add(textInput, 50, 10 + i * 35);
         }

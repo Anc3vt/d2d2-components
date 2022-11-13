@@ -294,7 +294,6 @@ public class ButtonEx extends Component implements IColored {
             float h = getHeight();
             iconSprite.setXY((w - sw) / 2, (h - sh) / 2);
         }
-
         if (bitmapText != null) {
             bitmapText.setSize(getWidth(), getHeight());
             float w = getWidth();

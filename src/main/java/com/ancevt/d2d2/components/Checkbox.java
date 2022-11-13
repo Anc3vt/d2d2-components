@@ -99,7 +99,7 @@ public class Checkbox extends Component {
         sprite.setXY(PADDING, (getHeight() - sprite.getHeight()) / 2);
         if (label != null) {
             float h = label.getBitmapFont().getZeroCharHeight();
-            label.setXY(PADDING + sprite.getWidth() + PADDING, (getHeight() - h) / 2 + 2);
+            label.setXY(PADDING + sprite.getWidth() + PADDING, (getHeight() - h) / 2 + 1);
             label.setSize(getWidth() - PADDING - sprite.getWidth() - PADDING, h);
         }
     }
