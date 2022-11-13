@@ -21,6 +21,7 @@ import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
 import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.debug.StarletSpace;
+import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapText;
@@ -30,6 +31,8 @@ import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.interactive.Combined9Sprites;
 import com.ancevt.d2d2.interactive.DragUtil;
+
+import java.util.Arrays;
 
 import static com.ancevt.d2d2.D2D2.getTextureManager;
 import static com.ancevt.d2d2.D2D2.init;
@@ -45,6 +48,7 @@ public class Tooltip extends Component {
     private final PlainRect bg;
     private final Combined9Sprites borders;
     private final BitmapText bitmapText;
+    private final Sprite spriteBg;
     private final Sprite sprite;
     private float maxImageWidth;
     private float maxImageHeight;
@@ -69,6 +73,11 @@ public class Tooltip extends Component {
         borders.setColor(FOREGROUND_COLOR);
         add(borders);
 
+        spriteBg = new Sprite(ComponentAssets.TOOLTIP_IMAGE_BACKGROUND);
+        add(spriteBg, 10, 10);
+        spriteBg.setColor(Color.of(0x111111));
+        spriteBg.setVisible(false);
+
         sprite = new Sprite();
         add(sprite, 10, 10);
 
@@ -92,6 +101,14 @@ public class Tooltip extends Component {
     private void this_resize(Event event) {
         bg.setSize(getWidth(), getHeight());
         borders.setSize(getWidth(), getHeight());
+    }
+
+    public void setImageBackgroundVisible(boolean value) {
+        spriteBg.setVisible(value);
+    }
+
+    public boolean isImageBackgroundVisible() {
+        return spriteBg.isVisible();
     }
 
     public void setTexture(Texture texture) {
@@ -124,6 +141,12 @@ public class Tooltip extends Component {
             h = 10.0f + textHeight + 10.0f;
         }
 
+        handleMaxSize();
+
+        if (sprite.getTexture() != null && isImageBackgroundVisible()) {
+            spriteBg.setRepeat((sprite.getWidth() * sprite.getScaleX()) / 8, (sprite.getHeight() * sprite.getScaleY()) / 8);
+        }
+
         setSize(w, h);
     }
 
@@ -137,27 +160,29 @@ public class Tooltip extends Component {
 
     public void setImageScale(float scale) {
         sprite.setScale(scale, scale);
-
-        if(sprite.getTexture() != null) {
-            if (maxImageWidth != 0) {
-                while (sprite.getWidth() * sprite.getScaleX() > maxImageWidth) {
-                    sprite.toScale(0.09f, 0.09f);
-                }
-            }
-
-            if (maxImageHeight != 0) {
-                while (sprite.getHeight() * sprite.getScaleY() > maxImageHeight) {
-                    sprite.toScale(0.09f, 0.09f);
-                }
-            }
-        }
-
         rebuild();
     }
 
     public void setMaxImageSize(float width, float height) {
         maxImageWidth = width;
         maxImageHeight = height;
+        rebuild();
+    }
+
+    private void handleMaxSize() {
+        if (sprite.getTexture() != null) {
+            if (maxImageWidth != 0) {
+                while (sprite.getWidth() * sprite.getScaleX() > maxImageWidth) {
+                    sprite.toScale(0.99f, 0.99f);
+                }
+            }
+
+            if (maxImageHeight != 0) {
+                while (sprite.getHeight() * sprite.getScaleY() > maxImageHeight) {
+                    sprite.toScale(0.99f, 0.99f);
+                }
+            }
+        }
     }
 
     public float getMaxImageWidth() {
@@ -195,10 +220,12 @@ public class Tooltip extends Component {
                 And again""");
         tooltip.setImageScale(2f);
 
+
+
         stage.addEventListener(InputEvent.KEY_DOWN, event -> {
             var e = (InputEvent) event;
 
-            if(e.getKeyCode() == KeyCode.SPACE) {
+            if (e.getKeyCode() == KeyCode.SPACE) {
                 D2D2.setSmoothMode(!D2D2.isSmoothMode());
                 System.out.println(D2D2.isSmoothMode());
             }
@@ -210,9 +237,21 @@ public class Tooltip extends Component {
         buttonEx.setTooltip(tooltip);
         buttonEx.setPushEventsUp(false);
 
+
+        Arrays.stream(args).distinct();
+
         DragUtil.enableDrag(buttonEx);
 
         stage.add(buttonEx, 100, 250);
+
+
+        ButtonEx b2 = new ButtonEx();
+        b2.setSize(60, 60);
+        b2.setText("off");
+        b2.addEventListener(ComponentEvent.ACTION, event -> {
+            buttonEx.setTooltip(null);
+        });
+        stage.add(b2, 100, 350);
 
         loop();
     }

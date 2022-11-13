@@ -147,7 +147,7 @@ public class Button extends Component {
     private void fixTextXY() {
         float w = bitmapText.getTextWidth() - 5;
         float h = bitmapText.getBitmapFont().getZeroCharHeight();
-        bitmapText.setXY((getWidth() - w) / 2, (getHeight() - h) / 2 - 3);
+        bitmapText.setXY((getWidth() - w) / 2, (getHeight() - h) / 2);
     }
 
     @Override
