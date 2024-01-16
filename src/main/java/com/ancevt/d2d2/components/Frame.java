@@ -133,13 +133,13 @@ public class Frame extends Component {
         this.manualResizable = manualResizable;
 
         if (manualResizable) {
-            addEventListener("manualResize", Event.EACH_FRAME, this::this_manualResizeEachFrame);
+            addEventListener("manualResize", Event.EXIT_FRAME, this::this_manualResizeEachFrame);
             addEventListener("manualResize", InteractiveEvent.DOWN, this::this_manualResizeDown);
             addEventListener("manualResize", InteractiveEvent.UP, this::this_manualResizeUp);
             addEventListener("manualResize", InteractiveEvent.DRAG, this::this_manualResizeDrag);
             addEventListener("manualResize", InteractiveEvent.OUT, this::this_manualResizeOut);
         } else {
-            removeEventListener("manualResize", Event.EACH_FRAME);
+            removeEventListener("manualResize", Event.EXIT_FRAME);
             removeEventListener("manualResize", InteractiveEvent.DOWN);
             removeEventListener("manualResize", InteractiveEvent.UP);
             removeEventListener("manualResize", InteractiveEvent.DRAG);
