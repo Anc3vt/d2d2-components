@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2022 the original author or authors.
+ * Copyright (C) 2024 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
  *
@@ -190,7 +190,7 @@ public class TextInput extends Component {
 
     private void this_keyDown(Event event) {
         var e = (InteractiveEvent) event;
-        switch (e.getKeyCode()) {
+        switch (e.getCode()) {
 
             case KeyCode.RIGHT -> {
                 setCaretPosition(getCaretPosition() + 1);
@@ -232,7 +232,7 @@ public class TextInput extends Component {
                 dispatchEvent(TextInputEvent.builder()
                         .type(TextInputEvent.ENTER)
                         .text(getText())
-                        .keyCode(e.getKeyCode())
+                        .keyCode(e.getCode())
                         .build());
 
                 setCaretPosition(Integer.MAX_VALUE);
@@ -240,7 +240,7 @@ public class TextInput extends Component {
         }
 
         if (e.isControl()) {
-            switch (e.getKeyChar()) {
+            switch (e.getCharacter()) {
                 case 'X' -> {
                     Clipboard.set(getText());
                     setText("");
@@ -262,7 +262,7 @@ public class TextInput extends Component {
         dispatchEvent(TextInputEvent.builder()
                 .type(TextInputEvent.KEY_DOWN)
                 .text(getText())
-                .keyCode(e.getKeyCode())
+                .keyCode(e.getCode())
                 .build());
 
     }
