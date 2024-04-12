@@ -57,10 +57,11 @@ public class Chat extends Container {
     private final List<String> history;
     private float width;
     private float height;
+    @Getter
     private int scroll;
 
     @Getter
-    private int maxMessages = 100;
+    private int maxMessages = 2048;
     @Getter
     private int lastChatMessageId;
     private int historyIndex;
@@ -68,13 +69,13 @@ public class Chat extends Container {
     private boolean inputEnabled;
 
     @Getter
-    private final IsolatedDirectory dir;
+    private final IsolatedDirectory getIsolatedDirectory;
 
     @Getter
     private boolean autoHide;
 
     public Chat(String dirInUserHome) {
-        dir = new IsolatedDirectory(Path.of(System.getProperty("user.home")).resolve(dirInUserHome));
+        getIsolatedDirectory = new IsolatedDirectory(Path.of(System.getProperty("user.home")).resolve(dirInUserHome));
 
         input = new TextInput();
         messages = new CopyOnWriteArrayList<>();
@@ -206,10 +207,6 @@ public class Chat extends Container {
         redraw();
     }
 
-    public int getScroll() {
-        return scroll;
-    }
-
     public void addPlayerMessage(int id,
                                  int playerId,
                                  String playerName,
@@ -259,18 +256,10 @@ public class Chat extends Container {
     }
 
     public void print(@NotNull String messageText) {
-        log.info(messageText);
-
-        if (messageText.contains("\n")) {
-            messageText.lines().forEach(this::print);
-        } else {
-            addMessage(messageText);
-        }
+        print(messageText, Color.LIGHT_GRAY);
     }
 
     public void print(@NotNull String messageText, @NotNull Color color) {
-        log.info(messageText);
-
         if (messageText.contains("\n")) {
             messageText.lines().forEach(line -> print(line, color));
         } else {
@@ -411,13 +400,13 @@ public class Chat extends Container {
         String toSave = history.stream().reduce("", (s1, s2) -> s1.concat('\n' + s2));
         toSave = toSave.substring(1);
         if (!toSave.isBlank()) {
-            dir.writeString(toSave, "chatinputhistory");
+            getIsolatedDirectory.writeString(toSave, "chatinputhistory");
         }
     }
 
     private void loadHistory() {
-        dir.checkExists("chatinputhistory").ifPresent(strPath -> {
-            String historyString = dir.readString(strPath);
+        getIsolatedDirectory.checkExists("chatinputhistory").ifPresent(strPath -> {
+            String historyString = getIsolatedDirectory.readString(strPath);
             history.addAll(historyString.lines().toList());
             historyIndex = history.size();
         });

@@ -1,6 +1,9 @@
 package com.ancevt.d2d2.components.dev.chat;
 
 
+import com.ancevt.commons.exception.StackTraceUtil;
+import com.ancevt.commons.json.JsonEngine;
+import com.ancevt.commons.string.ConvertableString;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
 import com.ancevt.d2d2.components.ComponentAssets;
@@ -11,18 +14,27 @@ import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.LifecycleEvent;
 import com.ancevt.util.args.Args;
+import com.ancevt.util.texttable.TextTable;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.TreeMap;
 import java.util.function.Consumer;
 
 @Getter
+@Slf4j
 public class ConsoleChat extends Chat {
 
     private static final float PADDING = 20;
 
-    private final Map<String, Consumer<Args>> commands = new HashMap<>();
+    private final List<Command> commands = new ArrayList<>();
+    @Getter
+    private final Map<String, String> context = new TreeMap<>();
 
     private boolean maximized;
 
@@ -34,35 +46,81 @@ public class ConsoleChat extends Chat {
         D2D2.stage().addEventListener(this, LifecycleEvent.EXIT_MAIN_LOOP, this::stage_exit);
         openInput();
         loadContent();
+        loadContext();
 
-        commands.put("/q", a -> D2D2.exit());
-        commands.put("/cls", a -> clear());
+        commands.add(new Command("/help", "/h", "Show help", a -> showHelp(), true));
+        commands.add(new Command("/cls", null, "Clear console output", a -> clear(), true));
+        commands.add(new Command("/exit", "/q", "Exit D2D2 loop", a -> D2D2.exit(), true));
+        commands.add(new Command("/var", "/v", "Define and print variable value", this::commandVar, true));
+        commands.add(new Command("/rmvar", null, "Remove variable", this::removeVar, true));
+    }
+
+    public ConvertableString getVar(String varName) {
+        return ConvertableString.convert(context.get(varName));
+    }
+
+    private void removeVar(Args args) {
+        args.skip();
+        context.remove(args.next());
+    }
+
+    private void commandVar(Args args) {
+        args.skip();
+        if (!args.hasNext()) {
+            context.forEach((k, v) -> print(k + "=" + v));
+        } else {
+            String varName = args.next();
+            if (args.hasNext()) context.put(varName, args.next());
+            print(varName + "=" + context.get(varName));
+        }
+    }
+
+    private void showHelp() {
+        TextTable textTable = new TextTable(false, "command", "alias", "description");
+        textTable.addRow("");
+        commands.stream()
+            .filter(c -> !c.builtIn)
+            .forEach(c -> textTable.addKeyedRow(c.command, new String[]{c.command, c.alias, c.description}));
+        print(textTable.render());
+    }
+
+    public ConsoleChat addCommand(String command, String alias, String description, Consumer<Args> func) {
+        if (alias == null) alias = "";
+        if (description == null) description = "";
+        commands.add(new Command(command, alias, description, func, false));
+        return this;
+    }
+
+    public ConsoleChat addCommand(String command, String alias, Consumer<Args> func) {
+        addCommand(command, alias, null, func);
+        return this;
+    }
+
+    public ConsoleChat addCommand(String command, Consumer<Args> func) {
+        addCommand(command, null, null, func);
+        return this;
+    }
+
+    public ConsoleChat removeCommand(String commandOrAlias) {
+        Command commandToRemove = null;
+        for (Command c : commands) {
+            if (Objects.equals(c.command, commandOrAlias) ||
+                Objects.equals(c.alias, commandOrAlias)) {
+                commandToRemove = c;
+                break;
+            }
+        }
+        if (commandToRemove == null) {
+            throw new IllegalStateException("Command not found: %s".formatted(commandOrAlias));
+        }
+        commands.remove(commandToRemove);
+        return this;
     }
 
     private void stage_exit(Event event) {
         saveHistory();
         saveContent();
-    }
-
-    private void loadContent() {
-        getDir().checkExists("content").ifPresent(relativePath -> {
-            String content = getDir().readString(relativePath);
-            content.lines().forEach(s -> {
-                ChatMessage chatMessage = ChatMessageJsonConverter.jsonToChatMessage(s);
-                addMessage(chatMessage);
-            });
-        });
-    }
-
-    private void saveContent() {
-        StringBuilder sb = new StringBuilder();
-
-        getMessages().forEach(m -> {
-            sb.append(ChatMessageJsonConverter.chatMessageToJson(m));
-            sb.append("\n");
-        });
-
-        getDir().writeString(sb.toString(), "content");
+        saveContext();
     }
 
     public void setMaximized(boolean maximized) {
@@ -92,13 +150,66 @@ public class ConsoleChat extends Chat {
         ChatEvent e = event.casted();
         String text = e.getText();
         Args args = Args.of(text);
-        Consumer<Args> func = commands.get(args.next());
         addMessage("$> " + text, Color.GRAY);
-        if (func != null) {
-            func.accept(args);
-        } else {
-            addMessage("Unknown command: " + text, Color.RED);
+
+        for (Command c : commands) {
+            if (Objects.equals(c.command, args.get(String.class, 0)) ||
+                Objects.equals(c.alias, args.get(String.class, 0))) {
+                try {
+                    c.func.accept(args);
+                } catch (Exception ex) {
+                    log.error(ex.getMessage(), ex);
+                    print(StackTraceUtil.stringify(ex), Color.RED);
+                }
+                return;
+            }
         }
+
+        // or if not found
+        addMessage("Unknown command: " + args.get(String.class, 0), Color.RED);
+    }
+
+    private void loadContent() {
+        getGetIsolatedDirectory().checkExists("content").ifPresent(relativePath -> {
+            String content = getGetIsolatedDirectory().readString(relativePath);
+            content.lines().forEach(s -> {
+                ChatMessage chatMessage = ChatMessageJsonConverter.jsonToChatMessage(s);
+                addMessage(chatMessage);
+            });
+        });
+    }
+
+    private void saveContent() {
+        StringBuilder sb = new StringBuilder();
+
+        getMessages().forEach(m -> {
+            sb.append(ChatMessageJsonConverter.chatMessageToJson(m));
+            sb.append("\n");
+        });
+
+        getGetIsolatedDirectory().writeString(sb.toString(), "content");
+    }
+
+    private void loadContext() {
+        getGetIsolatedDirectory().checkExists("context").ifPresent(relativePath -> {
+            String contextData = getGetIsolatedDirectory().readString(relativePath);
+            Map<String, String> map = JsonEngine.gson().fromJson(contextData, Map.class);
+            context.putAll(map);
+        });
+    }
+
+    private void saveContext() {
+        String contextData = JsonEngine.gson().toJson(context);
+        getGetIsolatedDirectory().writeString(contextData, "context");
+    }
+
+    @RequiredArgsConstructor
+    private static class Command {
+        private final String command;
+        private final String alias;
+        private final String description;
+        private final Consumer<Args> func;
+        private final boolean builtIn;
     }
 
     public static void main(String[] args) {
@@ -115,5 +226,4 @@ public class ConsoleChat extends Chat {
         stage.add(new FpsMeter());
         D2D2.loop();
     }
-
 }
