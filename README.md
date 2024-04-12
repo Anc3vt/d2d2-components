@@ -23,7 +23,7 @@ The goal of D2D2 Components is to extend the functionality of D2D2 Core by provi
 ```java
 public static void main(String[] args) {
     // Initializing the framework
-    Stage stage = D2D2.init(new LWJGLBackend(800, 600, "Window title"));
+    Stage stage = D2D2.init(new LwjglBackend(800, 600, "Window title"));
     
     // Creating a frame 
     Frame panel = new Frame();  

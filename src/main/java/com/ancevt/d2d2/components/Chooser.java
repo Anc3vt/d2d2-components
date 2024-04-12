@@ -19,7 +19,7 @@ package com.ancevt.d2d2.components;
 
 import com.ancevt.commons.Pair;
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
+import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.Stage;
@@ -225,7 +225,7 @@ public class Chooser<T> extends Container {
     }
 
     public static void main(String[] args) {
-        Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.init(new LwjglBackend(800, 600, "(floating)"));
         ComponentAssets.init();
 
         Chooser<String> chooser = new Chooser<>();
