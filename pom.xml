@@ -25,7 +25,7 @@
             <email>me@ancevt.com</email>
         </developer>
     </developers>
-    
+
     <distributionManagement>
         <repository>
             <id>ancevt</id>
@@ -59,6 +59,8 @@
     </repositories>
 
     <properties>
+        <d2d2-core.version>0.1.6.0-SNAPSHOT</d2d2-core.version>
+        <ancevt-commons.version>1.0.0.9-SNAPSHOT</ancevt-commons.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>17</java.version>
@@ -78,7 +80,12 @@
         <dependency>
             <groupId>com.ancevt.d2d2</groupId>
             <artifactId>d2d2-core</artifactId>
-            <version>0.1.6.0-SNAPSHOT</version>
+            <version>${d2d2-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ancevt.commons</groupId>
+            <artifactId>ancevt-commons</artifactId>
+            <version>${ancevt-commons.version}</version>
         </dependency>
 
         <!-- Testing -->

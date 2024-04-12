@@ -18,6 +18,7 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.display.IContainer;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,7 @@ public class FrameManager {
 
     private final List<Component> frameList;
 
+    @Getter
     private Frame activeFrame;
 
     private FrameManager() {
@@ -57,10 +59,6 @@ public class FrameManager {
         }
 
         return false;
-    }
-
-    public Frame getActiveFrame() {
-        return activeFrame;
     }
 
     void activateFrame(Frame frame) {

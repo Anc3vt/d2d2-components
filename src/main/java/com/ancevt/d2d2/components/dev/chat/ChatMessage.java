@@ -20,9 +20,12 @@ package com.ancevt.d2d2.components.dev.chat;
 import com.ancevt.d2d2.components.ComponentFont;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
+import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.BitmapText;
+import com.ancevt.d2d2.display.text.FractionalMetrics;
+import com.ancevt.d2d2.display.text.TtfBitmapFontBuilder;
+import com.ancevt.d2d2.effect.Glow8Shadows;
 import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
 
 import static java.lang.String.format;
 
@@ -54,9 +57,9 @@ public class ChatMessage extends Container {
         this.text = messageText;
         this.textColor = textColor == null ? Color.WHITE : textColor;
         nameBitmapText = new BitmapText();
-        nameBitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddleGlow());
+        nameBitmapText.setBitmapFont(getBitmapFont());
         bitmapText = new BitmapText();
-        bitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddleGlow());
+        bitmapText.setBitmapFont(getBitmapFont());
 
         String playerNameToShow = format("%s(%d):", playerName, playerId);
 
@@ -89,7 +92,7 @@ public class ChatMessage extends Container {
         this.textColor = textColor;
         nameBitmapText = null;
         bitmapText = new BitmapText();
-        bitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddleGlow());
+        bitmapText.setBitmapFont(getBitmapFont());
 
         bitmapText.setWidth(DEFAULT_WIDTH);
         bitmapText.setHeight(DEFAULT_HEIGHT);
@@ -98,7 +101,27 @@ public class ChatMessage extends Container {
 
         bitmapText.setVertexBleedingFix(0);
 
+        //add(new Glow8Shadows(bitmapText, Color.BLACK, 1.5f, 1f, 0f, 0f));
         add(bitmapText);
+    }
+
+    private static BitmapFont bitmapFont;
+
+    public BitmapFont getBitmapFont() {
+        return ComponentFont.getBitmapFontMiddleGlow();
+
+//        if (bitmapFont == null) {
+//            String fontPath = "d2d2ttf/terminus/TerminusTTF-Bold-4.49.3.ttf";
+//            bitmapFont = new TtfBitmapFontBuilder()
+//                .ttfAssetPath(fontPath)
+//                .fontSize(24)
+//                .spacingY(10)
+//                .textAntialias(false)
+//                .fractionalMetrics(FractionalMetrics.OFF)
+//                .offsetY(5)
+//                .build();
+//        }
+//        return bitmapFont;
     }
 
     public boolean isFromPlayer() {
@@ -108,14 +131,14 @@ public class ChatMessage extends Container {
     @Override
     public String toString() {
         return "ChatMessage{" +
-                "id=" + id +
-                ", playerId=" + playerId +
-                ", playerName='" + playerName + '\'' +
-                ", text='" + text + '\'' +
-                ", nameUiText=" + nameBitmapText +
-                ", textUiText=" + bitmapText +
-                ", textColor=" + textColor +
-                '}';
+            "id=" + id +
+            ", playerId=" + playerId +
+            ", playerName='" + playerName + '\'' +
+            ", text='" + text + '\'' +
+            ", nameUiText=" + nameBitmapText +
+            ", textUiText=" + bitmapText +
+            ", textColor=" + textColor +
+            '}';
     }
 }
 
