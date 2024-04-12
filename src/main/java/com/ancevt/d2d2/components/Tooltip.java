@@ -18,7 +18,7 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
+import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
 import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.debug.StarletSpace;
 import com.ancevt.d2d2.display.Color;
@@ -34,9 +34,6 @@ import com.ancevt.d2d2.interactive.DragUtil;
 
 import java.util.Arrays;
 
-import static com.ancevt.d2d2.D2D2.getTextureManager;
-import static com.ancevt.d2d2.D2D2.init;
-import static com.ancevt.d2d2.D2D2.loop;
 
 public class Tooltip extends Component {
 
@@ -60,15 +57,15 @@ public class Tooltip extends Component {
         setEnabled(false);
 
         borders = new Combined9Sprites(
-                D2D2.getTextureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_TOP_LEFT),
-                D2D2.getTextureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_TOP),
-                D2D2.getTextureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_TOP_RIGHT),
-                D2D2.getTextureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_LEFT),
-                D2D2.getTextureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_CENTER),
-                D2D2.getTextureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_RIGHT),
-                D2D2.getTextureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_LEFT),
-                D2D2.getTextureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM),
-                D2D2.getTextureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_RIGHT)
+            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_TOP_LEFT),
+            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_TOP),
+            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_TOP_RIGHT),
+            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_LEFT),
+            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_CENTER),
+            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_RIGHT),
+            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_LEFT),
+            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM),
+            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_RIGHT)
         );
         borders.setColor(FOREGROUND_COLOR);
         add(borders);
@@ -204,35 +201,34 @@ public class Tooltip extends Component {
     }
 
     public static void main(String[] args) {
-        Stage stage = init(new LWJGLBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.init(new LwjglBackend(800, 600, "(floating)"));
         StarletSpace.haveFun();
         ComponentAssets.init();
 
         Tooltip tooltip = Tooltip.createTooltip();
-        tooltip.setTexture(getTextureManager().getTexture("satellite"));
+        tooltip.setTexture(D2D2.textureManager().getTexture("satellite"));
         tooltip.setText("""
-                #This is a tooltip ϕϕϕϕϕϕϕ
-                                
-                <FF8000>Second line
-                                
-                <BBBBBB>Third line
-                One more line
-                And again""");
+            #This is a tooltip ϕϕϕϕϕϕϕ
+                            
+            <FF8000>Second line
+                            
+            <BBBBBB>Third line
+            One more line
+            And again""");
         tooltip.setImageScale(2f);
-
 
 
         stage.addEventListener(InputEvent.KEY_DOWN, event -> {
             var e = (InputEvent) event;
 
             if (e.getKeyCode() == KeyCode.SPACE) {
-                D2D2.setSmoothMode(!D2D2.isSmoothMode());
-                System.out.println(D2D2.isSmoothMode());
+                D2D2.backend().setSmoothMode(!D2D2.backend().isSmoothMode());
+                System.out.println(D2D2.backend().isSmoothMode());
             }
         });
 
         ButtonEx buttonEx = new ButtonEx();
-        buttonEx.setIcon(getTextureManager().getTexture("satellite"));
+        buttonEx.setIcon(D2D2.textureManager().getTexture("satellite"));
         buttonEx.setSize(60, 60);
         buttonEx.setTooltip(tooltip);
         buttonEx.setPushEventsUp(false);
@@ -253,7 +249,7 @@ public class Tooltip extends Component {
         });
         stage.add(b2, 100, 350);
 
-        loop();
+        D2D2.loop();
     }
 }
 

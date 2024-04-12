@@ -18,7 +18,7 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
+import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
 import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Stage;
@@ -501,7 +501,7 @@ public class TextInput extends Component {
 
 
     public static void main(String[] args) {
-        Stage stage = D2D2.init(new LWJGLBackend(800, 800, "(floating)"));
+        Stage stage = D2D2.init(new LwjglBackend(800, 800, "(floating)"));
         ComponentAssets.init();
         InteractiveManager.getInstance().setTabbingEnabled(true);
 

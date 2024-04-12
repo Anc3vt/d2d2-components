@@ -17,10 +17,13 @@
  */
 package com.ancevt.d2d2.components;
 
+import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.display.texture.Texture;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
-import static com.ancevt.d2d2.D2D2.getTextureManager;
-
+@Slf4j
+@NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
 public class ComponentAssets {
 
     public static final String MOUSE_CURSOR_IDLE = "d2d2-components-mouse-cursor-idle";
@@ -76,12 +79,19 @@ public class ComponentAssets {
     public static final String ROUNDED_9_SIDE_BOTTOM = "d2d2-components-rounded-9-side-bottom";
     public static final String ROUNDED_9_SIDE_BOTTOM_RIGHT = "d2d2-components-rounded-9-side-bottom-right";
 
+    private static boolean initialized;
+
     public static void init() {
-        getTextureManager().loadTextureDataInfo("d2d2-components.inf");
-        Cursor.setDefaultCursorTheme();
+        if (!initialized) {
+            D2D2.textureManager().loadTextureDataInfo("d2d2-components.inf");
+            Cursor.setDefaultCursorTheme();
+            initialized = true;
+        } else {
+            log.warn("Components already initialized");
+        }
     }
 
     public static Texture getTexture(String textureKey) {
-        return getTextureManager().getTexture(textureKey);
+        return D2D2.textureManager().getTexture(textureKey);
     }
 }

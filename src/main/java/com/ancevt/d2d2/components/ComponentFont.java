@@ -18,7 +18,7 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
+import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
 import com.ancevt.d2d2.debug.StarletSpace;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
@@ -37,7 +37,7 @@ public class ComponentFont {
 
     public static BitmapFont getBitmapFontMiddle() {
         if (bitmapFontMiddle == null) {
-            bitmapFontMiddle = BitmapFontManager.getInstance().loadBitmapFont(FONT_ASSET_MIDDLE);
+            bitmapFontMiddle = D2D2.bitmapFontManager().loadBitmapFont(FONT_ASSET_MIDDLE);
             bitmapFontMiddle.setPaddingTop(-3f);
         }
         return bitmapFontMiddle;
@@ -45,7 +45,7 @@ public class ComponentFont {
 
     public static BitmapFont getBitmapFontMiddleGlow() {
         if (bitmapFontMiddleGlow == null) {
-            bitmapFontMiddleGlow = BitmapFontManager.getInstance().loadBitmapFont(FONT_ASSET_MIDDLE_GLOW);
+            bitmapFontMiddleGlow = D2D2.bitmapFontManager().loadBitmapFont(FONT_ASSET_MIDDLE_GLOW);
             bitmapFontMiddleGlow.setPaddingTop(-3f);
         }
         return bitmapFontMiddleGlow;
@@ -53,14 +53,14 @@ public class ComponentFont {
 
     public static BitmapFont getBitmapFontSmall() {
         if (bitmapFontSmall == null) {
-            bitmapFontSmall = BitmapFontManager.getInstance().loadBitmapFont(FONT_ASSET_SMALL);
+            bitmapFontSmall = D2D2.bitmapFontManager().loadBitmapFont(FONT_ASSET_SMALL);
             bitmapFontSmall.setPaddingTop(-1f);
         }
         return bitmapFontSmall;
     }
 
     public static void main(String[] args) {
-        Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.init(new LwjglBackend(800, 600, "(floating)"));
         StarletSpace.haveFun();
 
         BitmapText bitmapText = new BitmapText();

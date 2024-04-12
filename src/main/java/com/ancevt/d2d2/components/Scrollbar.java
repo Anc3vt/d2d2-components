@@ -18,7 +18,7 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LWJGLBackend;
+import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
 import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.debug.DebugPanel;
 import com.ancevt.d2d2.display.Color;
@@ -156,7 +156,7 @@ public class Scrollbar extends Component {
 
         private static Texture get1x1Texture() {
             if (texture != null) return texture;
-            return texture = D2D2.getTextureManager().loadTextureAtlas(ASSET_1X1).createTexture();
+            return texture = D2D2.textureManager().loadTextureAtlas(ASSET_1X1).createTexture();
         }
 
         public ScrollbarRect(Scrollbar scrollbar) {
@@ -219,7 +219,7 @@ public class Scrollbar extends Component {
     }
 
     public static void main(String[] args) {
-        Stage stage = D2D2.init(new LWJGLBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.init(new LwjglBackend(800, 600, "(floating)"));
         stage.setBackgroundColor(Color.of(0x001122));
 
         Scrollbar scrollbar = new Scrollbar();
