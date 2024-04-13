@@ -22,9 +22,6 @@ import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.BitmapText;
-import com.ancevt.d2d2.display.text.FractionalMetrics;
-import com.ancevt.d2d2.display.text.TtfBitmapFontBuilder;
-import com.ancevt.d2d2.effect.Glow8Shadows;
 import lombok.Getter;
 
 import static java.lang.String.format;
