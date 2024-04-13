@@ -398,6 +398,7 @@ public class Chat extends Container {
 
     public void saveHistory() {
         String toSave = history.stream().reduce("", (s1, s2) -> s1.concat('\n' + s2));
+        if (toSave.isEmpty()) return;
         toSave = toSave.substring(1);
         if (!toSave.isBlank()) {
             getIsolatedDirectory.writeString(toSave, "chatinputhistory");
@@ -413,8 +414,8 @@ public class Chat extends Container {
     }
 
     @Override
-    public void onEachFrame() {
-        super.onEachFrame();
+    public void onExitFrame() {
+        super.onExitFrame();
 
         if (autoHide) {
             alphaTime--;

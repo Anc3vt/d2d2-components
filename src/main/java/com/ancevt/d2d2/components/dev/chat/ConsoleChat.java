@@ -4,6 +4,7 @@ package com.ancevt.d2d2.components.dev.chat;
 import com.ancevt.commons.exception.StackTraceUtil;
 import com.ancevt.commons.json.JsonEngine;
 import com.ancevt.commons.string.ConvertableString;
+import com.ancevt.commons.util.ApplicationMainClassNameExtractor;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
 import com.ancevt.d2d2.components.ComponentAssets;
@@ -15,11 +16,13 @@ import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.LifecycleEvent;
 import com.ancevt.util.args.Args;
 import com.ancevt.util.texttable.TextTable;
+import com.google.gson.reflect.TypeToken;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -36,6 +39,9 @@ public class ConsoleChat extends Chat {
     @Getter
     private final Map<String, String> context = new TreeMap<>();
 
+    @Getter
+    private final Map<String, String> initialValues = new HashMap<>();
+
     private boolean maximized;
 
     public ConsoleChat(String dirInUserHome) {
@@ -46,13 +52,18 @@ public class ConsoleChat extends Chat {
         D2D2.stage().addEventListener(this, LifecycleEvent.EXIT_MAIN_LOOP, this::stage_exit);
         openInput();
         loadContent();
+        setInitialValues();
         loadContext();
 
-        commands.add(new Command("/help", "/h", "Show help", a -> showHelp(), true));
-        commands.add(new Command("/cls", null, "Clear console output", a -> clear(), true));
-        commands.add(new Command("/exit", "/q", "Exit D2D2 loop", a -> D2D2.exit(), true));
-        commands.add(new Command("/var", "/v", "Define and print variable value", this::commandVar, true));
-        commands.add(new Command("/rmvar", null, "Remove variable", this::removeVar, true));
+        commands.add(new Command("/help"  , "/h", "Show help"                      , a -> showHelp() , true));
+        commands.add(new Command("/cls"   , null, "Clear console output"           , a -> clear()    , true));
+        commands.add(new Command("/exit"  , "/q", "Exit D2D2 loop"                 , a -> D2D2.exit(), true));
+        commands.add(new Command("/var"   , "/v", "Define and print variable value", this::commandVar, true));
+        commands.add(new Command("/delete", "/d", "Delete variable"                , this::removeVar , true));
+    }
+
+    public ConsoleChat() throws ApplicationMainClassNameExtractor.MainClassNameExtractorException {
+        this(".d2d2/console-chat/" + ApplicationMainClassNameExtractor.getMainClassName());
     }
 
     public ConvertableString getVar(String varName) {
@@ -60,18 +71,50 @@ public class ConsoleChat extends Chat {
     }
 
     private void removeVar(Args args) {
-        args.skip();
-        context.remove(args.next());
+        String varName = args.next();
+        String oldValue = context.get(varName);
+        if (oldValue != null) {
+            context.remove(varName);
+            print("delete '" + varName + "', old value: '" + oldValue + "'");
+            dispatchEvent(ConsoleChatEvent.builder()
+                .type(ConsoleChatEvent.VAR_VALUE_CHANGE)
+                .varName(varName)
+                .oldValue(ConvertableString.convert(oldValue))
+                .value(null)
+                .build()
+            );
+            dispatchEvent(ConsoleChatEvent.builder()
+                .type(ConsoleChatEvent.VAR_VALUE_DELETE)
+                .varName(varName)
+                .oldValue(ConvertableString.convert(oldValue))
+                .value(null)
+                .build()
+            );
+        } else {
+            print("no such variable '" + varName + "'");
+        }
     }
 
     private void commandVar(Args args) {
-        args.skip();
         if (!args.hasNext()) {
             context.forEach((k, v) -> print(k + "=" + v));
         } else {
             String varName = args.next();
-            if (args.hasNext()) context.put(varName, args.next());
-            print(varName + "=" + context.get(varName));
+            if (args.hasNext()) {
+                String oldValue = context.get(varName);
+                String newValue = args.next();
+                context.put(varName, newValue);
+                print(varName + "=" + oldValue + "->" + newValue);
+                dispatchEvent(ConsoleChatEvent.builder()
+                    .type(ConsoleChatEvent.VAR_VALUE_CHANGE)
+                    .oldValue(ConvertableString.convert(oldValue))
+                    .value(ConvertableString.convert(newValue))
+                    .varName(varName)
+                    .build()
+                );
+            } else {
+                print(varName + "=" + context.get(varName));
+            }
         }
     }
 
@@ -152,9 +195,11 @@ public class ConsoleChat extends Chat {
         Args args = Args.of(text);
         addMessage("$> " + text, Color.GRAY);
 
+        String cmdWord = args.next();
+
         for (Command c : commands) {
-            if (Objects.equals(c.command, args.get(String.class, 0)) ||
-                Objects.equals(c.alias, args.get(String.class, 0))) {
+            if (Objects.equals(c.command, cmdWord) ||
+                Objects.equals(c.alias, cmdWord)) {
                 try {
                     c.func.accept(args);
                 } catch (Exception ex) {
@@ -165,8 +210,7 @@ public class ConsoleChat extends Chat {
             }
         }
 
-        // or if not found
-        addMessage("Unknown command: " + args.get(String.class, 0), Color.RED);
+        print("Unknown command: " + args.get(String.class, 0), Color.RED);
     }
 
     private void loadContent() {
@@ -190,11 +234,28 @@ public class ConsoleChat extends Chat {
         getGetIsolatedDirectory().writeString(sb.toString(), "content");
     }
 
+    private void setInitialValues() {
+
+    }
+
     private void loadContext() {
         getGetIsolatedDirectory().checkExists("context").ifPresent(relativePath -> {
             String contextData = getGetIsolatedDirectory().readString(relativePath);
-            Map<String, String> map = JsonEngine.gson().fromJson(contextData, Map.class);
+            Map<String, String> map = JsonEngine.gson().fromJson(
+                contextData,
+                new TypeToken<Map<String, String>>() {}.getType()
+            );
             context.putAll(map);
+
+            map.forEach((k, v) -> {
+                dispatchEvent(ConsoleChatEvent.builder()
+                    .type(ConsoleChatEvent.VAR_VALUE_CHANGE)
+                    .varName(k)
+                    .oldValue(ConvertableString.convert(null))
+                    .value(ConvertableString.convert(v))
+                    .build()
+                );
+            });
         });
     }
 

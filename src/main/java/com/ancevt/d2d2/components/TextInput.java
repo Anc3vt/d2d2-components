@@ -488,7 +488,7 @@ public class TextInput extends Component {
         }
 
         @Override
-        public void onEachFrame() {
+        public void onLoopUpdate() {
             if (uiTextInput.isEnabled()) {
                 blinkCounter--;
                 if (blinkCounter <= 0) {
