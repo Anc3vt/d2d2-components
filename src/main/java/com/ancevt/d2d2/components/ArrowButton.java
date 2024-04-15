@@ -20,6 +20,7 @@ package com.ancevt.d2d2.components;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.Sprite;
+import com.ancevt.d2d2.display.SpriteFactory;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.interactive.InteractiveContainer;
@@ -37,8 +38,8 @@ public class ArrowButton extends Container {
     private int direction;
 
     public ArrowButton() {
-        sprite = new Sprite(ARROW_BUTTON);
-        shadow = new Sprite(ARROW_BUTTON);
+        sprite = SpriteFactory.createSprite(ARROW_BUTTON);
+        shadow = SpriteFactory.createSprite(ARROW_BUTTON);
         shadow.setColor(Color.BLACK);
 
         add(shadow, 1, 1);

@@ -23,6 +23,7 @@ import com.ancevt.d2d2.debug.StarletSpace;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.IColored;
 import com.ancevt.d2d2.display.Sprite;
+import com.ancevt.d2d2.display.SpriteFactory;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.display.texture.Texture;
@@ -251,7 +252,7 @@ public class ButtonEx extends Component implements IColored {
 
     public void setIcon(Texture texture) {
         if (iconSprite == null) {
-            iconSprite = new Sprite();
+            iconSprite = SpriteFactory.createSprite();
             add(iconSprite);
         }
         iconSprite.setTexture(texture);
@@ -305,7 +306,7 @@ public class ButtonEx extends Component implements IColored {
     }
 
     public static void main(String[] args) {
-        Stage stage = init(new LwjglBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.directInit(new LwjglBackend(800, 600, "(floating)"));
         StarletSpace.haveFun();
         ComponentAssets.init();
 

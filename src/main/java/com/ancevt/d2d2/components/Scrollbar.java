@@ -219,7 +219,7 @@ public class Scrollbar extends Component {
     }
 
     public static void main(String[] args) {
-        Stage stage = D2D2.init(new LwjglBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.directInit(new LwjglBackend(800, 600, "(floating)"));
         stage.setBackgroundColor(Color.of(0x001122));
 
         Scrollbar scrollbar = new Scrollbar();

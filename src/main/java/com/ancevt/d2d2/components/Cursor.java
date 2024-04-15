@@ -21,27 +21,31 @@ import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.IDisplayObject;
 import com.ancevt.d2d2.display.Sprite;
+import com.ancevt.d2d2.display.SpriteFactory;
 import com.ancevt.d2d2.input.Mouse;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Cursor {
 
     public static final int MODE_IDLE = 0;
     public static final int MODE_TEXT = 1;
     public static final int MODE_RESIZE = 2;
 
+    @Getter
     private static IDisplayObject idleCursor;
     private static IDisplayObject textCursor;
+    @Getter
     private static IDisplayObject resizeCursor;
 
+    @Getter
     private static int mode;
 
     public static void setIdleCursor(IDisplayObject cursor) {
         D2D2.setCursor(cursor);
         Cursor.idleCursor = cursor;
-    }
-
-    public static IDisplayObject getIdleCursor() {
-        return idleCursor;
     }
 
     public static void setTextCursor(IDisplayObject cursor) {
@@ -56,33 +60,23 @@ public class Cursor {
         Cursor.resizeCursor = resizeCursor;
     }
 
-    public static IDisplayObject getResizeCursor() {
-        return resizeCursor;
-    }
-
     public static void setDefaultCursorTheme() {
-        setIdleCursor(new Sprite(ComponentAssets.MOUSE_CURSOR_IDLE));
-
+        setIdleCursor(SpriteFactory.createSprite(ComponentAssets.MOUSE_CURSOR_IDLE));
 
         Container resizeCursorContainer = new Container();
-        Sprite resizeCursorSprite = new Sprite(ComponentAssets.MOUSE_CURSOR_RESIZE);
+        Sprite resizeCursorSprite = SpriteFactory.createSprite(ComponentAssets.MOUSE_CURSOR_RESIZE);
         resizeCursorSprite.setXY(-resizeCursorSprite.getWidth() / 2, -resizeCursorSprite.getHeight() / 2);
         resizeCursorContainer.add(resizeCursorSprite);
         setResizeCursor(resizeCursorContainer);
 
-
         Container container = new Container();
-        Sprite textCursorSprite = new Sprite(ComponentAssets.MOUSE_CURSOR_TEXT);
+        Sprite textCursorSprite = SpriteFactory.createSprite(ComponentAssets.MOUSE_CURSOR_TEXT);
         container.add(textCursorSprite, -textCursorSprite.getWidth() / 2, -textCursorSprite.getHeight() / 2);
         setTextCursor(container);
     }
 
-    public static int getMode() {
-        return mode;
-    }
-
     public static void switchToResize(float angle) {
-        if(resizeCursor != null) resizeCursor.setRotation(angle);
+        if (resizeCursor != null) resizeCursor.setRotation(angle);
 
         if (mode == MODE_RESIZE) return;
         mode = MODE_RESIZE;

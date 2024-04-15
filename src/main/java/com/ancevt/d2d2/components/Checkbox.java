@@ -21,6 +21,7 @@ import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Sprite;
+import com.ancevt.d2d2.display.SpriteFactory;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
@@ -41,7 +42,7 @@ public class Checkbox extends Component {
     private boolean checked;
 
     public Checkbox() {
-        sprite = new Sprite(CHECKBOX_UNCHECKED);
+        sprite = SpriteFactory.createSprite(CHECKBOX_UNCHECKED);
         add(sprite);
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
@@ -139,7 +140,7 @@ public class Checkbox extends Component {
     }
 
     public static void main(String[] args) {
-        Stage stage = D2D2.init(new LwjglBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.directInit(new LwjglBackend(800, 600, "(floating)"));
         stage.setBackgroundColor(Color.of(0x112233));
         InteractiveManager.getInstance().setTabbingEnabled(true);
         ComponentAssets.init();

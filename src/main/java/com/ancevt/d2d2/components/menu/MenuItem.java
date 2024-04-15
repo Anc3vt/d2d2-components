@@ -23,6 +23,7 @@ import com.ancevt.d2d2.components.ComponentAssets;
 import com.ancevt.d2d2.components.ComponentFont;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Sprite;
+import com.ancevt.d2d2.display.SpriteFactory;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
@@ -101,7 +102,7 @@ public class MenuItem extends Component {
         if (childMenuArrow != null) childMenuArrow.removeFromParent();
 
         if (childMenu != null) {
-            childMenuArrow = new Sprite(ComponentAssets.MENU_CHILD_ARROW);
+            childMenuArrow = SpriteFactory.createSprite(ComponentAssets.MENU_CHILD_ARROW);
             childMenuArrow.setColor(Color.LIGHT_GRAY);
             add(childMenuArrow);
             update();

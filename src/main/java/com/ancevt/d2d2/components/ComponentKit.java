@@ -68,7 +68,7 @@ public class ComponentKit {
     }
 
     public static void main(String[] args) {
-        Stage stage = D2D2.init(new LwjglBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.directInit(new LwjglBackend(800, 600, "(floating)"));
         StarletSpace.haveFun();
         ComponentAssets.init();
 

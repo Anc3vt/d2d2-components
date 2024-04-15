@@ -26,7 +26,7 @@ import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.interactive.InteractiveContainer;
-import org.jetbrains.annotations.NotNull;
+import lombok.Getter;
 
 import java.util.concurrent.TimeUnit;
 
@@ -58,7 +58,9 @@ abstract public class Component extends InteractiveContainer {
 
     private final BorderedRect componentFocusRect;
     private boolean componentFocusRectEnabled;
+    @Getter
     private Padding padding;
+    @Getter
     private Tooltip tooltip;
 
     private float minWidth;
@@ -145,18 +147,10 @@ abstract public class Component extends InteractiveContainer {
         }
     }
 
-    public Tooltip getTooltip() {
-        return tooltip;
-    }
-
-    public void setPadding(@NotNull Padding padding) {
+    public void setPadding(Padding padding) {
         padding.setComponent(this);
         this.padding = padding;
         update();
-    }
-
-    public @NotNull Padding getPadding() {
-        return padding;
     }
 
     public void setComponentFocusRectVisibleEnabled(boolean focusRectEnabled) {

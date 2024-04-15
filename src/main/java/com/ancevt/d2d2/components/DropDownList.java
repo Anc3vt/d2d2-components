@@ -22,6 +22,7 @@ import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
 import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.debug.StarletSpace;
 import com.ancevt.d2d2.display.Sprite;
+import com.ancevt.d2d2.display.SpriteFactory;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.BitmapText;
@@ -88,7 +89,7 @@ public class DropDownList<T> extends Component {
         bitmapText.setBitmapFont(ComponentFont.getBitmapFontSmall());
         add(bitmapText);
 
-        arrow = new Sprite(ComponentAssets.DROP_DOWN_LIST_ARROW);
+        arrow = SpriteFactory.createSprite(ComponentAssets.DROP_DOWN_LIST_ARROW);
         add(arrow);
 
         addEventListener(Event.RESIZE, this::this_resize);
@@ -304,7 +305,7 @@ public class DropDownList<T> extends Component {
     }
 
     public static void main(String[] args) {
-        Stage stage = init(new LwjglBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.directInit(new LwjglBackend(800, 600, "(floating)"));
         StarletSpace.haveFun();
         ComponentAssets.init();
 

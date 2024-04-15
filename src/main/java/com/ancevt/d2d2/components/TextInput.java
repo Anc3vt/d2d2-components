@@ -30,7 +30,6 @@ import com.ancevt.d2d2.input.Clipboard;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.interactive.Combined9Sprites;
 import com.ancevt.d2d2.interactive.InteractiveManager;
-import org.jetbrains.annotations.NotNull;
 
 public class TextInput extends Component {
 
@@ -119,13 +118,13 @@ public class TextInput extends Component {
     }
 
     @Override
-    public void setPadding(@NotNull Padding padding) {
+    public void setPadding( Padding padding) {
         this.padding = padding;
         this_resize(null);
     }
 
     @Override
-    public @NotNull Padding getPadding() {
+    public  Padding getPadding() {
         return padding;
     }
 
@@ -337,7 +336,7 @@ public class TextInput extends Component {
         selection.setWidth((selectionToIndex - selectionFromIndex) * bitmapText.getCharWidth());
     }
 
-    public void setText(@NotNull String text) {
+    public void setText( String text) {
         this.text = text;
         this.bitmapText.setText(text);
         if (getCaretPosition() > text.length()) {
@@ -501,7 +500,7 @@ public class TextInput extends Component {
 
 
     public static void main(String[] args) {
-        Stage stage = D2D2.init(new LwjglBackend(800, 800, "(floating)"));
+        Stage stage = D2D2.directInit(new LwjglBackend(800, 800, "(floating)"));
         ComponentAssets.init();
         InteractiveManager.getInstance().setTabbingEnabled(true);
 

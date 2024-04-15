@@ -22,7 +22,6 @@ import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
 import com.ancevt.d2d2.debug.StarletSpace;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapFont;
-import com.ancevt.d2d2.display.text.BitmapFontManager;
 import com.ancevt.d2d2.display.text.BitmapText;
 
 public class ComponentFont {
@@ -60,7 +59,7 @@ public class ComponentFont {
     }
 
     public static void main(String[] args) {
-        Stage stage = D2D2.init(new LwjglBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.directInit(new LwjglBackend(800, 600, "(floating)"));
         StarletSpace.haveFun();
 
         BitmapText bitmapText = new BitmapText();

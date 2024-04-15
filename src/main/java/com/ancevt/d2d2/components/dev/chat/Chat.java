@@ -35,7 +35,6 @@ import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -234,7 +233,7 @@ public class Chat extends Container {
         redraw();
     }
 
-    public void addMessage(@NotNull String messageText, @NotNull Color textColor) {
+    public void addMessage(String messageText, Color textColor) {
         setAlpha(1.0f);
         alphaTime = ALPHA_TIME;
         if (messageText.length() > 100) {
@@ -255,11 +254,11 @@ public class Chat extends Container {
         redraw();
     }
 
-    public void print(@NotNull String messageText) {
+    public void print(String messageText) {
         print(messageText, Color.LIGHT_GRAY);
     }
 
-    public void print(@NotNull String messageText, @NotNull Color color) {
+    public void print(String messageText, Color color) {
         if (messageText.contains("\n")) {
             messageText.lines().forEach(line -> print(line, color));
         } else {
@@ -267,11 +266,11 @@ public class Chat extends Container {
         }
     }
 
-    public void addMessage(@NotNull String messageText) {
+    public void addMessage(String messageText) {
         addMessage(messageText, Color.WHITE);
     }
 
-    public void addMessage(@NotNull ChatMessage chatMessage) {
+    public void addMessage(ChatMessage chatMessage) {
         setAlpha(1.0f);
         alphaTime = ALPHA_TIME;
         messages.add(chatMessage);
@@ -427,7 +426,7 @@ public class Chat extends Container {
     }
 
     public static void main(String[] args) {
-        Stage stage = D2D2.init(new LwjglBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.directInit(new LwjglBackend(800, 600, "(floating)"));
         ComponentAssets.init();
 
         stage.setBackgroundColor(Color.of(0x223344));

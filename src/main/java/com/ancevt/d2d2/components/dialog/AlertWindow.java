@@ -30,7 +30,6 @@ import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.input.KeyCode;
-import org.jetbrains.annotations.NotNull;
 
 import static com.ancevt.d2d2.D2D2.stage;
 import static com.ancevt.d2d2.event.Event.ADD_TO_STAGE;
@@ -127,12 +126,12 @@ public class AlertWindow extends Container {
 
     public void center() {
         setXY(
-                (stage().getWidth() - getWidth()) / 2f,
-                (stage().getHeight() - getHeight()) / 2f
+            (stage().getWidth() - getWidth()) / 2f,
+            (stage().getHeight() - getHeight()) / 2f
         );
     }
 
-    public static @NotNull AlertWindow show(String text, @NotNull Container doc) {
+    public static AlertWindow show(String text, Container doc) {
         AlertWindow alertWindow = new AlertWindow();
         alertWindow.setText(text);
         doc.add(alertWindow);
@@ -141,7 +140,7 @@ public class AlertWindow extends Container {
     }
 
     public static void main(String[] args) {
-        Stage root = D2D2.init(new LwjglBackend(800, 600, "(floating)"));
+        Stage root = D2D2.directInit(new LwjglBackend(800, 600, "(floating)"));
         ComponentAssets.init();
         root.setBackgroundColor(Color.GRAY);
 
