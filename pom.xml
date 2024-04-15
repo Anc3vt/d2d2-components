@@ -6,7 +6,7 @@
 
     <groupId>com.ancevt.d2d2</groupId>
     <artifactId>d2d2-components</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4-SNAPSHOT</version>
 
     <name>D2D2 Components</name>
     <url>https://githib.com/Anc3vt/d2d2-components</url>
@@ -59,10 +59,11 @@
     </repositories>
 
     <properties>
-        <d2d2-core.version>0.1.6.0-beta</d2d2-core.version>
-        <ancevt-commons.version>1.0.0.9</ancevt-commons.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>17</java.version>
+
+        <ancevt-commons.version>1.0.1-SNAPSHOT</ancevt-commons.version>
+        <d2d2-core.version>0.1.6.1-SNAPSHOT</d2d2-core.version>
 
         <junit-jupiter-api.version>5.8.2</junit-jupiter-api.version>
         <hamcrest-junit.version>2.0.0.0</hamcrest-junit.version>
