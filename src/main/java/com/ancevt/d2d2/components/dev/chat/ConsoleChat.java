@@ -26,9 +26,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.regex.Pattern;
 
 @Getter
 @Slf4j
@@ -211,8 +213,15 @@ public class ConsoleChat extends Chat {
     private void this_chatTextEnter(Event event) {
         ChatEvent e = event.casted();
         String text = e.getText();
+
         Args args = Args.of(text);
         addMessage("$> " + text, Color.GRAY);
+
+        if (checkSetVariablePattern(text)) {
+            String[] s = text.split("=", 2);
+            setVar(s[0], s[1]);
+            return;
+        }
 
         String cmdWord = args.next();
 
@@ -228,8 +237,11 @@ public class ConsoleChat extends Chat {
                 return;
             }
         }
-
         print("Unknown command: " + args.get(String.class, 0), Color.RED);
+    }
+
+    public static boolean checkSetVariablePattern(String input) {
+        return Pattern.matches("[a-zA-Z_$][a-zA-Z\\d_$]*=.*", input);
     }
 
     private void loadContent() {
