@@ -23,6 +23,7 @@ import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.debug.StarletSpace;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Sprite;
+import com.ancevt.d2d2.display.SpriteFactory;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.display.texture.Texture;
@@ -70,12 +71,12 @@ public class Tooltip extends Component {
         borders.setColor(FOREGROUND_COLOR);
         add(borders);
 
-        spriteBg = new Sprite(ComponentAssets.TOOLTIP_IMAGE_BACKGROUND);
+        spriteBg = SpriteFactory.createSprite(ComponentAssets.TOOLTIP_IMAGE_BACKGROUND);
         add(spriteBg, 10, 10);
         spriteBg.setColor(Color.of(0x111111));
         spriteBg.setVisible(false);
 
-        sprite = new Sprite();
+        sprite = SpriteFactory.createSprite();
         add(sprite, 10, 10);
 
         bitmapText = new BitmapText(ComponentFont.getBitmapFontMiddle());
@@ -201,7 +202,7 @@ public class Tooltip extends Component {
     }
 
     public static void main(String[] args) {
-        Stage stage = D2D2.init(new LwjglBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.directInit(new LwjglBackend(800, 600, "(floating)"));
         StarletSpace.haveFun();
         ComponentAssets.init();
 

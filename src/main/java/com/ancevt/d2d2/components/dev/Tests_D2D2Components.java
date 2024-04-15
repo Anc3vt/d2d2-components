@@ -43,7 +43,7 @@ import static com.ancevt.d2d2.components.menu.Menu.createMenu;
 public class Tests_D2D2Components {
 
     public static void main(String[] args) {
-        Stage stage = init(new LwjglBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.directInit(new LwjglBackend(800, 600, "(floating)"));
         StarletSpace.haveFun();
         ComponentAssets.init();
 

@@ -22,10 +22,12 @@ import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
 import com.ancevt.d2d2.debug.DebugPanel;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Sprite;
+import com.ancevt.d2d2.display.SpriteFactory;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
+import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.interactive.InteractiveManager;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -52,9 +54,9 @@ public class Button extends Component {
     }
 
     public Button(String text) {
-        leftPart = new Sprite(BUTTON_LEFT_PART);
-        rightPart = new Sprite(BUTTON_RIGHT_PART);
-        middlePart = new Sprite(BUTTON_MIDDLE_PART);
+        leftPart = SpriteFactory.createSprite(BUTTON_LEFT_PART);
+        rightPart = SpriteFactory.createSprite(BUTTON_RIGHT_PART);
+        middlePart = SpriteFactory.createSprite(BUTTON_MIDDLE_PART);
 
         bitmapText = new BitmapText();
         bitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddle());
@@ -163,13 +165,13 @@ public class Button extends Component {
     }
 
     public static void main(String[] args) {
-        Stage stage = D2D2.init(new LwjglBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.directInit(new LwjglBackend(800, 600, "(floating)"));
         ComponentAssets.init();
         InteractiveManager.getInstance().setTabbingEnabled(true);
         DebugPanel.setEnabled(true);
         stage.setBackgroundColor(Color.BLACK);
 
-        D2D2.setCursor(new Sprite(MOUSE_CURSOR_IDLE));
+        D2D2.setCursor(SpriteFactory.createSprite(MOUSE_CURSOR_IDLE));
 
         for (int i = 0; i < 5; i++) {
             Button button = new Button("Test " + i);
@@ -186,6 +188,15 @@ public class Button extends Component {
             button.setWidth(100);
             stage.add(button, 20, 50 + i * 30);
         }
+
+
+        Button b = new Button("lu");
+        b.addEventListener("asdasd", Event.LOOP_UPDATE, e -> {
+            b.setXY(Mouse.getX(), Mouse.getY());
+        });
+
+        stage.add(b);
+
 
         D2D2.loop();
         DebugPanel.saveAll();
