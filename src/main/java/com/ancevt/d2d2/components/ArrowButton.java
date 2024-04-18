@@ -23,7 +23,7 @@ import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.SpriteFactory;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
-import com.ancevt.d2d2.interactive.InteractiveContainer;
+import com.ancevt.d2d2.display.interactive.InteractiveContainer;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;

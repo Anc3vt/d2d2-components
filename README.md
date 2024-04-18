@@ -23,26 +23,26 @@ The goal of D2D2 Components is to extend the functionality of D2D2 Core by provi
 ```java
 public static void main(String[] args) {
     // Initializing the framework
-    Stage stage = D2D2.init(new LwjglBackend(800, 600, "Window title"));
-    
+    Stage stage = D2D2.init(new LwjglMediaEngine(800, 600, "Window title"));
+
     // Creating a frame 
-    Frame panel = new Frame();  
-    panel.setManualResizable(true);  
-    panel.setDragEnabled(true);  
-    panel.setTitle("Window title");  
-    panel.setMinSize(100, 100);  
-    panel.setMaxSize(400, 400);  
-    
+    Frame panel = new Frame();
+    panel.setManualResizable(true);
+    panel.setDragEnabled(true);
+    panel.setTitle("Window title");
+    panel.setMinSize(100, 100);
+    panel.setMaxSize(400, 400);
+
     // Creating a button
     Button button = new Button("Hello");
     button.addEventListener(Button.ButtonEvent.BUTTON_PRESSED, this::onButtonPressed);
-    
+
     // Adding the button to the panel
     panel.add(button);
-    
+
     // Adding the panel to the stage
     stage.add(panel);
-    
+
     // Starting the rendering and event handling loop
     D2D2.loop();
 }

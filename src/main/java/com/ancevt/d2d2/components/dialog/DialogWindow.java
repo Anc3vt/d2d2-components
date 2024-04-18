@@ -18,7 +18,7 @@
 package com.ancevt.d2d2.components.dialog;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
+import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.components.Button;
 import com.ancevt.d2d2.components.ComponentAssets;
@@ -161,7 +161,7 @@ public class DialogWindow extends Container {
     }
 
     public static void main(String[] args) {
-        Stage stage = D2D2.directInit(new LwjglBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.directInit(new LwjglEngine(800, 600, "(floating)"));
         ComponentAssets.init();
         stage.setBackgroundColor(Color.GRAY);
 
