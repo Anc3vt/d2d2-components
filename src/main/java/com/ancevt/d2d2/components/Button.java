@@ -18,22 +18,21 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
+import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import com.ancevt.d2d2.debug.DebugPanel;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.SpriteFactory;
 import com.ancevt.d2d2.display.Stage;
+import com.ancevt.d2d2.display.interactive.InteractiveManager;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.Mouse;
-import com.ancevt.d2d2.interactive.InteractiveManager;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
-import static com.ancevt.commons.unix.UnixDisplay.debug;
 import static com.ancevt.d2d2.components.ComponentAssets.BUTTON_LEFT_PART;
 import static com.ancevt.d2d2.components.ComponentAssets.BUTTON_MIDDLE_PART;
 import static com.ancevt.d2d2.components.ComponentAssets.BUTTON_RIGHT_PART;
@@ -165,7 +164,7 @@ public class Button extends Component {
     }
 
     public static void main(String[] args) {
-        Stage stage = D2D2.directInit(new LwjglBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.directInit(new LwjglEngine(800, 600, "(floating)"));
         ComponentAssets.init();
         InteractiveManager.getInstance().setTabbingEnabled(true);
         DebugPanel.setEnabled(true);
@@ -180,7 +179,6 @@ public class Button extends Component {
                     debugPanel.setY(button.getY());
                     debugPanel.addButton("enable", () -> button.setEnabled(true));
                     debugPanel.addButton("disable", () -> {
-                        debug("Button:175: <a><G>test");
                         button.setEnabled(false);
                     });
                 });

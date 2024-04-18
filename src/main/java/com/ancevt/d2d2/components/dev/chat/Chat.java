@@ -17,11 +17,9 @@
  */
 package com.ancevt.d2d2.components.dev.chat;
 
-import com.ancevt.commons.Holder;
-import com.ancevt.commons.concurrent.Async;
 import com.ancevt.commons.fs.IsolatedDirectory;
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
+import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import com.ancevt.d2d2.components.ComponentAssets;
 import com.ancevt.d2d2.components.ComponentFont;
 import com.ancevt.d2d2.components.TextInput;
@@ -33,6 +31,7 @@ import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.input.KeyCode;
+import com.ancevt.d2d2.time.Timer;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,7 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 public class Chat extends Container {
@@ -169,8 +168,6 @@ public class Chat extends Container {
     }
 
     private void redraw() {
-        // TODO: implement scroll
-
         input.setXY(0, height - input.getHeight());
 
         input.setMaxSize(D2D2.stage().getWidth(), 16);
@@ -184,7 +181,7 @@ public class Chat extends Container {
             displayedMessages.add(chatMessage);
 
             add(chatMessage, 0, y);
-            y += chatMessage.getHeight();
+            y += (int) chatMessage.getHeight();
         }
     }
 
@@ -296,7 +293,7 @@ public class Chat extends Container {
     }
 
     public void openInput() {
-        Async.runLater(100, TimeUnit.MILLISECONDS, () -> {
+        Timer.setTimeout(t -> {
             setAlpha(1.0f);
             alphaTime = ALPHA_TIME;
             add(input);
@@ -304,7 +301,7 @@ public class Chat extends Container {
             dispatchEvent(ChatEvent.builder()
                 .type(ChatEvent.CHAT_INPUT_OPEN)
                 .build());
-        });
+        }, 100);
     }
 
     public void closeInput() {
@@ -426,27 +423,27 @@ public class Chat extends Container {
     }
 
     public static void main(String[] args) {
-        Stage stage = D2D2.directInit(new LwjglBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.directInit(new LwjglEngine(800, 600, "(floating)"));
         ComponentAssets.init();
 
         stage.setBackgroundColor(Color.of(0x223344));
 
-        Holder<Integer> idCounter = new Holder<>(1);
+        AtomicInteger idCounter = new AtomicInteger(1);
 
         Chat chat = new Chat(".d2d2-just-a-chat");
         chat.addEventListener(ChatEvent.CHAT_TEXT_ENTER, event -> {
             if (event instanceof ChatEvent chatEvent) {
                 String text = chatEvent.getText();
-                idCounter.setValue(idCounter.getValue() + 1);
-                chat.addPlayerMessage(idCounter.getValue(), 1, "Ancevt", Color.YELLOW, text, Color.WHITE);
+                idCounter.set(idCounter.get() + 1);
+                chat.addPlayerMessage(idCounter.get(), 1, "Ancevt", Color.YELLOW, text, Color.WHITE);
             }
         });
 
         stage.add(chat, 10, 10);
 
         for (int i = 0; i < 10; i++) {
-            idCounter.setValue(idCounter.getValue() + 1);
-            chat.addPlayerMessage(idCounter.getValue(), 1, "Ancevt", Color.YELLOW, "Hello, i'm Ancevt" + i, Color.WHITE);
+            idCounter.set(idCounter.get() + 1);
+            chat.addPlayerMessage(idCounter.get(), 1, "Ancevt", Color.YELLOW, "Hello, i'm Ancevt" + i, Color.WHITE);
         }
 
         stage.addEventListener(InputEvent.KEY_DOWN, event -> {

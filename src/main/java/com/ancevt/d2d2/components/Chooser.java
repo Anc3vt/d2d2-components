@@ -17,9 +17,8 @@
  */
 package com.ancevt.d2d2.components;
 
-import com.ancevt.commons.Pair;
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
+import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.Stage;
@@ -27,6 +26,8 @@ import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
@@ -224,8 +225,15 @@ public class Chooser<T> extends Container {
         public static final String CHOOSER_SWITCH = "chooserSwitch";
     }
 
+    @RequiredArgsConstructor(staticName = "of")
+    @Getter
+    private static class Pair<T1, T2> {
+        public final T1 first;
+        public final T2 second;
+    }
+
     public static void main(String[] args) {
-        Stage stage = D2D2.directInit(new LwjglBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.directInit(new LwjglEngine(800, 600, "(floating)"));
         ComponentAssets.init();
 
         Chooser<String> chooser = new Chooser<>();

@@ -17,20 +17,19 @@
  */
 package com.ancevt.d2d2.components;
 
-import com.ancevt.commons.Holder;
 import com.ancevt.d2d2.common.BorderedRect;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.IContainer;
 import com.ancevt.d2d2.display.IDisplayObject;
+import com.ancevt.d2d2.display.interactive.InteractiveContainer;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.Mouse;
-import com.ancevt.d2d2.interactive.InteractiveContainer;
+import com.ancevt.d2d2.time.Timer;
 import lombok.Getter;
 
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.ancevt.commons.concurrent.Async.runLater;
 import static com.ancevt.d2d2.D2D2.stage;
 
 abstract public class Component extends InteractiveContainer {
@@ -108,17 +107,17 @@ abstract public class Component extends InteractiveContainer {
         if (tooltip != null) {
             addEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.HOVER, event -> {
 
-                Holder<Boolean> tooltipCancelHover = new Holder<>(false);
+                AtomicBoolean tooltipCancelHover = new AtomicBoolean(false);
 
                 removeEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.DOWN);
                 addEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.DOWN, event1 -> {
-                    tooltipCancelHover.setValue(true);
+                    tooltipCancelHover.set(true);
                     removeEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.DOWN);
                     tooltip.removeFromParent();
                 });
 
-                runLater(1000, TimeUnit.MILLISECONDS, () -> {
-                    if (!tooltipCancelHover.getValue() && isHovering()) {
+                Timer.setTimeout(t -> {
+                    if (!tooltipCancelHover.get() && isHovering()) {
                         stage().add(tooltip, Mouse.getX(), Mouse.getY());
                         if (tooltip.getX() + tooltip.getWidth() > stage().getWidth()) {
                             tooltip.setX(stage().getWidth() - tooltip.getWidth());
@@ -133,16 +132,16 @@ abstract public class Component extends InteractiveContainer {
                             tooltip.removeFromParent();
                         });
                     }
-                });
+                }, 1000);
             });
 
             addEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.OUT, event -> {
-                runLater(1000, TimeUnit.MILLISECONDS, () -> {
+                Timer.setTimeout(t -> {
                     if (!isHovering() && !tooltip.isHovering()) {
                         tooltip.removeEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.OUT);
                         tooltip.removeFromParent();
                     }
-                });
+                }, 1000);
             });
         }
     }
@@ -252,7 +251,7 @@ abstract public class Component extends InteractiveContainer {
     public void dispose() {
         super.dispose();
 
-        for (int i = 0; i < getNumberOfChildren(); i++) {
+        for (int i = 0; i < getNumChildren(); i++) {
             IDisplayObject child = getChild(i);
             if (child instanceof Component component) {
                 component.dispose();
