@@ -6,7 +6,7 @@
 
     <groupId>com.ancevt.d2d2</groupId>
     <artifactId>d2d2-components</artifactId>
-    <version>0.0.4-SNAPSHOT</version>
+    <version>0.0.4</version>
 
     <name>D2D2 Components</name>
     <url>https://githib.com/Anc3vt/d2d2-components</url>
@@ -44,7 +44,6 @@
             <id>ancevt</id>
             <url>https://packages.ancevt.com/releases</url>
             <snapshots>
-                <enabled>false</enabled>
                 <updatePolicy>always</updatePolicy>
             </snapshots>
         </repository>
@@ -52,7 +51,6 @@
             <id>ancevt-snapshot</id>
             <url>https://packages.ancevt.com/snapshots</url>
             <snapshots>
-                <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
             </snapshots>
         </repository>
@@ -63,8 +61,8 @@
         <java.version>17</java.version>
         <lombok.version>1.18.24</lombok.version>
 
-        <ancevt-commons.version>1.0.1-SNAPSHOT</ancevt-commons.version>
-        <d2d2-core.version>0.1.6.1-SNAPSHOT</d2d2-core.version>
+        <ancevt-commons.version>1.0.1</ancevt-commons.version>
+        <d2d2-core.version>0.1.6.1-beta</d2d2-core.version>
 
         <junit-jupiter-api.version>5.8.2</junit-jupiter-api.version>
         <hamcrest-junit.version>2.0.0.0</hamcrest-junit.version>
@@ -87,22 +85,6 @@
             <groupId>com.ancevt.commons</groupId>
             <artifactId>ancevt-commons</artifactId>
             <version>${ancevt-commons.version}</version>
-        </dependency>
-
-        <!-- Testing -->
-
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit-jupiter-api.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 

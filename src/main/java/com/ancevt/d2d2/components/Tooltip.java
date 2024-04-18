@@ -18,7 +18,7 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
+import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.debug.StarletSpace;
 import com.ancevt.d2d2.display.Color;
@@ -30,8 +30,8 @@ import com.ancevt.d2d2.display.texture.Texture;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.input.KeyCode;
-import com.ancevt.d2d2.interactive.Combined9Sprites;
-import com.ancevt.d2d2.interactive.DragUtil;
+import com.ancevt.d2d2.display.interactive.Combined9Sprites;
+import com.ancevt.d2d2.display.interactive.DragUtil;
 
 import java.util.Arrays;
 
@@ -202,7 +202,7 @@ public class Tooltip extends Component {
     }
 
     public static void main(String[] args) {
-        Stage stage = D2D2.directInit(new LwjglBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.directInit(new LwjglEngine(800, 600, "(floating)"));
         StarletSpace.haveFun();
         ComponentAssets.init();
 
@@ -234,13 +234,11 @@ public class Tooltip extends Component {
         buttonEx.setTooltip(tooltip);
         buttonEx.setPushEventsUp(false);
 
-
         Arrays.stream(args).distinct();
 
         DragUtil.enableDrag(buttonEx);
 
         stage.add(buttonEx, 100, 250);
-
 
         ButtonEx b2 = new ButtonEx();
         b2.setSize(60, 60);

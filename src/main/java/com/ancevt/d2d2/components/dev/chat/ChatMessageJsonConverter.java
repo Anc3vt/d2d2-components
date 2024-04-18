@@ -17,9 +17,9 @@
  */
 package com.ancevt.d2d2.components.dev.chat;
 
-import com.ancevt.commons.json.JsonEngine;
 import com.ancevt.d2d2.display.Color;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import lombok.AccessLevel;
@@ -33,12 +33,12 @@ public class ChatMessageJsonConverter {
     public static ChatMessage jsonToChatMessage(String json) {
         JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
 
-        int id                = jsonObject.get("id").getAsInt();
-        int playerId          = jsonObject.get("playerId").getAsInt();
-        String playerName     = getStringOrNull(jsonObject            , "playerName");
-        String playerColorHex = getStringOrNull(jsonObject            , "playerColorHex");
-        String text           = getStringOrNull(jsonObject            , "text");
-        String textColorHex   = getStringOrNull(jsonObject            , "textColorHex");
+        int id = jsonObject.get("id").getAsInt();
+        int playerId = jsonObject.get("playerId").getAsInt();
+        String playerName = getStringOrNull(jsonObject, "playerName");
+        String playerColorHex = getStringOrNull(jsonObject, "playerColorHex");
+        String text = getStringOrNull(jsonObject, "text");
+        String textColorHex = getStringOrNull(jsonObject, "textColorHex");
 
         Color playerColor = (playerColorHex != null) ? Color.of(playerColorHex) : Color.WHITE;
         Color textColor = (textColorHex != null) ? Color.of(textColorHex) : Color.WHITE;
@@ -70,5 +70,17 @@ public class ChatMessageJsonConverter {
     private static String getStringOrNull(JsonObject jsonObject, String key) {
         JsonElement element = jsonObject.get(key);
         return (element != null && !element.isJsonNull()) ? element.getAsString() : null;
+    }
+
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    private static class JsonEngine {
+        private static Gson gson;
+
+        private static Gson gson() {
+            if (gson == null) {
+                gson = new GsonBuilder().setPrettyPrinting().create();
+            }
+            return gson;
+        }
     }
 }

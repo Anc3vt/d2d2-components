@@ -19,11 +19,10 @@ package com.ancevt.d2d2.components.dev.chat;
 
 
 import com.ancevt.commons.exception.StackTraceUtil;
-import com.ancevt.commons.json.JsonEngine;
 import com.ancevt.commons.string.ConvertableString;
 import com.ancevt.commons.util.ApplicationMainClassNameExtractor;
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
+import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import com.ancevt.d2d2.components.ComponentAssets;
 import com.ancevt.d2d2.debug.FpsMeter;
 import com.ancevt.d2d2.debug.StarletSpace;
@@ -33,8 +32,12 @@ import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.LifecycleEvent;
 import com.ancevt.util.args.Args;
 import com.ancevt.util.texttable.TextTable;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -50,7 +53,7 @@ import java.util.regex.Pattern;
 
 @Getter
 @Slf4j
-public class ConsoleChat extends Chat {
+public class Console extends Chat {
 
     private static final float PADDING = 20;
 
@@ -58,10 +61,14 @@ public class ConsoleChat extends Chat {
     @Getter
     private final Map<String, String> context = new TreeMap<>();
 
+    @Getter
+    private final String consoleName;
+
     private boolean maximized;
 
-    public ConsoleChat(String dirInUserHome) {
-        super(dirInUserHome);
+    public Console(String consoleName) {
+        super(consoleName);
+        this.consoleName = consoleName;
         setInputEnabled(true);
         addEventListener(ChatEvent.CHAT_TEXT_ENTER, this::this_chatTextEnter);
         addEventListener(ChatEvent.CHAT_INPUT_CLOSE, this::this_chatInputClose);
@@ -76,7 +83,7 @@ public class ConsoleChat extends Chat {
         commands.add(new Command("/delete", "/d", "Delete variable", this::removeVar, true));
     }
 
-    public ConsoleChat() throws ApplicationMainClassNameExtractor.MainClassNameExtractorException {
+    public Console() throws ApplicationMainClassNameExtractor.MainClassNameExtractorException {
         this(".d2d2/console-chat/" + ApplicationMainClassNameExtractor.getMainClassName());
     }
 
@@ -84,7 +91,7 @@ public class ConsoleChat extends Chat {
         return ConvertableString.convert(context.get(varName));
     }
 
-    public ConsoleChat setVar(String variable, String value) {
+    public Console setVar(String variable, String value) {
         context.put(variable, value);
         dispatchEvent(ConsoleChatEvent.builder()
             .type(ConsoleChatEvent.VAR_VALUE_CHANGE)
@@ -164,24 +171,24 @@ public class ConsoleChat extends Chat {
         print(textTable.render());
     }
 
-    public ConsoleChat addCommand(String command, String alias, String description, Consumer<Args> func) {
+    public Console addCommand(String command, String alias, String description, Consumer<Args> func) {
         if (alias == null) alias = "";
         if (description == null) description = "";
         commands.add(new Command(command, alias, description, func, false));
         return this;
     }
 
-    public ConsoleChat addCommand(String command, String alias, Consumer<Args> func) {
+    public Console addCommand(String command, String alias, Consumer<Args> func) {
         addCommand(command, alias, null, func);
         return this;
     }
 
-    public ConsoleChat addCommand(String command, Consumer<Args> func) {
+    public Console addCommand(String command, Consumer<Args> func) {
         addCommand(command, null, null, func);
         return this;
     }
 
-    public ConsoleChat removeCommand(String commandOrAlias) {
+    public Console removeCommand(String commandOrAlias) {
         Command commandToRemove = null;
         for (Command c : commands) {
             if (Objects.equals(c.command, commandOrAlias) ||
@@ -330,17 +337,29 @@ public class ConsoleChat extends Chat {
     }
 
     public static void main(String[] args) {
-        Stage stage = D2D2.directInit(new LwjglBackend(1000, 800, "D2D2 Application"));
+        Stage stage = D2D2.directInit(new LwjglEngine(1000, 800, "D2D2 Application"));
         StarletSpace.haveFun(false);
 
         ComponentAssets.init();
 
-        ConsoleChat consoleChat = new ConsoleChat(".d2d2-console-chat");
-        consoleChat.setMaximized(true);
+        Console console = new Console(".d2d2-console-chat");
+        console.setMaximized(true);
 
 
-        stage.add(consoleChat);
+        stage.add(console);
         stage.add(new FpsMeter());
         D2D2.loop();
+    }
+
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    private static class JsonEngine {
+        private static Gson gson;
+
+        private static Gson gson() {
+            if (gson == null) {
+                gson = new GsonBuilder().setPrettyPrinting().create();
+            }
+            return gson;
+        }
     }
 }

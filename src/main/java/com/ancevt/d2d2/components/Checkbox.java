@@ -18,7 +18,7 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.backend.lwjgl.LwjglBackend;
+import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.SpriteFactory;
@@ -26,7 +26,7 @@ import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
-import com.ancevt.d2d2.interactive.InteractiveManager;
+import com.ancevt.d2d2.display.interactive.InteractiveManager;
 
 import static com.ancevt.d2d2.components.ComponentAssets.CHECKBOX_CHECKED;
 import static com.ancevt.d2d2.components.ComponentAssets.CHECKBOX_UNCHECKED;
@@ -140,7 +140,7 @@ public class Checkbox extends Component {
     }
 
     public static void main(String[] args) {
-        Stage stage = D2D2.directInit(new LwjglBackend(800, 600, "(floating)"));
+        Stage stage = D2D2.directInit(new LwjglEngine(800, 600, "(floating)"));
         stage.setBackgroundColor(Color.of(0x112233));
         InteractiveManager.getInstance().setTabbingEnabled(true);
         ComponentAssets.init();
