@@ -17,19 +17,15 @@
  */
 package com.ancevt.d2d2.components;
 
-import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.Stage;
+import com.ancevt.d2d2.display.interactive.Combined9Sprites;
 import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.Clipboard;
 import com.ancevt.d2d2.input.KeyCode;
-import com.ancevt.d2d2.display.interactive.Combined9Sprites;
-import com.ancevt.d2d2.display.interactive.InteractiveManager;
 
 public class TextInput extends Component {
 
@@ -59,6 +55,7 @@ public class TextInput extends Component {
         bg = new PlainRect(DEFAULT_WIDTH, DEFAULT_HEIGHT, colorBackground);
         selection = new PlainRect(0, DEFAULT_HEIGHT - 8, colorSelection);
         bitmapText = new BitmapText();
+        bitmapText.setAutosize(true);
         bitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddle());
 
         bg.setAlpha(backgroundAlpha);
@@ -71,15 +68,15 @@ public class TextInput extends Component {
         caret.setXY(bitmapText.getX(), 4);
 
         focusRect = new Combined9Sprites(new String[]{
-                ComponentAssets.RECT_BORDER_9_SIDE_TOP_LEFT,
-                ComponentAssets.RECT_BORDER_9_SIDE_TOP,
-                ComponentAssets.RECT_BORDER_9_SIDE_TOP_RIGHT,
-                ComponentAssets.RECT_BORDER_9_SIDE_LEFT,
-                ComponentAssets.RECT_BORDER_9_SIDE_CENTER,
-                ComponentAssets.RECT_BORDER_9_SIDE_RIGHT,
-                ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_LEFT,
-                ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM,
-                ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_RIGHT
+            ComponentAssets.RECT_BORDER_9_SIDE_TOP_LEFT,
+            ComponentAssets.RECT_BORDER_9_SIDE_TOP,
+            ComponentAssets.RECT_BORDER_9_SIDE_TOP_RIGHT,
+            ComponentAssets.RECT_BORDER_9_SIDE_LEFT,
+            ComponentAssets.RECT_BORDER_9_SIDE_CENTER,
+            ComponentAssets.RECT_BORDER_9_SIDE_RIGHT,
+            ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_LEFT,
+            ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM,
+            ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_RIGHT
         });
         focusRect.setColor(colorFocusRect);
         focusRect.setVisible(false);
@@ -118,13 +115,13 @@ public class TextInput extends Component {
     }
 
     @Override
-    public void setPadding( Padding padding) {
+    public void setPadding(Padding padding) {
         this.padding = padding;
         this_resize(null);
     }
 
     @Override
-    public  Padding getPadding() {
+    public Padding getPadding() {
         return padding;
     }
 
@@ -179,8 +176,12 @@ public class TextInput extends Component {
     private void this_keyType(Event event) {
         var e = (InteractiveEvent) event;
         String keyType = e.getKeyType();
+        System.out.println("com.ancevt.d2d2.components.TextInput " + keyType);
         if (!bitmapText.getBitmapFont().isCharSupported(keyType.charAt(0))) return;
-        if (text.length() * bitmapText.getCharWidth() < getWidth() - 10) insertText(keyType);
+
+        if (text.length() * bitmapText.getCharWidth() < getWidth() - 10) {
+            insertText(keyType);
+        }
     }
 
     private void this_keyUp(Event event) {
@@ -189,7 +190,7 @@ public class TextInput extends Component {
 
     private void this_keyDown(Event event) {
         var e = (InteractiveEvent) event;
-        switch (e.getCode()) {
+        switch (e.getKeyCode()) {
 
             case KeyCode.RIGHT -> {
                 setCaretPosition(getCaretPosition() + 1);
@@ -227,12 +228,13 @@ public class TextInput extends Component {
 
             case KeyCode.END -> setCaretPosition(text.length());
 
-            case KeyCode.ENTER -> {
+            case KeyCode.ENTER,
+                KeyCode.RIGHT_ENTER -> {
                 dispatchEvent(TextInputEvent.builder()
-                        .type(TextInputEvent.ENTER)
-                        .text(getText())
-                        .keyCode(e.getCode())
-                        .build());
+                    .type(TextInputEvent.ENTER)
+                    .text(getText())
+                    .keyCode(e.getKeyCode())
+                    .build());
 
                 setCaretPosition(Integer.MAX_VALUE);
             }
@@ -259,10 +261,10 @@ public class TextInput extends Component {
         }
 
         dispatchEvent(TextInputEvent.builder()
-                .type(TextInputEvent.KEY_DOWN)
-                .text(getText())
-                .keyCode(e.getCode())
-                .build());
+            .type(TextInputEvent.KEY_DOWN)
+            .text(getText())
+            .keyCode(e.getKeyCode())
+            .build());
 
     }
 
@@ -336,7 +338,7 @@ public class TextInput extends Component {
         selection.setWidth((selectionToIndex - selectionFromIndex) * bitmapText.getCharWidth());
     }
 
-    public void setText( String text) {
+    public void setText(String text) {
         this.text = text;
         this.bitmapText.setText(text);
         if (getCaretPosition() > text.length()) {
@@ -344,9 +346,9 @@ public class TextInput extends Component {
         }
 
         dispatchEvent(TextInputEvent.builder()
-                .type(TextInputEvent.TEXT_CHANGE)
-                .text(getText())
-                .build());
+            .type(TextInputEvent.TEXT_CHANGE)
+            .text(getText())
+            .build());
     }
 
     public String getText() {
@@ -425,7 +427,7 @@ public class TextInput extends Component {
     }
 
     private void insertText(String textToInsert) {
-        if (textToInsert.length() == 0) {
+        if (textToInsert.isEmpty()) {
             setText(textToInsert);
         }
         int index = getCaretPosition();
@@ -497,34 +499,5 @@ public class TextInput extends Component {
             }
         }
     }
-
-
-    public static void main(String[] args) {
-        Stage stage = D2D2.directInit(new LwjglEngine(800, 800, "(floating)"));
-        ComponentAssets.init();
-        InteractiveManager.getInstance().setTabbingEnabled(true);
-
-        stage.setBackgroundColor(Color.of(0x112233));
-
-        for (int i = 0; i < 20; i++) {
-            TextInput textInput = new TextInput();
-            textInput.setText((15 + i) + " " + Math.random());
-            textInput.setHeight(15 + i);
-
-            if (i == 5) {
-                textInput.setEnabled(false);
-            }
-
-            //textInput.setBitmapFont(D2D2.getBitmapFontManager().loadBitmapFont(StandardBitmapFonts.TERMINUS_16));
-
-            stage.add(textInput, 50, 10 + i * 35);
-        }
-
-        BitmapText bitmapText = new BitmapText("Hello world");
-        bitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddle());
-        stage.add(bitmapText, 400, 100);
-        D2D2.loop();
-    }
-
 
 }

@@ -22,14 +22,14 @@ import com.ancevt.commons.exception.StackTraceUtil;
 import com.ancevt.commons.string.ConvertableString;
 import com.ancevt.commons.util.ApplicationMainClassNameExtractor;
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
-import com.ancevt.d2d2.components.ComponentAssets;
-import com.ancevt.d2d2.debug.FpsMeter;
-import com.ancevt.d2d2.debug.StarletSpace;
+import com.ancevt.d2d2.common.IDisposable;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
+import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.LifecycleEvent;
+import com.ancevt.d2d2.input.KeyCode;
+import com.ancevt.d2d2.time.Timer;
 import com.ancevt.util.args.Args;
 import com.ancevt.util.texttable.TextTable;
 import com.google.gson.Gson;
@@ -53,7 +53,7 @@ import java.util.regex.Pattern;
 
 @Getter
 @Slf4j
-public class Console extends Chat {
+public class Console extends Chat implements IDisposable {
 
     private static final float PADDING = 20;
 
@@ -66,8 +66,13 @@ public class Console extends Chat {
 
     private boolean maximized;
 
+    private boolean disposed;
+
+    private boolean hidedByTilda;
+
     public Console(String consoleName) {
         super(consoleName);
+
         this.consoleName = consoleName;
         setInputEnabled(true);
         addEventListener(ChatEvent.CHAT_TEXT_ENTER, this::this_chatTextEnter);
@@ -264,7 +269,7 @@ public class Console extends Chat {
     }
 
     public static boolean checkSetVariablePattern(String input) {
-        return Pattern.matches("[a-zA-Z_$][a-zA-Z\\d_$]*=.*", input);
+        return Pattern.matches("[a-zA-Z_$][a-zA-Z\\d_$\\.]*=.*", input);
     }
 
     private void loadContent() {
@@ -327,6 +332,36 @@ public class Console extends Chat {
         getGetIsolatedDirectory().writeString(contextData, "context");
     }
 
+    public void setTildaEnable() {
+        D2D2.stage().addEventListener(this, InputEvent.KEY_DOWN, event -> {
+            InputEvent e = event.casted();
+            if (e.getKeyCode() == KeyCode.TILDA && e.isShift()) {
+                setVisible(!isVisible());
+                Timer.setTimeout(t -> {
+                    String text = textInput.getText();
+                    if (text.endsWith("`") ||
+                        text.endsWith("ё") ||
+                        text.endsWith("Ё") ||
+                        text.endsWith("~")) {
+                        text = text.substring(0, text.length() - 1);
+                        textInput.setText(text);
+                    }
+                }, 10);
+            }
+        });
+    }
+
+    @Override
+    public void dispose() {
+        D2D2.stage().removeEventListener(this, InputEvent.KEY_DOWN);
+        disposed = true;
+    }
+
+    @Override
+    public boolean isDisposed() {
+        return disposed;
+    }
+
     @RequiredArgsConstructor
     private static class Command {
         private final String command;
@@ -334,21 +369,6 @@ public class Console extends Chat {
         private final String description;
         private final Consumer<Args> func;
         private final boolean builtIn;
-    }
-
-    public static void main(String[] args) {
-        Stage stage = D2D2.directInit(new LwjglEngine(1000, 800, "D2D2 Application"));
-        StarletSpace.haveFun(false);
-
-        ComponentAssets.init();
-
-        Console console = new Console(".d2d2-console-chat");
-        console.setMaximized(true);
-
-
-        stage.add(console);
-        stage.add(new FpsMeter());
-        D2D2.loop();
     }
 
     @NoArgsConstructor(access = AccessLevel.PRIVATE)
