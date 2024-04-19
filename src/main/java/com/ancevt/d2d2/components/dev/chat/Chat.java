@@ -49,7 +49,9 @@ public class Chat extends Container {
     private static final int INPUT_MAX_LENGTH = 100;
     private static final int ALPHA_TIME = 500;
     private int alphaTime = ALPHA_TIME;
-    private final TextInput input;
+
+    @Getter
+    protected final TextInput textInput;
     private final List<ChatMessage> messages;
     private final List<ChatMessage> displayedMessages;
     private final List<String> history;
@@ -75,7 +77,7 @@ public class Chat extends Container {
     public Chat(String dirInUserHome) {
         getIsolatedDirectory = new IsolatedDirectory(Path.of(System.getProperty("user.home")).resolve(dirInUserHome));
 
-        input = new TextInput();
+        textInput = new TextInput();
         messages = new CopyOnWriteArrayList<>();
         displayedMessages = new CopyOnWriteArrayList<>();
         history = new ArrayList<>();
@@ -83,12 +85,12 @@ public class Chat extends Container {
         width = D2D2.stage().getWidth() / 2.0f;
         height = D2D2.stage().getHeight() / 3.0f;
 
-        input.setWidth(20);
-        input.addEventListener(TextInputEvent.ENTER, this::textInputEvent);
-        input.addEventListener(TextInputEvent.TEXT_CHANGE, this::textInputEvent);
-        input.addEventListener(TextInputEvent.KEY_DOWN, this::textInputEvent);
-        input.setComponentFocusRectVisibleEnabled(false);
-        input.setFocusRectVisibleEnabled(false);
+        textInput.setWidth(20);
+        textInput.addEventListener(TextInputEvent.ENTER, this::textInputEvent);
+        textInput.addEventListener(TextInputEvent.TEXT_CHANGE, this::textInputEvent);
+        textInput.addEventListener(TextInputEvent.KEY_DOWN, this::textInputEvent);
+        textInput.setComponentFocusRectVisibleEnabled(false);
+        textInput.setFocusRectVisibleEnabled(false);
 
         loadHistory();
 
@@ -168,9 +170,9 @@ public class Chat extends Container {
     }
 
     private void redraw() {
-        input.setXY(0, height - input.getHeight());
+        textInput.setXY(0, height - textInput.getHeight());
 
-        input.setMaxSize(D2D2.stage().getWidth(), 16);
+        textInput.setMaxSize(D2D2.stage().getWidth(), 16);
 
         displayedMessages.forEach(DisplayObject::removeFromParent);
 
@@ -186,7 +188,7 @@ public class Chat extends Container {
     }
 
     private int getMessageCountOnDisplay() {
-        return (int) ((getHeight() - input.getHeight()) / ChatMessage.DEFAULT_HEIGHT) - 1;
+        return (int) ((getHeight() - textInput.getHeight()) / ChatMessage.DEFAULT_HEIGHT) - 1;
     }
 
     public void setScroll(int scroll) {
@@ -296,8 +298,8 @@ public class Chat extends Container {
         Timer.setTimeout(t -> {
             setAlpha(1.0f);
             alphaTime = ALPHA_TIME;
-            add(input);
-            input.focus();
+            add(textInput);
+            textInput.focus();
             dispatchEvent(ChatEvent.builder()
                 .type(ChatEvent.CHAT_INPUT_OPEN)
                 .build());
@@ -305,7 +307,7 @@ public class Chat extends Container {
     }
 
     public void closeInput() {
-        remove(input);
+        remove(textInput);
 
         dispatchEvent(ChatEvent.builder()
             .type(ChatEvent.CHAT_INPUT_CLOSE)
@@ -313,7 +315,7 @@ public class Chat extends Container {
     }
 
     public boolean isInputOpened() {
-        return input.hasParent();
+        return textInput.hasParent();
     }
 
     public void clear() {
@@ -331,11 +333,11 @@ public class Chat extends Container {
                     String text = uiTextInputEvent.getText();
                     int length = text.length();
                     if (length > INPUT_MAX_LENGTH) {
-                        input.setText(text.substring(0, INPUT_MAX_LENGTH));
+                        textInput.setText(text.substring(0, INPUT_MAX_LENGTH));
                         return;
                     }
                     int w = text.length() * ComponentFont.getBitmapFontMiddle().getCharInfo('0').width();
-                    input.setWidth(w + 20);
+                    textInput.setWidth(w + 20);
                 }
 
                 case TextInputEvent.ENTER -> {
@@ -351,7 +353,8 @@ public class Chat extends Container {
                             historyIndex = history.size();
                         }
                     }
-                    input.clear();
+
+                    textInput.clear();
                     closeInput();
                 }
 
@@ -379,7 +382,7 @@ public class Chat extends Container {
 
     private void restoreHistory() {
         if (historyIndex > history.size() - 1) {
-            input.moveCaretToEnd();
+            textInput.moveCaretToEnd();
             historyIndex = history.size() - 1;
         }
 
@@ -388,8 +391,8 @@ public class Chat extends Container {
             return;
         }
 
-        input.setText(history.get(historyIndex));
-        input.moveCaretToEnd();
+        textInput.setText(history.get(historyIndex));
+        textInput.moveCaretToEnd();
     }
 
     public void saveHistory() {

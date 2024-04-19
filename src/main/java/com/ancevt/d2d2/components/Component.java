@@ -67,7 +67,11 @@ abstract public class Component extends InteractiveContainer {
     private float maxWidth;
     private float maxHeight;
 
-    public Component() {
+    protected Component() {
+        if (!ComponentAssets.isInitialized()) {
+            ComponentAssets.init();
+        }
+
         super.setEnabled(true);
 
         componentFocusRectEnabled = false;

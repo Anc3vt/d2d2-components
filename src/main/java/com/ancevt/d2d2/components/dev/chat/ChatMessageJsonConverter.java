@@ -78,7 +78,7 @@ public class ChatMessageJsonConverter {
 
         private static Gson gson() {
             if (gson == null) {
-                gson = new GsonBuilder().setPrettyPrinting().create();
+                gson = new GsonBuilder().create();
             }
             return gson;
         }
