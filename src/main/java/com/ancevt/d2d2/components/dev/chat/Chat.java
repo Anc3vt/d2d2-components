@@ -74,6 +74,9 @@ public class Chat extends Container {
     @Getter
     private boolean autoHide;
 
+    @Getter
+    private boolean multicolorEnabled;
+
     public Chat(String dirInUserHome) {
         getIsolatedDirectory = new IsolatedDirectory(Path.of(System.getProperty("user.home")).resolve(dirInUserHome));
 
@@ -94,6 +97,11 @@ public class Chat extends Container {
 
         loadHistory();
 
+        redraw();
+    }
+
+    public void setMulticolorEnabled(boolean multicolorEnabled) {
+        this.multicolorEnabled = multicolorEnabled;
         redraw();
     }
 
@@ -180,6 +188,7 @@ public class Chat extends Container {
 
         for (int i = scroll; i < messages.size() && i - scroll < getMessageCountOnDisplay(); i++) {
             ChatMessage chatMessage = messages.get(i);
+            chatMessage.setMulticolorEnabled(multicolorEnabled);
             displayedMessages.add(chatMessage);
 
             add(chatMessage, 0, y);

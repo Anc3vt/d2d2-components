@@ -223,8 +223,8 @@ public class Tooltip extends Component {
             var e = (InputEvent) event;
 
             if (e.getKeyCode() == KeyCode.SPACE) {
-                D2D2.backend().setSmoothMode(!D2D2.backend().isSmoothMode());
-                System.out.println(D2D2.backend().isSmoothMode());
+                D2D2.engine().setSmoothMode(!D2D2.engine().isSmoothMode());
+                System.out.println(D2D2.engine().isSmoothMode());
             }
         });
 
