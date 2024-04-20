@@ -46,6 +46,9 @@ public class ChatMessage extends Container {
     private final BitmapText nameBitmapText;
     private final BitmapText bitmapText;
 
+    @Getter
+    private boolean multicolorEnabled;
+
     public ChatMessage(int id, int playerId, String playerName, Color playerColor, String messageText, Color textColor) {
         this.id = id;
         this.playerId = playerId;
@@ -89,36 +92,24 @@ public class ChatMessage extends Container {
         this.textColor = textColor;
         nameBitmapText = null;
         bitmapText = new BitmapText();
+        bitmapText.setText(messageText);
         bitmapText.setBitmapFont(getBitmapFont());
         bitmapText.setSpacing(-0.5f);
         bitmapText.setWidth(DEFAULT_WIDTH);
         bitmapText.setHeight(DEFAULT_HEIGHT);
         bitmapText.setColor(textColor);
-        bitmapText.setText(messageText);
-
         bitmapText.setVertexBleedingFix(0);
 
-        //add(new Glow8Shadows(bitmapText, Color.BLACK, 1.5f, 1f, 0f, 0f));
         add(bitmapText);
     }
 
-    private static BitmapFont bitmapFont;
+    public void setMulticolorEnabled(boolean multicolorEnabled) {
+        bitmapText.setMulticolorEnabled(multicolorEnabled);
+        this.multicolorEnabled = multicolorEnabled;
+    }
 
     public BitmapFont getBitmapFont() {
         return ComponentFont.getBitmapFontMiddleGlow();
-
-//        if (bitmapFont == null) {
-//            String fontPath = "d2d2ttf/terminus/TerminusTTF-Bold-4.49.3.ttf";
-//            bitmapFont = new TtfBitmapFontBuilder()
-//                .ttfAssetPath(fontPath)
-//                .fontSize(24)
-//                .spacingY(10)
-//                .textAntialias(false)
-//                .fractionalMetrics(FractionalMetrics.OFF)
-//                .offsetY(5)
-//                .build();
-//        }
-//        return bitmapFont;
     }
 
     public boolean isFromPlayer() {

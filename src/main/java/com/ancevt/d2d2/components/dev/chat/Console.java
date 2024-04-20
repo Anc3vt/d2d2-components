@@ -39,6 +39,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -49,6 +50,7 @@ import java.util.Objects;
 import java.util.TreeMap;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
 @Getter
@@ -69,6 +71,10 @@ public class Console extends Chat implements IDisposable {
     private boolean disposed;
 
     private boolean hidedByTilda;
+
+    @Getter
+    @Setter
+    private Supplier<String> prompt = () -> "$ ";
 
     public Console(String consoleName) {
         super(consoleName);
@@ -108,7 +114,7 @@ public class Console extends Chat implements IDisposable {
         return this;
     }
 
-    public void addVariableListener(String variable, BiConsumer<String, ConvertableString> func) {
+    public Console addVariableListener(String variable, BiConsumer<String, ConvertableString> func) {
         addEventListener("console-chat." + variable, ConsoleChatEvent.VAR_VALUE_CHANGE, event -> {
             ConsoleChatEvent e = event.casted();
             if (Objects.equals(e.getVarName(), variable)) {
@@ -120,6 +126,7 @@ public class Console extends Chat implements IDisposable {
                 }
             }
         });
+        return this;
     }
 
     public void removeVariableListener(String varName) {
@@ -243,7 +250,7 @@ public class Console extends Chat implements IDisposable {
         String text = e.getText();
 
         Args args = Args.of(text);
-        addMessage("$> " + text, Color.GRAY);
+        addMessage(prompt.get() + text, Color.GRAY);
 
         if (checkSetVariablePattern(text)) {
             String[] s = text.split("=", 2);
