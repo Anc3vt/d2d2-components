@@ -19,15 +19,12 @@ package com.ancevt.d2d2.components.dev.chat;
 
 import com.ancevt.commons.fs.IsolatedDirectory;
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
-import com.ancevt.d2d2.components.ComponentAssets;
 import com.ancevt.d2d2.components.ComponentFont;
 import com.ancevt.d2d2.components.TextInput;
 import com.ancevt.d2d2.components.TextInputEvent;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.DisplayObject;
-import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.input.KeyCode;
@@ -40,7 +37,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 public class Chat extends Container {
@@ -433,56 +429,4 @@ public class Chat extends Container {
             }
         }
     }
-
-    public static void main(String[] args) {
-        Stage stage = D2D2.directInit(new LwjglEngine(800, 600, "(floating)"));
-        ComponentAssets.init();
-
-        stage.setBackgroundColor(Color.of(0x223344));
-
-        AtomicInteger idCounter = new AtomicInteger(1);
-
-        Chat chat = new Chat(".d2d2-just-a-chat");
-        chat.addEventListener(ChatEvent.CHAT_TEXT_ENTER, event -> {
-            if (event instanceof ChatEvent chatEvent) {
-                String text = chatEvent.getText();
-                idCounter.set(idCounter.get() + 1);
-                chat.addPlayerMessage(idCounter.get(), 1, "Ancevt", Color.YELLOW, text, Color.WHITE);
-            }
-        });
-
-        stage.add(chat, 10, 10);
-
-        for (int i = 0; i < 10; i++) {
-            idCounter.set(idCounter.get() + 1);
-            chat.addPlayerMessage(idCounter.get(), 1, "Ancevt", Color.YELLOW, "Hello, i'm Ancevt" + i, Color.WHITE);
-        }
-
-        stage.addEventListener(InputEvent.KEY_DOWN, event -> {
-            InputEvent inputEvent = (InputEvent) event;
-            switch (inputEvent.getKeyCode()) {
-                case KeyCode.PAGE_UP -> {
-                    chat.setScroll(chat.getScroll() - 10);
-                }
-
-                case KeyCode.PAGE_DOWN -> {
-                    chat.setScroll(chat.getScroll() + 10);
-                }
-
-                case KeyCode.F6 -> {
-                    if (!chat.isInputOpened())
-                        chat.openInput();
-                    else
-                        chat.closeInput();
-                }
-
-                case KeyCode.T -> {
-                    if (!chat.isInputOpened())
-                        chat.openInput();
-                }
-            }
-        });
-        D2D2.loop();
-    }
-
 }

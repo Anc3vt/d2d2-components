@@ -17,15 +17,12 @@
  */
 package com.ancevt.d2d2.components.dialog;
 
-import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.components.Button;
-import com.ancevt.d2d2.components.ComponentAssets;
 import com.ancevt.d2d2.components.ComponentFont;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
-import com.ancevt.d2d2.display.Stage;
+import com.ancevt.d2d2.display.IContainer;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InputEvent;
@@ -152,24 +149,12 @@ public class DialogWindow extends Container {
         );
     }
 
-    public static DialogWindow show(String text, Container doc) {
+    public static DialogWindow show(String text, IContainer cont) {
         DialogWindow dialogWindow = new DialogWindow();
         dialogWindow.setText(text);
-        doc.add(dialogWindow);
+        cont.add(dialogWindow);
         dialogWindow.center();
         return dialogWindow;
     }
 
-    public static void main(String[] args) {
-        Stage stage = D2D2.directInit(new LwjglEngine(800, 600, "(floating)"));
-        ComponentAssets.init();
-        stage.setBackgroundColor(Color.GRAY);
-
-        DialogWindow dialogWindow = new DialogWindow();
-        dialogWindow.setText("Screen resolution was set to 1920x1080. \nLeave this configuration? (5 sec)");
-        stage.add(dialogWindow);
-        dialogWindow.center();
-
-        D2D2.loop();
-    }
 }

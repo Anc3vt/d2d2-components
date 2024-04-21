@@ -17,18 +17,12 @@
  */
 package com.ancevt.d2d2.components;
 
-import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
-import com.ancevt.d2d2.debug.DebugPanel;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.SpriteFactory;
-import com.ancevt.d2d2.display.Stage;
-import com.ancevt.d2d2.display.interactive.InteractiveManager;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
-import com.ancevt.d2d2.input.Mouse;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
@@ -36,7 +30,6 @@ import lombok.experimental.SuperBuilder;
 import static com.ancevt.d2d2.components.ComponentAssets.BUTTON_LEFT_PART;
 import static com.ancevt.d2d2.components.ComponentAssets.BUTTON_MIDDLE_PART;
 import static com.ancevt.d2d2.components.ComponentAssets.BUTTON_RIGHT_PART;
-import static com.ancevt.d2d2.components.ComponentAssets.MOUSE_CURSOR_IDLE;
 
 public class Button extends Component {
 
@@ -162,71 +155,4 @@ public class Button extends Component {
     public static class ButtonEvent extends Event {
         public static final String BUTTON_PRESSED = "buttonPressed";
     }
-
-    public static void main(String[] args) {
-        Stage stage = D2D2.directInit(new LwjglEngine(800, 600, "(floating)"));
-        ComponentAssets.init();
-        InteractiveManager.getInstance().setTabbingEnabled(true);
-        DebugPanel.setEnabled(true);
-        stage.setBackgroundColor(Color.BLACK);
-
-        D2D2.setCursor(SpriteFactory.createSprite(MOUSE_CURSOR_IDLE));
-
-        for (int i = 0; i < 5; i++) {
-            Button button = new Button("Test " + i);
-            button.addEventListener(Button.ButtonEvent.BUTTON_PRESSED, event -> {
-                DebugPanel.show(Button.class.getName() + button.getName(), button.getText() + " pressed").ifPresent(debugPanel -> {
-                    debugPanel.setY(button.getY());
-                    debugPanel.addButton("enable", () -> button.setEnabled(true));
-                    debugPanel.addButton("disable", () -> {
-                        button.setEnabled(false);
-                    });
-                });
-            });
-            button.setWidth(100);
-            stage.add(button, 20, 50 + i * 30);
-        }
-
-
-        Button b = new Button("lu");
-        b.addEventListener("asdasd", Event.LOOP_UPDATE, e -> {
-            b.setXY(Mouse.getX(), Mouse.getY());
-        });
-
-        stage.add(b);
-
-
-        D2D2.loop();
-        DebugPanel.saveAll();
-    }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -17,20 +17,13 @@
  */
 package com.ancevt.d2d2.components.menu;
 
-import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.components.Component;
-import com.ancevt.d2d2.components.ComponentAssets;
-import com.ancevt.d2d2.debug.StarletSpace;
-import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.IDisplayObject;
-import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.Mouse;
-import com.ancevt.d2d2.input.MouseButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -184,38 +177,4 @@ public class Menu extends Component {
         items.forEach(MenuItem::dispose);
     }
 
-    public static void main(String[] args) {
-        Stage stage = D2D2.directInit(new LwjglEngine(800, 600, "(floating)"));
-        StarletSpace.haveFun();
-        stage.setBackgroundColor(Color.of(0x001122));
-
-        ComponentAssets.init();
-
-        stage.addEventListener(InputEvent.MOUSE_DOWN, event -> {
-            var e = (InputEvent) event;
-
-            if (e.getMouseButton() == MouseButton.RIGHT) {
-                createMenu()
-                        .addItem("first", () -> System.out.println("1"))
-                        .addItem("second", () -> System.out.println("2"))
-                        .addSeparator()
-                        .addItem("third", createMenu()
-                                .addItem("second level first", () -> System.out.println("2"))
-                                .addItem("second level second", createMenu()
-                                        .addItem("third level first", () -> System.out.println("2"))
-                                        .addItem("third level second", () -> System.out.println("2"))
-                                        .addItem("third level third", () -> System.out.println("2"))
-                                )
-                                .addItem("second level third", () -> System.out.println("4"))
-                        )
-                        .addItem("fourth", createMenu()
-                                .addItem("second level first", () -> System.out.println("5"))
-                                .addItem("second level second", () -> System.out.println("6"))
-                                .addItem("second level third", () -> System.out.println("7"))
-                        ).activate();
-            }
-        });
-
-        D2D2.loop();
-    }
 }

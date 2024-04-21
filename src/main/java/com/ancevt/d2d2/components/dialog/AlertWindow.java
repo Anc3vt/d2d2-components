@@ -17,15 +17,11 @@
  */
 package com.ancevt.d2d2.components.dialog;
 
-import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.components.Button;
-import com.ancevt.d2d2.components.ComponentAssets;
 import com.ancevt.d2d2.components.ComponentFont;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
-import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InputEvent;
@@ -139,16 +135,4 @@ public class AlertWindow extends Container {
         return alertWindow;
     }
 
-    public static void main(String[] args) {
-        Stage root = D2D2.directInit(new LwjglEngine(800, 600, "(floating)"));
-        ComponentAssets.init();
-        root.setBackgroundColor(Color.GRAY);
-
-        AlertWindow alertWindow = new AlertWindow();
-        alertWindow.setText("Server is localhost:3333 unavailable");
-        root.add(alertWindow);
-        alertWindow.center();
-
-        D2D2.loop();
-    }
 }
