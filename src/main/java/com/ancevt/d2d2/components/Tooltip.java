@@ -18,22 +18,14 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import com.ancevt.d2d2.common.PlainRect;
-import com.ancevt.d2d2.debug.StarletSpace;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.SpriteFactory;
-import com.ancevt.d2d2.display.Stage;
+import com.ancevt.d2d2.display.interactive.Combined9Sprites;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.display.texture.Texture;
 import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InputEvent;
-import com.ancevt.d2d2.input.KeyCode;
-import com.ancevt.d2d2.display.interactive.Combined9Sprites;
-import com.ancevt.d2d2.display.interactive.DragUtil;
-
-import java.util.Arrays;
 
 
 public class Tooltip extends Component {
@@ -200,82 +192,4 @@ public class Tooltip extends Component {
         tooltip = new Tooltip();
         return tooltip;
     }
-
-    public static void main(String[] args) {
-        Stage stage = D2D2.directInit(new LwjglEngine(800, 600, "(floating)"));
-        StarletSpace.haveFun();
-        ComponentAssets.init();
-
-        Tooltip tooltip = Tooltip.createTooltip();
-        tooltip.setTexture(D2D2.textureManager().getTexture("satellite"));
-        tooltip.setText("""
-            #This is a tooltip ϕϕϕϕϕϕϕ
-                            
-            <FF8000>Second line
-                            
-            <BBBBBB>Third line
-            One more line
-            And again""");
-        tooltip.setImageScale(2f);
-
-
-        stage.addEventListener(InputEvent.KEY_DOWN, event -> {
-            var e = (InputEvent) event;
-
-            if (e.getKeyCode() == KeyCode.SPACE) {
-                D2D2.engine().setSmoothMode(!D2D2.engine().isSmoothMode());
-                System.out.println(D2D2.engine().isSmoothMode());
-            }
-        });
-
-        ButtonEx buttonEx = new ButtonEx();
-        buttonEx.setIcon(D2D2.textureManager().getTexture("satellite"));
-        buttonEx.setSize(60, 60);
-        buttonEx.setTooltip(tooltip);
-        buttonEx.setPushEventsUp(false);
-
-        Arrays.stream(args).distinct();
-
-        DragUtil.enableDrag(buttonEx);
-
-        stage.add(buttonEx, 100, 250);
-
-        ButtonEx b2 = new ButtonEx();
-        b2.setSize(60, 60);
-        b2.setText("off");
-        b2.addEventListener(ComponentEvent.ACTION, event -> {
-            buttonEx.setTooltip(null);
-        });
-        stage.add(b2, 100, 350);
-
-        D2D2.loop();
-    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

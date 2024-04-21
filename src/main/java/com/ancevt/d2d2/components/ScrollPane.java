@@ -17,15 +17,9 @@
  */
 package com.ancevt.d2d2.components;
 
-import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import com.ancevt.d2d2.common.PlainRect;
-import com.ancevt.d2d2.debug.DebugPanel;
-import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
-import com.ancevt.d2d2.display.interactive.DragUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -197,14 +191,14 @@ public class ScrollPane extends Component {
         components.forEach(Component::removeFromParent);
 
         float y = 0.0f;
-        for (int i = scrollPosition; y < getHeight()- itemHeight && i < components.size(); i++) {
+        for (int i = scrollPosition; y < getHeight() - itemHeight && i < components.size(); i++) {
             if (i < 0) continue;
             Component item = components.get(i);
             add(item, 0, y);
             item.move(getPadding().getLeft(), getPadding().getTop());
             item.setSize(
-                    getWidth() - getPadding().getRight() - getPadding().getLeft(),
-                    getItemHeight() - getPadding().getBottom() - getPadding().getTop()
+                getWidth() - getPadding().getRight() - getPadding().getLeft(),
+                getItemHeight() - getPadding().getBottom() - getPadding().getTop()
             );
             y += itemHeight;
         }
@@ -217,45 +211,5 @@ public class ScrollPane extends Component {
         }
 
         scrollbar.setRectLength(getHeight() * val);
-    }
-
-    public static void main(String[] args) {
-        Stage stage = D2D2.directInit(new LwjglEngine(800, 600, "(floating)"));
-
-        stage.setBackgroundColor(Color.DARK_GRAY);
-
-        DebugPanel.setEnabled(true);
-        ComponentAssets.init();
-
-        ScrollPane scrollPane = new ScrollPane();
-
-        scrollPane.setWidth(400);
-        scrollPane.getPadding().setRight(10);
-
-        DragUtil.enableDrag(scrollPane);
-
-        stage.add(scrollPane, 100, 100);
-
-        for (int i = 0; i < 20; i++) {
-            Button button = new Button("Test " + i);
-            button.setWidth(200);
-            scrollPane.addScrollableItem(button);
-        }
-
-        DebugPanel.show("test", "").ifPresent(debugPanel -> {
-            debugPanel.addButton("+", () -> {
-                Button button = new Button("test" + (int) (Math.random() * 100));
-                scrollPane.addScrollableItem(button);
-            });
-            debugPanel.addButton("-", () -> {
-                scrollPane.removeScrollableItem(0);
-            });
-            debugPanel.addButton("0", () -> {
-                scrollPane.setScrollPosition(0);
-            });
-        });
-
-        D2D2.loop();
-        DebugPanel.saveAll();
     }
 }

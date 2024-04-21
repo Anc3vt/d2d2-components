@@ -48,14 +48,4 @@ public class Panel extends Component {
         bg.setSize(getWidth(), getHeight());
     }
 
-    public static void main(String[] args) {
-        Stage stage = D2D2.directInit(new LwjglEngine(800, 600, "(floating)"));
-        StarletSpace.haveFun();
-
-        Panel panel = new Panel();
-
-        stage.add(panel, 100, 200);
-
-        D2D2.loop();
-    }
 }

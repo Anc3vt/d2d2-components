@@ -17,13 +17,8 @@
  */
 package com.ancevt.d2d2.components;
 
-import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import com.ancevt.d2d2.common.PlainRect;
-import com.ancevt.d2d2.debug.DebugPanel;
-import com.ancevt.d2d2.debug.StarletSpace;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.interactive.Combined9Sprites;
 import com.ancevt.d2d2.display.interactive.DragUtil;
 import com.ancevt.d2d2.event.Event;
@@ -374,63 +369,5 @@ public class Frame extends Component {
         public static final String RESIZE_COMPLETE = "frameResizeComplete";
     }
 
-    public static void main(String[] args) {
-        Stage stage = D2D2.directInit(new LwjglEngine(800, 600, "(floating)"));
-        StarletSpace.haveFun();
-        ComponentAssets.init();
-
-        for (int i = 0; i < 3; i++) {
-            Frame panel = new Frame();
-            panel.setManualResizable(true);
-            panel.setDragEnabled(true);
-            panel.setTitle("Window #" + (i + 1));
-            panel.setMinSize(100, 100);
-            panel.setMaxSize(400, 400);
-            stage.add(panel);
-
-            panel.setXY(100 + i * 100, 100 + i * 100);
-
-            ButtonEx buttonEx = new ButtonEx();
-            buttonEx.setSize(100, 40);
-            buttonEx.setText("Button #" + (i + 1));
-            panel.add(buttonEx, 20, 50);
-        }
-
-
-        D2D2.loop();
-
-        DebugPanel.saveAll();
-    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

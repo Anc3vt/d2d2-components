@@ -232,19 +232,4 @@ public class Chooser<T> extends Container {
         public final T2 second;
     }
 
-    public static void main(String[] args) {
-        Stage stage = D2D2.directInit(new LwjglEngine(800, 600, "(floating)"));
-        ComponentAssets.init();
-
-        Chooser<String> chooser = new Chooser<>();
-        chooser.setWidth(180f);
-        chooser.addItem("windowed", "windowed");
-        //chooser.addItem("640x480", "640x480");
-        //chooser.addItem("1920x1080", "1920x1080");
-        //chooser.addItem("Универсальный монитор PnP", "Универсальный монитор PnP");
-
-        stage.add(chooser, 100, 100);
-
-        D2D2.loop();
-    }
 }

@@ -18,27 +18,21 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import com.ancevt.d2d2.common.PlainRect;
-import com.ancevt.d2d2.debug.StarletSpace;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.SpriteFactory;
-import com.ancevt.d2d2.display.Stage;
+import com.ancevt.d2d2.display.interactive.Combined9Sprites;
 import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.InteractiveEvent;
-import com.ancevt.d2d2.display.interactive.Combined9Sprites;
-import com.ancevt.d2d2.display.interactive.DragUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.ancevt.d2d2.D2D2.init;
-import static com.ancevt.d2d2.D2D2.loop;
 import static com.ancevt.d2d2.D2D2.stage;
 
 public class DropDownList<T> extends Component {
@@ -72,15 +66,15 @@ public class DropDownList<T> extends Component {
         add(bg);
 
         borders = new Combined9Sprites(
-                D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_TOP_LEFT),
-                D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_TOP),
-                D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_TOP_RIGHT),
-                D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_LEFT),
-                D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_CENTER),
-                D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_RIGHT),
-                D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_LEFT),
-                D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM),
-                D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_RIGHT)
+            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_TOP_LEFT),
+            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_TOP),
+            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_TOP_RIGHT),
+            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_LEFT),
+            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_CENTER),
+            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_RIGHT),
+            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_LEFT),
+            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM),
+            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_RIGHT)
         );
         borders.setColor(FOREGROUND_COLOR);
         add(borders);
@@ -159,7 +153,7 @@ public class DropDownList<T> extends Component {
             var e = (InputEvent) event;
 
             if (e.getX() < scrollPane.getX() || e.getX() > scrollPane.getX() + scrollPane.getWidth()
-                    || e.getY() < scrollPane.getY() || e.getY() > scrollPane.getY() + scrollPane.getHeight()) {
+                || e.getY() < scrollPane.getY() || e.getY() > scrollPane.getY() + scrollPane.getHeight()) {
                 stage().removeEventListener(this, InputEvent.MOUSE_DOWN);
                 close();
             }
@@ -297,60 +291,10 @@ public class DropDownList<T> extends Component {
         @Override
         public String toString() {
             return "Item{" +
-                    "text='" + text + '\'' +
-                    ", object=" + object +
-                    ", dropDownList=" + dropDownList +
-                    '}';
+                "text='" + text + '\'' +
+                ", object=" + object +
+                ", dropDownList=" + dropDownList +
+                '}';
         }
-    }
-
-    public static void main(String[] args) {
-        Stage stage = D2D2.directInit(new LwjglEngine(800, 600, "(floating)"));
-        StarletSpace.haveFun();
-        ComponentAssets.init();
-
-        Frame panel = new Frame();
-        panel.setSize(500, 500);
-        stage.add(panel, 100, 250);
-
-        DropDownList<Integer> dropDownList = new DropDownList<>();
-        dropDownList.setPushEventsUp(false);
-        for (int i = 0; i < 10; i++) {
-            String text = Math.random() + "";
-            dropDownList.addItem(text, i);
-        }
-        panel.add(dropDownList, 10, 50);
-
-        DropDownList<Integer> dropDownList1 = new DropDownList<>();
-        dropDownList1.setPushEventsUp(false);
-        for (int i = 0; i < 10; i++) {
-            String text = Math.random() + "";
-            dropDownList1.addItem(text, i);
-        }
-        panel.add(dropDownList1, 10, 80);
-
-        DragUtil.enableDrag(panel);
-
-
-        loop();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

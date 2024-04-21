@@ -18,15 +18,12 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import com.ancevt.d2d2.common.PlainRect;
-import com.ancevt.d2d2.debug.DebugPanel;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.Stage;
+import com.ancevt.d2d2.display.interactive.InteractiveSprite;
 import com.ancevt.d2d2.display.texture.Texture;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
-import com.ancevt.d2d2.display.interactive.InteractiveSprite;
 
 public class Scrollbar extends Component {
 
@@ -217,22 +214,4 @@ public class Scrollbar extends Component {
         }
 
     }
-
-    public static void main(String[] args) {
-        Stage stage = D2D2.directInit(new LwjglEngine(800, 600, "(floating)"));
-        stage.setBackgroundColor(Color.of(0x001122));
-
-        Scrollbar scrollbar = new Scrollbar();
-
-        stage.add(scrollbar, 100, 100);
-
-        DebugPanel.setEnabled(true);
-        DebugPanel.show("test", "").ifPresent(debugPanel -> {
-            debugPanel.addButton("-0.1", () -> scrollbar.setScrollValue(scrollbar.getScrollValue() - 0.1f));
-            debugPanel.addButton("+0.1", () -> scrollbar.setScrollValue(scrollbar.getScrollValue() + 0.1f));
-        });
-
-        D2D2.loop();
-    }
-
 }

@@ -18,22 +18,15 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
-import com.ancevt.d2d2.debug.StarletSpace;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.IColored;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.SpriteFactory;
-import com.ancevt.d2d2.display.Stage;
+import com.ancevt.d2d2.display.interactive.Combined9Sprites;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.display.texture.Texture;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
-import com.ancevt.d2d2.display.interactive.Combined9Sprites;
-import com.ancevt.d2d2.display.interactive.InteractiveManager;
-
-import static com.ancevt.d2d2.D2D2.init;
-import static com.ancevt.d2d2.D2D2.loop;
 
 public class ButtonEx extends Component implements IColored {
 
@@ -60,29 +53,29 @@ public class ButtonEx extends Component implements IColored {
 
         bg = new Combined9Sprites(
             D2D2.textureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_TOP_LEFT),
-                D2D2.textureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_TOP),
-                D2D2.textureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_TOP_RIGHT),
-                D2D2.textureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_LEFT),
-                D2D2.textureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_CENTER),
-                D2D2.textureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_RIGHT),
-                D2D2.textureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_BOTTOM_LEFT),
-                D2D2.textureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_BOTTOM),
-                D2D2.textureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_BOTTOM_RIGHT)
+            D2D2.textureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_TOP),
+            D2D2.textureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_TOP_RIGHT),
+            D2D2.textureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_LEFT),
+            D2D2.textureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_CENTER),
+            D2D2.textureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_RIGHT),
+            D2D2.textureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_BOTTOM_LEFT),
+            D2D2.textureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_BOTTOM),
+            D2D2.textureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_BOTTOM_RIGHT)
         );
 
         bg.setEnabled(false);
         add(bg);
 
         selectedBorder = new Combined9Sprites(
-                D2D2.textureManager().getTexture(ComponentAssets.BORDER_9_SIDE_TOP_LEFT),
-                D2D2.textureManager().getTexture(ComponentAssets.BORDER_9_SIDE_TOP),
-                D2D2.textureManager().getTexture(ComponentAssets.BORDER_9_SIDE_TOP_RIGHT),
-                D2D2.textureManager().getTexture(ComponentAssets.BORDER_9_SIDE_LEFT),
-                D2D2.textureManager().getTexture(ComponentAssets.BORDER_9_SIDE_CENTER),
-                D2D2.textureManager().getTexture(ComponentAssets.BORDER_9_SIDE_RIGHT),
-                D2D2.textureManager().getTexture(ComponentAssets.BORDER_9_SIDE_BOTTOM_LEFT),
-                D2D2.textureManager().getTexture(ComponentAssets.BORDER_9_SIDE_BOTTOM),
-                D2D2.textureManager().getTexture(ComponentAssets.BORDER_9_SIDE_BOTTOM_RIGHT)
+            D2D2.textureManager().getTexture(ComponentAssets.BORDER_9_SIDE_TOP_LEFT),
+            D2D2.textureManager().getTexture(ComponentAssets.BORDER_9_SIDE_TOP),
+            D2D2.textureManager().getTexture(ComponentAssets.BORDER_9_SIDE_TOP_RIGHT),
+            D2D2.textureManager().getTexture(ComponentAssets.BORDER_9_SIDE_LEFT),
+            D2D2.textureManager().getTexture(ComponentAssets.BORDER_9_SIDE_CENTER),
+            D2D2.textureManager().getTexture(ComponentAssets.BORDER_9_SIDE_RIGHT),
+            D2D2.textureManager().getTexture(ComponentAssets.BORDER_9_SIDE_BOTTOM_LEFT),
+            D2D2.textureManager().getTexture(ComponentAssets.BORDER_9_SIDE_BOTTOM),
+            D2D2.textureManager().getTexture(ComponentAssets.BORDER_9_SIDE_BOTTOM_RIGHT)
         );
 
         selectedBorder.setEnabled(false);
@@ -94,8 +87,8 @@ public class ButtonEx extends Component implements IColored {
             if (toggleMode) {
                 setSelected(!isSelected());
                 dispatchEvent(Event.builder()
-                        .type(Event.CHANGE)
-                        .build());
+                    .type(Event.CHANGE)
+                    .build());
             } else {
                 bg.setY(1);
                 if (bitmapText != null) bitmapText.moveY(1);
@@ -108,8 +101,8 @@ public class ButtonEx extends Component implements IColored {
 
             if (e.isOnArea()) {
                 dispatchEvent(ComponentEvent.builder()
-                        .type(ComponentEvent.ACTION)
-                        .build());
+                    .type(ComponentEvent.ACTION)
+                    .build());
             }
 
             bg.setY(0);
@@ -301,53 +294,7 @@ public class ButtonEx extends Component implements IColored {
             float h = getHeight();
             float tw = bitmapText.getTextWidth();
             float th = bitmapText.getCharHeight();
-            bitmapText.setXY((w - tw) / 2, (h - th) / 2  - 3);
+            bitmapText.setXY((w - tw) / 2, (h - th) / 2 - 3);
         }
-    }
-
-    public static void main(String[] args) {
-        Stage stage = D2D2.directInit(new LwjglEngine(800, 600, "(floating)"));
-        StarletSpace.haveFun();
-        ComponentAssets.init();
-
-        InteractiveManager.getInstance().setTabbingEnabled(true);
-
-        ButtonEx b1 = new ButtonEx();
-        b1.setText("Text in button");
-        b1.setSize(150, 30);
-        b1.setTabbingEnabled(true);
-        b1.addEventListener(InteractiveEvent.DOWN, event -> {
-            System.out.println("b1 DOWN");
-        });
-
-        ButtonEx b2 = new ButtonEx();
-        b2.setToggleMode(true);
-        b2.setIcon(D2D2.textureManager().getTexture("satellite"));
-        b2.setSize(60, 60);
-        b2.setTabbingEnabled(true);
-        b2.addEventListener(Event.CHANGE, event -> {
-            System.out.println(b2.isSelected());
-        });
-
-        ButtonEx b3 = new ButtonEx();
-        b3.setToggleMode(true);
-        b3.setIcon(D2D2.textureManager().getTexture("satellite"));
-        b3.setSize(60, 60);
-        b3.setEnabled(false);
-        b3.setTabbingEnabled(true);
-        b3.addEventListener(Event.CHANGE, event -> {
-            System.out.println(b3.isSelected());
-        });
-
-        Button oldPlainButton = new Button("Plain button");
-        oldPlainButton.setWidth(150);
-        oldPlainButton.setTabbingEnabled(true);
-
-        stage.add(b1, 100, 250);
-        stage.add(b2, 400, 250);
-        stage.add(b3, 500, 250);
-        stage.add(oldPlainButton, 100, 400);
-
-        loop();
     }
 }
