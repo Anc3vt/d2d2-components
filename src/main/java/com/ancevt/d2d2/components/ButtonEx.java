@@ -280,7 +280,7 @@ public class ButtonEx extends Component implements IColored {
         if (iconSprite != null) {
             iconSprite.setScale(10f, 10f);
             while (iconSprite.getWidth() * iconSprite.getScaleX() > getWidth() || iconSprite.getHeight() * iconSprite.getScaleY() > getHeight()) {
-                iconSprite.toScale(0.9f, 0.9f);
+                iconSprite.scale(0.9f, 0.9f);
             }
             float sw = iconSprite.getWidth() * iconSprite.getScaleX();
             float sh = iconSprite.getHeight() * iconSprite.getScaleY();

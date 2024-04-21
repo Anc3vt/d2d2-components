@@ -163,13 +163,13 @@ public class Tooltip extends Component {
         if (sprite.getTexture() != null) {
             if (maxImageWidth != 0) {
                 while (sprite.getWidth() * sprite.getScaleX() > maxImageWidth) {
-                    sprite.toScale(0.99f, 0.99f);
+                    sprite.scale(0.99f, 0.99f);
                 }
             }
 
             if (maxImageHeight != 0) {
                 while (sprite.getHeight() * sprite.getScaleY() > maxImageHeight) {
-                    sprite.toScale(0.99f, 0.99f);
+                    sprite.scale(0.99f, 0.99f);
                 }
             }
         }

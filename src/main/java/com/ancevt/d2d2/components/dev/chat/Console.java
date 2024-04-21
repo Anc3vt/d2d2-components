@@ -24,6 +24,7 @@ import com.ancevt.commons.util.ApplicationMainClassNameExtractor;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.common.IDisposable;
 import com.ancevt.d2d2.display.Color;
+import com.ancevt.d2d2.display.IContainer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InputEvent;
@@ -59,7 +60,12 @@ public class Console extends Chat implements IDisposable {
 
     private static final float PADDING = 20;
 
+    private static final Object NO_INITIAL_VALUE = new Object();
+
     private final List<Command> commands = new ArrayList<>();
+
+    private final Map<String, String> initialValues = new HashMap<>();
+
     @Getter
     private final Map<String, String> context = new TreeMap<>();
 
@@ -70,7 +76,8 @@ public class Console extends Chat implements IDisposable {
 
     private boolean disposed;
 
-    private boolean hidedByTilda;
+    @Getter
+    private boolean tildaEnabled;
 
     @Getter
     @Setter
@@ -83,7 +90,8 @@ public class Console extends Chat implements IDisposable {
         setInputEnabled(true);
         addEventListener(ChatEvent.CHAT_TEXT_ENTER, this::this_chatTextEnter);
         addEventListener(ChatEvent.CHAT_INPUT_CLOSE, this::this_chatInputClose);
-        D2D2.stage().addEventListener(this, LifecycleEvent.EXIT_MAIN_LOOP, this::stage_exit);
+        D2D2.stage().addEventListener(this, LifecycleEvent.START_MAIN_LOOP, this::stage_startMainLoop);
+        D2D2.stage().addEventListener(this, LifecycleEvent.EXIT_MAIN_LOOP, this::stage_exitMainLoop);
         openInput();
         loadContent();
 
@@ -92,6 +100,17 @@ public class Console extends Chat implements IDisposable {
         commands.add(new Command("/exit", "/q", "Exit D2D2 loop", a -> D2D2.exit(), true));
         commands.add(new Command("/var", "/v", "Define and print variable value", this::commandVar, true));
         commands.add(new Command("/delete", "/d", "Delete variable", this::removeVar, true));
+
+    }
+
+    private void stage_startMainLoop(Event event) {
+        loadContext();
+    }
+
+    private void stage_exitMainLoop(Event event) {
+        saveHistory();
+        saveContent();
+        saveContext();
     }
 
     public Console() throws ApplicationMainClassNameExtractor.MainClassNameExtractorException {
@@ -114,19 +133,28 @@ public class Console extends Chat implements IDisposable {
         return this;
     }
 
-    public Console addVariableListener(String variable, BiConsumer<String, ConvertableString> func) {
+    public Console addVariableListener(String variable, Object initialValue, BiConsumer<String, ConvertableString> listener) {
         addEventListener("console-chat." + variable, ConsoleChatEvent.VAR_VALUE_CHANGE, event -> {
             ConsoleChatEvent e = event.casted();
             if (Objects.equals(e.getVarName(), variable)) {
                 try {
-                    func.accept(variable, e.getValue());
+                    listener.accept(variable, e.getValue());
                 } catch (Exception ex) {
                     log.error(ex.getMessage(), ex);
                     print(StackTraceUtil.stringify(ex), Color.RED);
                 }
             }
         });
+
+        if (initialValue != NO_INITIAL_VALUE) {
+            initialValues.put(variable, initialValue == null ? null : String.valueOf(initialValue));
+        }
+
         return this;
+    }
+
+    public Console addVariableListener(String variable, BiConsumer<String, ConvertableString> listener) {
+        return addVariableListener(variable, NO_INITIAL_VALUE, listener);
     }
 
     public void removeVariableListener(String varName) {
@@ -216,12 +244,6 @@ public class Console extends Chat implements IDisposable {
         return this;
     }
 
-    private void stage_exit(Event event) {
-        saveHistory();
-        saveContent();
-        saveContext();
-    }
-
     public void setMaximized(boolean maximized) {
         if (this.maximized == maximized) return;
         this.maximized = maximized;
@@ -304,18 +326,6 @@ public class Console extends Chat implements IDisposable {
         loadContext(Map.of());
     }
 
-    public void loadContext(String... kvs) {
-        Map<String, String> initialValues = new HashMap<>();
-
-        for (int i = 0; i < kvs.length; i += 2) {
-            String k = kvs[i];
-            String v = kvs[i + 1];
-            initialValues.put(k, v);
-        }
-
-        loadContext(initialValues);
-    }
-
     public void loadContext(Map<String, String> initialValues) {
         getGetIsolatedDirectory().checkExists("context").ifPresent(relativePath -> {
             String contextData = getGetIsolatedDirectory().readString(relativePath);
@@ -339,7 +349,10 @@ public class Console extends Chat implements IDisposable {
         getGetIsolatedDirectory().writeString(contextData, "context");
     }
 
-    public void setTildaEnable() {
+    public void setTildaEnabled(boolean tildaEnabled) {
+        if (this.tildaEnabled == tildaEnabled) return;
+
+        this.tildaEnabled = tildaEnabled;
         D2D2.stage().addEventListener(this, InputEvent.KEY_DOWN, event -> {
             InputEvent e = event.casted();
             if (e.getKeyCode() == KeyCode.TILDA && e.isShift()) {
@@ -356,11 +369,19 @@ public class Console extends Chat implements IDisposable {
                 }, 10);
             }
         });
+
+        if (tildaEnabled && hasParent()) {
+            IContainer parent = getParent();
+            removeFromParent();
+            parent.add(this);
+        }
     }
 
     @Override
     public void dispose() {
         D2D2.stage().removeEventListener(this, InputEvent.KEY_DOWN);
+        D2D2.stage().removeEventListener(this, LifecycleEvent.START_MAIN_LOOP);
+        D2D2.stage().removeEventListener(this, LifecycleEvent.EXIT_MAIN_LOOP);
         disposed = true;
     }
 

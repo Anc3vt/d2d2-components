@@ -82,6 +82,11 @@
             <artifactId>ancevt-commons</artifactId>
             <version>${ancevt-commons.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.ancevt.util</groupId>
+            <artifactId>texttable</artifactId>
+            <version>0.0.4</version>
+        </dependency>
     </dependencies>
 
     <build>
