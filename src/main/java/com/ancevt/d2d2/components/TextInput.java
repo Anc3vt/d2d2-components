@@ -176,7 +176,6 @@ public class TextInput extends Component {
     private void this_keyType(Event event) {
         var e = (InteractiveEvent) event;
         String keyType = e.getKeyType();
-        System.out.println("com.ancevt.d2d2.components.TextInput " + keyType);
         if (!bitmapText.getBitmapFont().isCharSupported(keyType.charAt(0))) return;
 
         if (text.length() * bitmapText.getCharWidth() < getWidth() - 10) {

@@ -99,8 +99,7 @@ public class Console extends Chat implements IDisposable {
         commands.add(new Command("/cls", null, "Clear console output", a -> clear(), true));
         commands.add(new Command("/exit", "/q", "Exit D2D2 loop", a -> D2D2.exit(), true));
         commands.add(new Command("/var", "/v", "Define and print variable value", this::commandVar, true));
-        commands.add(new Command("/delete", "/d", "Delete variable", this::removeVar, true));
-
+        commands.add(new Command("/delete", "/d", "Delete variable", this::deleteVar, true));
     }
 
     private void stage_startMainLoop(Event event) {
@@ -161,7 +160,7 @@ public class Console extends Chat implements IDisposable {
         removeEventListener("console-chat." + varName, ConsoleChatEvent.VAR_VALUE_CHANGE);
     }
 
-    private void removeVar(Args args) {
+    private void deleteVar(Args args) {
         String varName = args.next();
         String oldValue = context.get(varName);
         if (oldValue != null) {
@@ -323,10 +322,6 @@ public class Console extends Chat implements IDisposable {
     }
 
     public void loadContext() {
-        loadContext(Map.of());
-    }
-
-    public void loadContext(Map<String, String> initialValues) {
         getGetIsolatedDirectory().checkExists("context").ifPresent(relativePath -> {
             String contextData = getGetIsolatedDirectory().readString(relativePath);
             Map<String, String> map = JsonEngine.gson().fromJson(
@@ -334,6 +329,7 @@ public class Console extends Chat implements IDisposable {
                 new TypeToken<Map<String, String>>() {}.getType()
             );
 
+            context.putAll(map);
             map.forEach(this::setVar);
         });
 

@@ -355,8 +355,8 @@ public class Chat extends Container {
                         if (!Objects.equals(text, lastText)) {
                             history.add(text);
                             lastText = text;
-                            historyIndex = history.size();
                         }
+                        historyIndex = history.size();
                     }
 
                     textInput.clear();
@@ -366,9 +366,6 @@ public class Chat extends Container {
                 case TextInputEvent.KEY_DOWN -> {
                     switch (uiTextInputEvent.getKeyCode()) {
                         case KeyCode.UP -> {
-                            if (historyIndex == history.size()) {
-                                //history.add(input.getText());
-                            }
                             historyIndex--;
                             restoreHistory();
                         }
