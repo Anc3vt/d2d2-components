@@ -20,6 +20,7 @@ package com.ancevt.d2d2.components.dev.chat;
 
 import com.ancevt.commons.exception.StackTraceUtil;
 import com.ancevt.commons.string.ConvertableString;
+import com.ancevt.commons.string.TextTable;
 import com.ancevt.commons.util.ApplicationMainClassNameExtractor;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.common.IDisposable;
@@ -32,7 +33,6 @@ import com.ancevt.d2d2.event.LifecycleEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.time.Timer;
 import com.ancevt.util.args.Args;
-import com.ancevt.util.texttable.TextTable;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -113,7 +113,7 @@ public class Console extends Chat implements IDisposable {
     }
 
     public Console() throws ApplicationMainClassNameExtractor.MainClassNameExtractorException {
-        this(".d2d2/console-chat/" + ApplicationMainClassNameExtractor.getMainClassName());
+        this(".d2d2/console/" + ApplicationMainClassNameExtractor.getMainClassName());
     }
 
     public ConvertableString getVar(String varName) {
@@ -132,8 +132,12 @@ public class Console extends Chat implements IDisposable {
         return this;
     }
 
+    public Console addVariableListener(String variable, BiConsumer<String, ConvertableString> listener) {
+        return addVariableListener(variable, NO_INITIAL_VALUE, listener);
+    }
+
     public Console addVariableListener(String variable, Object initialValue, BiConsumer<String, ConvertableString> listener) {
-        addEventListener("console-chat." + variable, ConsoleChatEvent.VAR_VALUE_CHANGE, event -> {
+        addEventListener("console_." + variable, ConsoleChatEvent.VAR_VALUE_CHANGE, event -> {
             ConsoleChatEvent e = event.casted();
             if (Objects.equals(e.getVarName(), variable)) {
                 try {
@@ -152,12 +156,8 @@ public class Console extends Chat implements IDisposable {
         return this;
     }
 
-    public Console addVariableListener(String variable, BiConsumer<String, ConvertableString> listener) {
-        return addVariableListener(variable, NO_INITIAL_VALUE, listener);
-    }
-
     public void removeVariableListener(String varName) {
-        removeEventListener("console-chat." + varName, ConsoleChatEvent.VAR_VALUE_CHANGE);
+        removeEventListener("console_" + varName, ConsoleChatEvent.VAR_VALUE_CHANGE);
     }
 
     private void deleteVar(Args args) {
@@ -203,10 +203,9 @@ public class Console extends Chat implements IDisposable {
 
     private void showHelp() {
         TextTable textTable = new TextTable(false, "command", "alias", "description");
-        textTable.addRow("");
         commands.stream()
             .filter(c -> !c.builtIn)
-            .forEach(c -> textTable.addKeyedRow(c.command, new String[]{c.command, c.alias, c.description}));
+            .forEach(c -> textTable.addRow(c.command, c.alias, c.description));
         print(textTable.render());
     }
 
