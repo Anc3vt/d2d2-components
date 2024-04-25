@@ -30,7 +30,6 @@ import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.time.Timer;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -38,7 +37,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-@Slf4j
 public class Chat extends Container {
 
     private String lastText;
@@ -256,10 +254,6 @@ public class Chat extends Container {
 
         scrollToEnd();
         redraw();
-
-        if (log.isDebugEnabled()) {
-            log.debug("{}", chatMessage.getText());
-        }
     }
 
     private void scrollToEnd() {
