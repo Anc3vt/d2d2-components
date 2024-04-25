@@ -24,8 +24,6 @@ import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.BitmapText;
 import lombok.Getter;
 
-import static java.lang.String.format;
-
 public class ChatMessage extends Container {
 
     public static final float DEFAULT_WIDTH = 1000;
@@ -34,63 +32,18 @@ public class ChatMessage extends Container {
     @Getter
     private final int id;
     @Getter
-    private final int playerId;
-    @Getter
-    private final String playerName;
-    @Getter
-    private final Color playerColor;
-    @Getter
     private final String text;
     @Getter
     private final Color textColor;
-    private final BitmapText nameBitmapText;
     private final BitmapText bitmapText;
 
     @Getter
     private boolean multicolorEnabled;
 
-    public ChatMessage(int id, int playerId, String playerName, Color playerColor, String messageText, Color textColor) {
-        this.id = id;
-        this.playerId = playerId;
-        this.playerName = playerName;
-        this.playerColor = playerColor == null ? Color.WHITE : playerColor;
-        this.text = messageText;
-        this.textColor = textColor == null ? Color.WHITE : textColor;
-        nameBitmapText = new BitmapText();
-        nameBitmapText.setBitmapFont(getBitmapFont());
-        bitmapText = new BitmapText();
-        bitmapText.setBitmapFont(getBitmapFont());
-
-        String playerNameToShow = format("%s(%d):", playerName, playerId);
-
-        nameBitmapText.setColor(playerColor);
-        bitmapText.setColor(textColor);
-        nameBitmapText.setText(playerNameToShow);
-        nameBitmapText.setSize(playerNameToShow.length() * ComponentFont.getBitmapFontMiddle().getCharInfo('0').width() + 10, 30);
-        bitmapText.setSpacing(-0.5f);
-        bitmapText.setText(messageText);
-        bitmapText.setX(nameBitmapText.getWidth() + 8);
-        bitmapText.setWidth(DEFAULT_WIDTH);
-        bitmapText.setHeight(DEFAULT_HEIGHT);
-
-        nameBitmapText.setHeight(DEFAULT_HEIGHT);
-        nameBitmapText.setAutosize(true);
-
-        bitmapText.setVertexBleedingFix(0);
-        nameBitmapText.setVertexBleedingFix(0);
-
-        add(nameBitmapText);
-        add(bitmapText);
-    }
-
     public ChatMessage(int id, String messageText, Color textColor) {
         this.id = id;
-        this.playerId = 0;
-        this.playerName = null;
-        this.playerColor = null;
         this.text = messageText;
         this.textColor = textColor;
-        nameBitmapText = null;
         bitmapText = new BitmapText();
         bitmapText.setText(messageText);
         bitmapText.setBitmapFont(getBitmapFont());
@@ -112,18 +65,11 @@ public class ChatMessage extends Container {
         return ComponentFont.getBitmapFontMiddleGlow();
     }
 
-    public boolean isFromPlayer() {
-        return playerName != null;
-    }
-
     @Override
     public String toString() {
         return "ChatMessage{" +
             "id=" + id +
-            ", playerId=" + playerId +
-            ", playerName='" + playerName + '\'' +
             ", text='" + text + '\'' +
-            ", nameUiText=" + nameBitmapText +
             ", textUiText=" + bitmapText +
             ", textColor=" + textColor +
             '}';

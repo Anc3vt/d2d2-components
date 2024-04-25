@@ -34,28 +34,17 @@ public class ChatMessageJsonConverter {
         JsonObject jsonObject = gson.fromJson(json, JsonObject.class);
 
         int id = jsonObject.get("id").getAsInt();
-        int playerId = jsonObject.get("playerId").getAsInt();
-        String playerName = getStringOrNull(jsonObject, "playerName");
-        String playerColorHex = getStringOrNull(jsonObject, "playerColorHex");
         String text = getStringOrNull(jsonObject, "text");
         String textColorHex = getStringOrNull(jsonObject, "textColorHex");
 
-        Color playerColor = (playerColorHex != null) ? Color.of(playerColorHex) : Color.WHITE;
         Color textColor = (textColorHex != null) ? Color.of(textColorHex) : Color.WHITE;
 
-        if (playerName == null) {
-            return new ChatMessage(id, text, textColor);
-        } else {
-            return new ChatMessage(id, playerId, playerName, playerColor, text, textColor);
-        }
+        return new ChatMessage(id, text, textColor);
     }
 
     public static String chatMessageToJson(ChatMessage chatMessage) {
         JsonObject object = new JsonObject();
         object.addProperty("id", chatMessage.getId());
-        object.addProperty("playerId", chatMessage.getPlayerId());
-        addPropertyIfNotNull(object, "playerName", chatMessage.getPlayerName());
-        addPropertyIfNotNull(object, "playerColorHex", chatMessage.getPlayerColor() != null ? chatMessage.getPlayerColor().toHexString() : null);
         addPropertyIfNotNull(object, "text", chatMessage.getText());
         addPropertyIfNotNull(object, "textColorHex", chatMessage.getTextColor() != null ? chatMessage.getTextColor().toHexString() : null);
         return gson.toJson(object);

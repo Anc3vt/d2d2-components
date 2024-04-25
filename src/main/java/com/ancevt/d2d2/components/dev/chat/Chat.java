@@ -58,8 +58,6 @@ public class Chat extends Container {
 
     @Getter
     private int maxMessages = 2048;
-    @Getter
-    private int lastChatMessageId;
     private int historyIndex;
     @Getter
     private boolean inputEnabled;
@@ -210,33 +208,6 @@ public class Chat extends Container {
         redraw();
     }
 
-    public void addPlayerMessage(int id,
-                                 int playerId,
-                                 String playerName,
-                                 Color playerColor,
-                                 String messageText,
-                                 Color textColor) {
-
-        if (messageText.length() > 70) {
-            StringBuilder s = new StringBuilder();
-            for (int i = 0; i < messageText.length(); i += 70) {
-                String part = messageText.substring(i, Math.min(i + 70, messageText.length()));
-                addPlayerMessage(id, playerId, playerName, playerColor, part, textColor);
-            }
-            return;
-        }
-
-        if (messageText.contains("\n")) {
-            messageText.lines().forEach(line ->
-                addPlayerMessage(id, playerId, playerName, playerColor, line, textColor));
-            return;
-        }
-
-        addMessage(new ChatMessage(id, playerId, playerName, playerColor, messageText, textColor));
-        if (id != 0) lastChatMessageId = id;
-        redraw();
-    }
-
     public void addMessage(String messageText, Color textColor) {
         setAlpha(1.0f);
         alphaTime = ALPHA_TIME;
@@ -287,11 +258,7 @@ public class Chat extends Container {
         redraw();
 
         if (log.isDebugEnabled()) {
-            if (chatMessage.isFromPlayer()) {
-                log.debug("{}({}): {}", chatMessage.getPlayerName(), chatMessage.getPlayerId(), chatMessage.getText());
-            } else {
-                log.debug("{}", chatMessage.getText());
-            }
+            log.debug("{}", chatMessage.getText());
         }
     }
 
