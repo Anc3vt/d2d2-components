@@ -57,7 +57,7 @@ public class ChatMessage extends Container {
     }
 
     public void setMulticolorEnabled(boolean multicolorEnabled) {
-        bitmapText.setMulticolorEnabled(multicolorEnabled);
+        bitmapText.setMulticolor(multicolorEnabled);
         this.multicolorEnabled = multicolorEnabled;
     }
 

@@ -39,7 +39,7 @@ public class FrameTitle extends Component {
 
         bitmapText = new BitmapText();
         bitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddle());
-        bitmapText.setMulticolorEnabled(true);
+        bitmapText.setMulticolor(true);
         add(bitmapText, 10, 10);
 
         addEventListener(Event.RESIZE, this::this_resize);

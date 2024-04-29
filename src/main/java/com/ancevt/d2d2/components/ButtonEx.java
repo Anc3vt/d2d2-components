@@ -227,7 +227,7 @@ public class ButtonEx extends Component implements IColored {
         if (bitmapText == null) {
             bitmapText = new BitmapText();
             bitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddle());
-            bitmapText.setMulticolorEnabled(true);
+            bitmapText.setMulticolor(true);
             add(bitmapText);
         }
 

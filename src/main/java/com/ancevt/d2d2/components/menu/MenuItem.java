@@ -55,7 +55,7 @@ public class MenuItem extends Component {
 
         bitmapText = new BitmapText();
         bitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddle());
-        bitmapText.setMulticolorEnabled(true);
+        bitmapText.setMulticolor(true);
         add(bitmapText, 10, (HEIGHT - bitmapText.getTextHeight()) / 2);
 
         addEventListener(Event.RESIZE, this::this_resize);
