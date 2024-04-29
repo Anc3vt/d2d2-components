@@ -26,7 +26,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class ConsoleChatEvent extends Event {
+public class ConsoleEvent extends Event {
 
     public static final String VAR_VALUE_CHANGE = "varValueChange";
     public static final String VAR_VALUE_DELETE = "varValueDelete";

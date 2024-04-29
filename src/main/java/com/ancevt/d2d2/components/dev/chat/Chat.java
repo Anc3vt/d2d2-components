@@ -87,7 +87,7 @@ public class Chat extends Container {
         textInput.setComponentFocusRectVisibleEnabled(false);
         textInput.setFocusRectVisibleEnabled(false);
 
-        loadHistory();
+        loadInputHistory();
 
         redraw();
     }
@@ -358,17 +358,17 @@ public class Chat extends Container {
         textInput.moveCaretToEnd();
     }
 
-    public void saveHistory() {
+    public void saveInputHistory() {
         String toSave = history.stream().reduce("", (s1, s2) -> s1.concat('\n' + s2));
         if (toSave.isEmpty()) return;
         toSave = toSave.substring(1);
         if (!toSave.isBlank()) {
-            getIsolatedDirectory.writeString(toSave, "chatinputhistory");
+            getIsolatedDirectory.writeString(toSave, "inputhistory");
         }
     }
 
-    private void loadHistory() {
-        getIsolatedDirectory.checkExists("chatinputhistory").ifPresent(strPath -> {
+    private void loadInputHistory() {
+        getIsolatedDirectory.checkExists("inputhistory").ifPresent(strPath -> {
             String historyString = getIsolatedDirectory.readString(strPath);
             history.addAll(historyString.lines().toList());
             historyIndex = history.size();

@@ -93,23 +93,24 @@ public class Console extends Chat implements IDisposable {
         D2D2.stage().addEventListener(this, LifecycleEvent.START_MAIN_LOOP, this::stage_startMainLoop);
         D2D2.stage().addEventListener(this, LifecycleEvent.EXIT_MAIN_LOOP, this::stage_exitMainLoop);
         openInput();
-        loadContent();
+        loadOutputHistory();
 
         commands.add(new Command("/help", "/h", "Show help", a -> showHelp(), true));
         commands.add(new Command("/cls", null, "Clear console output", a -> clear(), true));
         commands.add(new Command("/exit", "/q", "Exit D2D2 loop", a -> D2D2.exit(), true));
         commands.add(new Command("/var", "/v", "Define and print variable value", this::commandVar, true));
         commands.add(new Command("/delete", "/d", "Delete variable", this::deleteVar, true));
+
     }
 
     private void stage_startMainLoop(Event event) {
-        loadContext();
+        loadVariables();
     }
 
     private void stage_exitMainLoop(Event event) {
-        saveHistory();
-        saveContent();
-        saveContext();
+        saveInputHistory();
+        saveOutputHistory();
+        saveVariables();
     }
 
     public Console() throws ApplicationMainClassNameExtractor.MainClassNameExtractorException {
@@ -122,8 +123,8 @@ public class Console extends Chat implements IDisposable {
 
     public Console setVar(String variable, String value) {
         context.put(variable, value);
-        dispatchEvent(ConsoleChatEvent.builder()
-            .type(ConsoleChatEvent.VAR_VALUE_CHANGE)
+        dispatchEvent(ConsoleEvent.builder()
+            .type(ConsoleEvent.VAR_VALUE_CHANGE)
             .varName(variable)
             .oldValue(ConvertableString.convert(null))
             .value(ConvertableString.convert(value))
@@ -137,8 +138,8 @@ public class Console extends Chat implements IDisposable {
     }
 
     public Console addVariableListener(String variable, Object initialValue, BiConsumer<String, ConvertableString> listener) {
-        addEventListener("console_." + variable, ConsoleChatEvent.VAR_VALUE_CHANGE, event -> {
-            ConsoleChatEvent e = event.casted();
+        addEventListener("console_" + variable, ConsoleEvent.VAR_VALUE_CHANGE, event -> {
+            ConsoleEvent e = event.casted();
             if (Objects.equals(e.getVarName(), variable)) {
                 try {
                     listener.accept(variable, e.getValue());
@@ -157,7 +158,7 @@ public class Console extends Chat implements IDisposable {
     }
 
     public void removeVariableListener(String varName) {
-        removeEventListener("console_" + varName, ConsoleChatEvent.VAR_VALUE_CHANGE);
+        removeEventListener("console_" + varName, ConsoleEvent.VAR_VALUE_CHANGE);
     }
 
     private void deleteVar(Args args) {
@@ -166,18 +167,18 @@ public class Console extends Chat implements IDisposable {
         if (oldValue != null) {
             context.remove(varName);
             print("delete '" + varName + "', old value: '" + oldValue + "'");
-            dispatchEvent(ConsoleChatEvent.builder()
-                .type(ConsoleChatEvent.VAR_VALUE_CHANGE)
+            dispatchEvent(ConsoleEvent.builder()
+                .type(ConsoleEvent.VAR_VALUE_CHANGE)
                 .varName(varName)
                 .oldValue(ConvertableString.convert(oldValue))
-                .value(null)
+                .value(ConvertableString.empty())
                 .build()
             );
-            dispatchEvent(ConsoleChatEvent.builder()
-                .type(ConsoleChatEvent.VAR_VALUE_DELETE)
+            dispatchEvent(ConsoleEvent.builder()
+                .type(ConsoleEvent.VAR_VALUE_DELETE)
                 .varName(varName)
                 .oldValue(ConvertableString.convert(oldValue))
-                .value(null)
+                .value(ConvertableString.empty())
                 .build()
             );
         } else {
@@ -299,8 +300,8 @@ public class Console extends Chat implements IDisposable {
         return Pattern.matches("[a-zA-Z_$][a-zA-Z\\d_$\\.]*=.*", input);
     }
 
-    private void loadContent() {
-        getGetIsolatedDirectory().checkExists("content").ifPresent(relativePath -> {
+    private void loadOutputHistory() {
+        getGetIsolatedDirectory().checkExists("outputhistory").ifPresent(relativePath -> {
             String content = getGetIsolatedDirectory().readString(relativePath);
             content.lines().forEach(s -> {
                 ChatMessage chatMessage = ChatMessageJsonConverter.jsonToChatMessage(s);
@@ -309,7 +310,7 @@ public class Console extends Chat implements IDisposable {
         });
     }
 
-    private void saveContent() {
+    private void saveOutputHistory() {
         StringBuilder sb = new StringBuilder();
 
         getMessages().forEach(m -> {
@@ -317,11 +318,11 @@ public class Console extends Chat implements IDisposable {
             sb.append("\n");
         });
 
-        getGetIsolatedDirectory().writeString(sb.toString(), "content");
+        getGetIsolatedDirectory().writeString(sb.toString(), "outputhistory");
     }
 
-    public void loadContext() {
-        getGetIsolatedDirectory().checkExists("context").ifPresent(relativePath -> {
+    public void loadVariables() {
+        getGetIsolatedDirectory().checkExists("variables").ifPresent(relativePath -> {
             String contextData = getGetIsolatedDirectory().readString(relativePath);
             Map<String, String> map = JsonEngine.gson().fromJson(
                 contextData,
@@ -339,9 +340,9 @@ public class Console extends Chat implements IDisposable {
         });
     }
 
-    private void saveContext() {
+    private void saveVariables() {
         String contextData = JsonEngine.gson().toJson(context);
-        getGetIsolatedDirectory().writeString(contextData, "context");
+        getGetIsolatedDirectory().writeString(contextData, "variables");
     }
 
     public void setTildaEnabled(boolean tildaEnabled) {
