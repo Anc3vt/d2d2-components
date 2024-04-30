@@ -20,6 +20,7 @@ package com.ancevt.d2d2.components.dev.chat;
 import com.ancevt.commons.fs.IsolatedDirectory;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.components.ComponentFont;
+import com.ancevt.d2d2.components.Padding;
 import com.ancevt.d2d2.components.TextInput;
 import com.ancevt.d2d2.components.TextInputEvent;
 import com.ancevt.d2d2.display.Color;
@@ -70,7 +71,7 @@ public class Chat extends Container {
     private boolean multicolorEnabled;
 
     public Chat(String dirInUserHome) {
-        getIsolatedDirectory = new IsolatedDirectory(Path.of(System.getProperty("user.home")).resolve(dirInUserHome));
+        getIsolatedDirectory = IsolatedDirectory.newIsolatedDirectoryInApplicationData(Path.of(dirInUserHome));
 
         textInput = new TextInput();
         messages = new CopyOnWriteArrayList<>();
@@ -170,7 +171,7 @@ public class Chat extends Container {
     }
 
     private void redraw() {
-        textInput.setXY(0, height - textInput.getHeight());
+        textInput.setXY(0, height + 10);
 
         textInput.setMaxSize(D2D2.stage().getWidth(), 16);
 
