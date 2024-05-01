@@ -129,7 +129,7 @@ public class TextInput extends Component {
         caret.setHeight(getHeight() - getHeight() / 3f);
         caret.setY((getHeight() - caret.getHeight()) / 2);
         bitmapText.setXY(padding.getLeft(), (getHeight() - bitmapText.getCharHeight()) / 2 + 2);
-        bitmapText.setWidth(getWidth() - padding.getLeft() - padding.getRight() + 10);
+        bitmapText.setWidth(getWidth() - padding.getLeft() - padding.getRight());
         focusRect.setSize(getWidth(), getHeight());
     }
 
