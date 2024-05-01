@@ -62,7 +62,6 @@
         <lombok.version>1.18.24</lombok.version>
 
         <ancevt-commons.version>1.0.2-SNAPSHOT</ancevt-commons.version>
-        <d2d2-core.version>0.1.6.1-SNAPSHOT</d2d2-core.version>
 
         <!-- Plugins -->
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
@@ -74,7 +73,7 @@
     <dependencies>
         <dependency>
             <groupId>com.ancevt.d2d2</groupId>
-            <artifactId>d2d2-core</artifactId>
+            <artifactId>d2d2-framework</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
