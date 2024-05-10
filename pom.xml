@@ -6,7 +6,7 @@
 
     <groupId>com.ancevt.d2d2</groupId>
     <artifactId>d2d2-components</artifactId>
-    <version>0.1.6.2</version>
+    <version>0.1.6.3-SNAPSHOT</version>
 
     <name>D2D2 Components</name>
     <url>https://githib.com/Anc3vt/d2d2-components</url>
@@ -61,8 +61,6 @@
         <java.version>17</java.version>
         <lombok.version>1.18.24</lombok.version>
 
-        <ancevt-commons.version>1.0.2-SNAPSHOT</ancevt-commons.version>
-
         <!-- Plugins -->
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
@@ -75,11 +73,6 @@
             <groupId>com.ancevt.d2d2</groupId>
             <artifactId>d2d2-framework</artifactId>
             <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.ancevt.commons</groupId>
-            <artifactId>ancevt-commons</artifactId>
-            <version>${ancevt-commons.version}</version>
         </dependency>
     </dependencies>
 
