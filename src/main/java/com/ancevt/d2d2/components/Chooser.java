@@ -17,11 +17,8 @@
  */
 package com.ancevt.d2d2.components;
 
-import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
-import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 import lombok.Data;

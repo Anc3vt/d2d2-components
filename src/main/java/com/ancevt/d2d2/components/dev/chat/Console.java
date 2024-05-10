@@ -28,7 +28,7 @@ import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.IContainer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InputEvent;
+import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.event.LifecycleEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.time.Timer;
@@ -349,8 +349,8 @@ public class Console extends Chat implements IDisposable {
         if (this.tildaEnabled == tildaEnabled) return;
 
         this.tildaEnabled = tildaEnabled;
-        D2D2.stage().addEventListener(this, InputEvent.KEY_DOWN, event -> {
-            InputEvent e = event.casted();
+        D2D2.stage().addEventListener(this, InteractiveEvent.KEY_DOWN, event -> {
+            InteractiveEvent e = event.casted();
             if (e.getKeyCode() == KeyCode.TILDA && e.isShift()) {
                 setVisible(!isVisible());
                 Timer.setTimeout(t -> {
@@ -375,7 +375,7 @@ public class Console extends Chat implements IDisposable {
 
     @Override
     public void dispose() {
-        D2D2.stage().removeEventListener(this, InputEvent.KEY_DOWN);
+        D2D2.stage().removeEventListener(this, InteractiveEvent.KEY_DOWN);
         D2D2.stage().removeEventListener(this, LifecycleEvent.START_MAIN_LOOP);
         D2D2.stage().removeEventListener(this, LifecycleEvent.EXIT_MAIN_LOOP);
         disposed = true;

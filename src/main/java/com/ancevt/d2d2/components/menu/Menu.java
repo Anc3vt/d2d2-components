@@ -21,7 +21,6 @@ import com.ancevt.d2d2.common.PlainRect;
 import com.ancevt.d2d2.components.Component;
 import com.ancevt.d2d2.display.IDisplayObject;
 import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.Mouse;
 
@@ -107,9 +106,9 @@ public class Menu extends Component {
             setY(y - getHeight());
         }
 
-        stage().addEventListener(this, InputEvent.MOUSE_DOWN, event -> {
+        stage().addEventListener(this, InteractiveEvent.DOWN, event -> {
             deactivate(this);
-            stage().removeEventListener(this, InputEvent.MOUSE_DOWN);
+            stage().removeEventListener(this, InteractiveEvent.DOWN);
         });
 
         activeRootMenu = this;

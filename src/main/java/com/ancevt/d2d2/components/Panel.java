@@ -17,12 +17,8 @@
  */
 package com.ancevt.d2d2.components;
 
-import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.engine.lwjgl.LwjglEngine;
 import com.ancevt.d2d2.common.PlainRect;
-import com.ancevt.d2d2.debug.StarletSpace;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
 
 public class Panel extends Component {

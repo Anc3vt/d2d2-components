@@ -25,7 +25,6 @@ import com.ancevt.d2d2.display.interactive.Combined9Sprites;
 import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.InteractiveEvent;
 
 import java.util.ArrayList;
@@ -148,13 +147,13 @@ public class DropDownList<T> extends Component {
             if (scrollPane.getY() < 0) scrollPane.setY(0);
         }
 
-        stage().removeEventListener(this, InputEvent.MOUSE_DOWN);
-        stage().addEventListener(this, InputEvent.MOUSE_DOWN, event -> {
-            var e = (InputEvent) event;
+        stage().removeEventListener(this, InteractiveEvent.DOWN);
+        stage().addEventListener(this, InteractiveEvent.DOWN, event -> {
+            var e = (InteractiveEvent) event;
 
             if (e.getX() < scrollPane.getX() || e.getX() > scrollPane.getX() + scrollPane.getWidth()
                 || e.getY() < scrollPane.getY() || e.getY() > scrollPane.getY() + scrollPane.getHeight()) {
-                stage().removeEventListener(this, InputEvent.MOUSE_DOWN);
+                stage().removeEventListener(this, InteractiveEvent.DOWN);
                 close();
             }
         });
@@ -163,7 +162,7 @@ public class DropDownList<T> extends Component {
     }
 
     private void close() {
-        stage().removeEventListener(this, InputEvent.MOUSE_DOWN);
+        stage().removeEventListener(this, InteractiveEvent.DOWN);
         oldTime = System.currentTimeMillis();
         scrollPane.removeFromParent();
         displayedItemList.forEach(Item::removeFromParent);

@@ -26,7 +26,7 @@ import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.DisplayObject;
 import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InputEvent;
+import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.time.Timer;
 import lombok.Getter;
@@ -118,12 +118,12 @@ public class Chat extends Container {
         if (this.inputEnabled == b) return;
         this.inputEnabled = b;
 
-        D2D2.stage().removeEventListener(this, InputEvent.KEY_DOWN);
+        D2D2.stage().removeEventListener(this, InteractiveEvent.KEY_DOWN);
 
         if (inputEnabled) {
-            D2D2.stage().addEventListener(InputEvent.KEY_DOWN, event -> {
-                InputEvent inputEvent = (InputEvent) event;
-                switch (inputEvent.getKeyCode()) {
+            D2D2.stage().addEventListener(InteractiveEvent.KEY_DOWN, event -> {
+                InteractiveEvent stageEvent = (InteractiveEvent) event;
+                switch (stageEvent.getKeyCode()) {
                     case KeyCode.PAGE_UP -> {
                         setScroll(getScroll() - 10);
                     }
