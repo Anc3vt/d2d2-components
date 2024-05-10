@@ -24,7 +24,7 @@ import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InputEvent;
+import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.KeyCode;
 
 import static com.ancevt.d2d2.D2D2.stage;
@@ -65,8 +65,8 @@ public class AlertWindow extends Container {
 
     private void add_to_stage(Event event) {
         removeEventListener(this, ADD_TO_STAGE);
-        stage().addEventListener(this, InputEvent.KEY_DOWN, e1 -> {
-            var e = (InputEvent) e1;
+        stage().addEventListener(this, InteractiveEvent.KEY_DOWN, e1 -> {
+            var e = (InteractiveEvent) e1;
             if (e.getKeyCode() == KeyCode.ENTER) {
                 close();
             }
@@ -113,7 +113,7 @@ public class AlertWindow extends Container {
     }
 
     public void close() {
-        stage().removeEventListener(this, InputEvent.KEY_DOWN);
+        stage().removeEventListener(this, InteractiveEvent.KEY_DOWN);
         removeFromParent();
         if (onCloseFunction != null) {
             onCloseFunction.run();
