@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.components.dev.chat;
+package com.ancevt.d2d2.components.dev;
 
 
 import com.ancevt.commons.exception.StackTraceUtil;
@@ -25,13 +25,10 @@ import com.ancevt.commons.util.ApplicationMainClassNameExtractor;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.common.IDisposable;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.IContainer;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.event.LifecycleEvent;
-import com.ancevt.d2d2.input.KeyCode;
-import com.ancevt.d2d2.time.Timer;
 import com.ancevt.util.args.Args;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -75,9 +72,6 @@ public class Console extends Chat implements IDisposable {
     private boolean maximized;
 
     private boolean disposed;
-
-    @Getter
-    private boolean tildaEnabled;
 
     @Getter
     @Setter
@@ -301,8 +295,8 @@ public class Console extends Chat implements IDisposable {
     }
 
     private void loadOutputHistory() {
-        getGetIsolatedDirectory().checkExists("outputhistory").ifPresent(relativePath -> {
-            String content = getGetIsolatedDirectory().readString(relativePath);
+        getIsolatedDirectory().checkExists("outputhistory").ifPresent(relativePath -> {
+            String content = getIsolatedDirectory().readString(relativePath);
             content.lines().forEach(s -> {
                 ChatMessage chatMessage = ChatMessageJsonConverter.jsonToChatMessage(s);
                 addMessage(chatMessage);
@@ -318,12 +312,12 @@ public class Console extends Chat implements IDisposable {
             sb.append("\n");
         });
 
-        getGetIsolatedDirectory().writeString(sb.toString(), "outputhistory");
+        getIsolatedDirectory().writeString(sb.toString(), "outputhistory");
     }
 
     public void loadVariables() {
-        getGetIsolatedDirectory().checkExists("variables").ifPresent(relativePath -> {
-            String contextData = getGetIsolatedDirectory().readString(relativePath);
+        getIsolatedDirectory().checkExists("variables").ifPresent(relativePath -> {
+            String contextData = getIsolatedDirectory().readString(relativePath);
             Map<String, String> map = JsonEngine.gson().fromJson(
                 contextData,
                 new TypeToken<Map<String, String>>() {}.getType()
@@ -342,35 +336,7 @@ public class Console extends Chat implements IDisposable {
 
     private void saveVariables() {
         String contextData = JsonEngine.gson().toJson(context);
-        getGetIsolatedDirectory().writeString(contextData, "variables");
-    }
-
-    public void setTildaEnabled(boolean tildaEnabled) {
-        if (this.tildaEnabled == tildaEnabled) return;
-
-        this.tildaEnabled = tildaEnabled;
-        D2D2.stage().addEventListener(this, InteractiveEvent.KEY_DOWN, event -> {
-            InteractiveEvent e = event.casted();
-            if (e.getKeyCode() == KeyCode.TILDA && e.isShift()) {
-                setVisible(!isVisible());
-                Timer.setTimeout(t -> {
-                    String text = textInput.getText();
-                    if (text.endsWith("`") ||
-                        text.endsWith("ё") ||
-                        text.endsWith("Ё") ||
-                        text.endsWith("~")) {
-                        text = text.substring(0, text.length() - 1);
-                        textInput.setText(text);
-                    }
-                }, 10);
-            }
-        });
-
-        if (tildaEnabled && hasParent()) {
-            IContainer parent = getParent();
-            removeFromParent();
-            parent.add(this);
-        }
+        getIsolatedDirectory().writeString(contextData, "variables");
     }
 
     @Override

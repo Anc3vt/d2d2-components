@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.components.dev.chat;
+package com.ancevt.d2d2.components.dev;
 
 import com.ancevt.d2d2.components.ComponentFont;
 import com.ancevt.d2d2.display.Color;
@@ -26,7 +26,7 @@ import lombok.Getter;
 
 public class ChatMessage extends Container {
 
-    public static final float DEFAULT_WIDTH = 1000;
+    private static final float DEFAULT_WIDTH = 1000;
     public static final float DEFAULT_HEIGHT = 16;
 
     @Getter
@@ -35,7 +35,7 @@ public class ChatMessage extends Container {
     private final String text;
     @Getter
     private final Color textColor;
-    private final BitmapText bitmapText;
+    final BitmapText bitmapText;
 
     @Getter
     private boolean multicolorEnabled;
@@ -52,6 +52,8 @@ public class ChatMessage extends Container {
         bitmapText.setHeight(DEFAULT_HEIGHT);
         bitmapText.setColor(textColor);
         bitmapText.setVertexBleedingFix(0);
+        bitmapText.setWordWrap(false);
+
 
         add(bitmapText);
     }

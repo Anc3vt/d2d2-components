@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.components.dev.chat;
+package com.ancevt.d2d2.components.dev;
 
 import com.ancevt.d2d2.display.Color;
 import com.google.gson.Gson;

@@ -137,13 +137,13 @@ public class Frame extends Component {
         this.manualResizable = manualResizable;
 
         if (manualResizable) {
-            addEventListener("manualResize", Event.ENTER_FRAME, this::this_manualResizeEachFrame);
+            addEventListener("manualResize", Event.LOOP_UPDATE, this::this_manualResizeEachFrame);
             addEventListener("manualResize", InteractiveEvent.DOWN, this::this_manualResizeDown);
             addEventListener("manualResize", InteractiveEvent.UP, this::this_manualResizeUp);
             addEventListener("manualResize", InteractiveEvent.DRAG, this::this_manualResizeDrag);
             addEventListener("manualResize", InteractiveEvent.OUT, this::this_manualResizeOut);
         } else {
-            removeEventListener("manualResize", Event.ENTER_FRAME);
+            removeEventListener("manualResize", Event.LOOP_UPDATE);
             removeEventListener("manualResize", InteractiveEvent.DOWN);
             removeEventListener("manualResize", InteractiveEvent.UP);
             removeEventListener("manualResize", InteractiveEvent.DRAG);
@@ -302,7 +302,7 @@ public class Frame extends Component {
     private void this_addToStage(Event event) {
         removeEventListener(Frame.class, Event.ADD_TO_STAGE);
         FrameManager.getInstance().activateFrame(this);
-        center();
+        //center();
     }
 
     public void center() {
