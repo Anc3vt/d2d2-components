@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ancevt.d2d2.components.dev.chat;
+package com.ancevt.d2d2.components.dev;
 
 import com.ancevt.commons.fs.IsolatedDirectory;
 import com.ancevt.d2d2.D2D2;
@@ -61,7 +61,7 @@ public class Chat extends Container {
     private boolean inputEnabled;
 
     @Getter
-    private final IsolatedDirectory getIsolatedDirectory;
+    private final IsolatedDirectory isolatedDirectory;
 
     @Getter
     private boolean autoHide;
@@ -70,7 +70,7 @@ public class Chat extends Container {
     private boolean multicolorEnabled;
 
     public Chat(String dirInUserHome) {
-        getIsolatedDirectory = IsolatedDirectory.newIsolatedDirectoryInApplicationData(Path.of(dirInUserHome));
+        isolatedDirectory = IsolatedDirectory.newIsolatedDirectoryInApplicationData(Path.of(dirInUserHome));
 
         textInput = new TextInput();
         messages = new CopyOnWriteArrayList<>();
@@ -183,13 +183,15 @@ public class Chat extends Container {
             chatMessage.setMulticolorEnabled(multicolorEnabled);
             displayedMessages.add(chatMessage);
 
+            chatMessage.bitmapText.setWidth(getWidth());
+
             add(chatMessage, 0, y);
             y += (int) chatMessage.getHeight();
         }
     }
 
     private int getMessageCountOnDisplay() {
-        return (int) ((getHeight() - textInput.getHeight()) / ChatMessage.DEFAULT_HEIGHT) - 1;
+        return (int) (getHeight() / ChatMessage.DEFAULT_HEIGHT);
     }
 
     public void setScroll(int scroll) {
@@ -363,13 +365,13 @@ public class Chat extends Container {
         if (toSave.isEmpty()) return;
         toSave = toSave.substring(1);
         if (!toSave.isBlank()) {
-            getIsolatedDirectory.writeString(toSave, "inputhistory");
+            isolatedDirectory.writeString(toSave, "inputhistory");
         }
     }
 
     private void loadInputHistory() {
-        getIsolatedDirectory.checkExists("inputhistory").ifPresent(strPath -> {
-            String historyString = getIsolatedDirectory.readString(strPath);
+        isolatedDirectory.checkExists("inputhistory").ifPresent(strPath -> {
+            String historyString = isolatedDirectory.readString(strPath);
             history.addAll(historyString.lines().toList());
             historyIndex = history.size();
         });
