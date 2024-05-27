@@ -17,7 +17,7 @@
  */
 package com.ancevt.d2d2.components;
 
-import com.ancevt.d2d2.common.PlainRect;
+import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 
@@ -32,7 +32,7 @@ public class ScrollPane extends Component {
 
     public static final int DEFAULT_SCROLL_STEP = 4;
 
-    private final PlainRect bg;
+    private final RectangleShape bg;
     private final Scrollbar scrollbar;
     private final List<Component> components;
 
@@ -42,7 +42,7 @@ public class ScrollPane extends Component {
     private float itemHeight;
 
     public ScrollPane() {
-        bg = new PlainRect(BACKGROUND_COLOR);
+        bg = new RectangleShape(1, 1, BACKGROUND_COLOR);
         bg.setAlpha(PANEL_BG_ALPHA);
         add(bg);
 

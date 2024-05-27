@@ -18,7 +18,7 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.common.PlainRect;
+import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.interactive.InteractiveSprite;
 import com.ancevt.d2d2.display.texture.Texture;
@@ -35,7 +35,7 @@ public class Scrollbar extends Component {
     private static final float ALPHA_SPEED = 0.1f;
     public static final int FADE_HOLD = 50;
 
-    private final PlainRect _debugRect;
+    private final RectangleShape _debugRect;
     private final ScrollbarRect rect;
     private int fadeHold = FADE_HOLD;
     private boolean hovered;
@@ -43,7 +43,7 @@ public class Scrollbar extends Component {
     public Scrollbar() {
         setTabbingEnabled(false);
 
-        _debugRect = new PlainRect();
+        _debugRect = new RectangleShape();
         _debugRect.setColor(Color.GRAY);
         //add(_debugRect);
 

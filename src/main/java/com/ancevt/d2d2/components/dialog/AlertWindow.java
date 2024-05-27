@@ -17,7 +17,7 @@
  */
 package com.ancevt.d2d2.components.dialog;
 
-import com.ancevt.d2d2.common.PlainRect;
+import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.components.Button;
 import com.ancevt.d2d2.components.ComponentFont;
 import com.ancevt.d2d2.display.Color;
@@ -37,12 +37,12 @@ public class AlertWindow extends Container {
     private static final float PADDING = 20f;
     private static final float PADDING_CONTROLS = 30f;
 
-    private final PlainRect bg;
+    private final RectangleShape bg;
     private final BitmapText bitmapText;
     private Runnable onCloseFunction;
 
     public AlertWindow() {
-        bg = new PlainRect(DEFAULT_WIDTH, DEFAULT_HEIGHT, Color.BLACK);
+        bg = new RectangleShape(DEFAULT_WIDTH, DEFAULT_HEIGHT, Color.BLACK);
         bg.setAlpha(0.95f);
         add(bg);
 

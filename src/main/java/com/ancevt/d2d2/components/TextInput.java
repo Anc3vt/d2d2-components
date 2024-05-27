@@ -17,7 +17,7 @@
  */
 package com.ancevt.d2d2.components;
 
-import com.ancevt.d2d2.common.PlainRect;
+import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.interactive.Combined9Sprites;
 import com.ancevt.d2d2.display.text.BitmapFont;
@@ -38,8 +38,8 @@ public class TextInput extends Component {
     private Color colorFocusRect = Color.of(0x515256);
     private float backgroundAlpha = Component.PANEL_BG_ALPHA;
 
-    private final PlainRect bg;
-    private final PlainRect selection;
+    private final RectangleShape bg;
+    private final RectangleShape selection;
     private final BitmapText bitmapText;
     private final Combined9Sprites focusRect;
     private final Caret caret;
@@ -52,8 +52,8 @@ public class TextInput extends Component {
     private Padding padding = new Padding(10, 0, 10, 0);
 
     public TextInput() {
-        bg = new PlainRect(DEFAULT_WIDTH, DEFAULT_HEIGHT, colorBackground);
-        selection = new PlainRect(0, DEFAULT_HEIGHT - 8, colorSelection);
+        bg = new RectangleShape(DEFAULT_WIDTH, DEFAULT_HEIGHT, colorBackground);
+        selection = new RectangleShape(0, DEFAULT_HEIGHT - 8, colorSelection);
         bitmapText = new BitmapText();
         bitmapText.setAutosize(true);
         bitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddle());
@@ -475,7 +475,7 @@ public class TextInput extends Component {
 
     }
 
-    private static class Caret extends PlainRect {
+    private static class Caret extends RectangleShape {
 
         public static final int BLINK_DELAY = 25;
 

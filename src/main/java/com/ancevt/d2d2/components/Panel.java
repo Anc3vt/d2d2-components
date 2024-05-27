@@ -17,7 +17,7 @@
  */
 package com.ancevt.d2d2.components;
 
-import com.ancevt.d2d2.common.PlainRect;
+import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.event.Event;
 
@@ -26,12 +26,12 @@ public class Panel extends Component {
     private final float DEFAULT_WIDTH = 200.0f;
     private final float DEFAULT_HEIGHT = 200.0f;
 
-    private final PlainRect bg;
+    private final RectangleShape bg;
 
     public Panel() {
         setTabbingEnabled(false);
 
-        bg = new PlainRect(Color.BLACK);
+        bg = new RectangleShape(1, 1, Color.BLACK);
         bg.setAlpha(Component.PANEL_BG_ALPHA);
         add(bg);
 

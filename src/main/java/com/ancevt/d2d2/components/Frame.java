@@ -17,7 +17,7 @@
  */
 package com.ancevt.d2d2.components;
 
-import com.ancevt.d2d2.common.PlainRect;
+import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.interactive.Combined9Sprites;
 import com.ancevt.d2d2.display.interactive.DragUtil;
@@ -41,7 +41,7 @@ public class Frame extends Component {
     private static final float RESIZE_SPREAD = 8.0f;
 
     private final FrameTitle frameTitle;
-    private final PlainRect bg1;
+    private final RectangleShape bg1;
     private final Combined9Sprites borders;
 
     @Getter
@@ -71,7 +71,7 @@ public class Frame extends Component {
     private final Component contentPanel = new Panel();
 
     public Frame() {
-        bg1 = new PlainRect();
+        bg1 = new RectangleShape();
         bg1.setAlpha(backgroundAlpha);
         bg1.setColor(colorBackground1);
         add(bg1);

@@ -17,7 +17,7 @@
  */
 package com.ancevt.d2d2.components.menu;
 
-import com.ancevt.d2d2.common.PlainRect;
+import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.components.Component;
 import com.ancevt.d2d2.display.IDisplayObject;
 import com.ancevt.d2d2.event.Event;
@@ -155,9 +155,9 @@ public class Menu extends Component {
         float y = 0;
         for (MenuItem item : items) {
             if (item == null) {
-                PlainRect separatorBg = new PlainRect(getWidth(), 6, MENU_BACKGROUND_COLOR);
+                RectangleShape separatorBg = new RectangleShape(getWidth(), 6, MENU_BACKGROUND_COLOR);
                 add(separatorBg, 0, y);
-                PlainRect separator = new PlainRect(getWidth() - 8, 2, MENU_SEPARATOR_COLOR);
+                RectangleShape separator = new RectangleShape(getWidth() - 8, 2, MENU_SEPARATOR_COLOR);
                 add(separator, 4, y + 2);
                 y += 6;
             } else {

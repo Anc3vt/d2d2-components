@@ -18,7 +18,7 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.common.PlainRect;
+import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.SpriteFactory;
 import com.ancevt.d2d2.display.interactive.Combined9Sprites;
@@ -39,7 +39,7 @@ public class DropDownList<T> extends Component {
     private static final float DEFAULT_WIDTH = 150.0f;
     private static final float DEFAULT_HEIGHT = 24.0f;
 
-    private final PlainRect bg;
+    private final RectangleShape bg;
     private final Combined9Sprites borders;
 
     private final BitmapText bitmapText;
@@ -61,7 +61,7 @@ public class DropDownList<T> extends Component {
         scrollPane = new ScrollPane();
         scrollPane.setItemHeight(DEFAULT_HEIGHT);
 
-        bg = new PlainRect(BACKGROUND_COLOR);
+        bg = new RectangleShape(1, 1, BACKGROUND_COLOR);
         add(bg);
 
         borders = new Combined9Sprites(
@@ -244,7 +244,7 @@ public class DropDownList<T> extends Component {
         private final String text;
         private final T object;
         private final DropDownList<T> dropDownList;
-        private final PlainRect bg;
+        private final RectangleShape bg;
         private final BitmapText bitmapText;
 
         public Item(DropDownList<T> dropDownList, String text, T object) {
@@ -252,7 +252,7 @@ public class DropDownList<T> extends Component {
             this.text = text;
             this.object = object;
 
-            bg = new PlainRect(BACKGROUND_COLOR);
+            bg = new RectangleShape(1, 1, BACKGROUND_COLOR);
             add(bg);
 
             bitmapText = new BitmapText();
