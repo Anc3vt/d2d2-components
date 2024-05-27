@@ -18,7 +18,7 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.common.PlainRect;
+import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.SpriteFactory;
@@ -35,7 +35,7 @@ public class Tooltip extends Component {
 
     private static Tooltip tooltip;
 
-    private final PlainRect bg;
+    private final RectangleShape bg;
     private final Combined9Sprites borders;
     private final BitmapText bitmapText;
     private final Sprite spriteBg;
@@ -44,7 +44,7 @@ public class Tooltip extends Component {
     private float maxImageHeight;
 
     private Tooltip() {
-        bg = new PlainRect(BACKGROUND_COLOR);
+        bg = new RectangleShape(1, 1, BACKGROUND_COLOR);
         add(bg);
 
         setEnabled(false);

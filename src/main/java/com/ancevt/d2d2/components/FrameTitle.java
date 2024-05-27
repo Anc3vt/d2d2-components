@@ -17,7 +17,7 @@
  */
 package com.ancevt.d2d2.components;
 
-import com.ancevt.d2d2.common.PlainRect;
+import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
@@ -27,14 +27,14 @@ public class FrameTitle extends Component {
     private static final float DEFAULT_TITLE_HEIGHT = 25.0f;
     private static final Color DEFAULT_TITLE_BACKGROUND_COLOR = Color.of(0x505050);
 
-    private final PlainRect bg;
+    private final RectangleShape bg;
     private final BitmapText bitmapText;
 
     public FrameTitle() {
         setComponentFocusRectVisibleEnabled(false);
         setTabbingEnabled(false);
 
-        bg = new PlainRect(DEFAULT_TITLE_BACKGROUND_COLOR);
+        bg = new RectangleShape(1, 1, DEFAULT_TITLE_BACKGROUND_COLOR);
         add(bg);
 
         bitmapText = new BitmapText();

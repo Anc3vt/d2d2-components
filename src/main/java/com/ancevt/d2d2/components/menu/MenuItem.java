@@ -17,7 +17,7 @@
  */
 package com.ancevt.d2d2.components.menu;
 
-import com.ancevt.d2d2.common.PlainRect;
+import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.components.Component;
 import com.ancevt.d2d2.components.ComponentAssets;
 import com.ancevt.d2d2.components.ComponentFont;
@@ -37,7 +37,7 @@ public class MenuItem extends Component {
     private static final Runnable STUB_ACTION = () -> {
     };
 
-    final PlainRect bg;
+    final RectangleShape bg;
     private final BitmapText bitmapText;
 
     private Sprite childMenuArrow;
@@ -47,7 +47,7 @@ public class MenuItem extends Component {
 
     public MenuItem(Menu parentMenu) {
         this.parentMenu = parentMenu;
-        bg = new PlainRect();
+        bg = new RectangleShape();
         bg.setColor(MENU_BACKGROUND_COLOR);
         add(bg);
 
