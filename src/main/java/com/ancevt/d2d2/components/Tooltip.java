@@ -18,13 +18,13 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.SpriteFactory;
 import com.ancevt.d2d2.display.interactive.Combined9Sprites;
 import com.ancevt.d2d2.display.text.BitmapText;
-import com.ancevt.d2d2.display.texture.Texture;
+import com.ancevt.d2d2.display.texture.TextureClip;
 import com.ancevt.d2d2.event.Event;
 
 
@@ -45,36 +45,36 @@ public class Tooltip extends Component {
 
     private Tooltip() {
         bg = new RectangleShape(1, 1, BACKGROUND_COLOR);
-        add(bg);
+        addChild(bg);
 
         setEnabled(false);
 
         borders = new Combined9Sprites(
-            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_TOP_LEFT),
-            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_TOP),
-            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_TOP_RIGHT),
-            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_LEFT),
-            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_CENTER),
-            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_RIGHT),
-            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_LEFT),
-            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM),
-            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_RIGHT)
+            D2D2.getTextureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_TOP_LEFT),
+            D2D2.getTextureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_TOP),
+            D2D2.getTextureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_TOP_RIGHT),
+            D2D2.getTextureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_LEFT),
+            D2D2.getTextureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_CENTER),
+            D2D2.getTextureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_RIGHT),
+            D2D2.getTextureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_LEFT),
+            D2D2.getTextureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM),
+            D2D2.getTextureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_RIGHT)
         );
         borders.setColor(FOREGROUND_COLOR);
-        add(borders);
+        addChild(borders);
 
-        spriteBg = SpriteFactory.createSprite(ComponentAssets.TOOLTIP_IMAGE_BACKGROUND);
-        add(spriteBg, 10, 10);
+        spriteBg = SpriteFactory.createSpriteByTextureKey(ComponentAssets.TOOLTIP_IMAGE_BACKGROUND);
+        addChild(spriteBg, 10, 10);
         spriteBg.setColor(Color.of(0x111111));
         spriteBg.setVisible(false);
 
-        sprite = SpriteFactory.createSprite();
-        add(sprite, 10, 10);
+        sprite = SpriteFactory.createEmptySprite();
+        addChild(sprite, 10, 10);
 
         bitmapText = new BitmapText(ComponentFont.getBitmapFontMiddle());
         bitmapText.setMulticolor(true);
         bitmapText.setAutosize(true);
-        add(bitmapText, 10, 10);
+        addChild(bitmapText, 10, 10);
 
         addEventListener(Tooltip.class, Event.RESIZE, this::this_resize);
         addEventListener(Tooltip.class, Event.ADD_TO_STAGE, this::this_addToStage);
@@ -101,12 +101,12 @@ public class Tooltip extends Component {
         return spriteBg.isVisible();
     }
 
-    public void setTexture(Texture texture) {
-        sprite.setTexture(texture);
+    public void setTexture(TextureClip textureClip) {
+        sprite.setTexture(textureClip);
         rebuild();
     }
 
-    public Texture getTexture() {
+    public TextureClip getTexture() {
         return sprite.getTexture();
     }
 

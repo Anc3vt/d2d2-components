@@ -5,8 +5,8 @@ import com.ancevt.commons.fs.IsolatedDirectoryDictionaryUtil;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.components.ComponentEvent;
 import com.ancevt.d2d2.components.Frame;
-import com.ancevt.d2d2.display.IContainer;
-import com.ancevt.d2d2.display.IDisplayObject;
+import com.ancevt.d2d2.display.Container;
+import com.ancevt.d2d2.display.DisplayObject;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.event.LifecycleEvent;
@@ -27,7 +27,7 @@ public class DevConsoleFrame extends Frame {
     @Getter
     private final DevConsole console;
 
-    public DevConsoleFrame(BiConsumer<DevConsole, IDisplayObject> debugFunction) {
+    public DevConsoleFrame(BiConsumer<DevConsole, DisplayObject> debugFunction) {
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         setTitle("DevConsole");
         setManualResizable(true);
@@ -39,7 +39,7 @@ public class DevConsoleFrame extends Frame {
             setAlpha(convertableString.toFloatOrDefault(0.75f));
         });
 
-        getContentPanel().add(console);
+        getContentPanel().addChild(console);
 
         addEventListener(this, ComponentEvent.RESIZE, e -> onResize());
         initTilda();
@@ -113,9 +113,9 @@ public class DevConsoleFrame extends Frame {
         });
 
         if (hasParent()) {
-            IContainer parent = getParent();
+            Container parent = getParent();
             removeFromParent();
-            parent.add(this);
+            parent.addChild(this);
         }
     }
 
@@ -127,9 +127,9 @@ public class DevConsoleFrame extends Frame {
         console.setSize(getContentPanel().getWidth() - 20, getContentPanel().getHeight() - 48);
     }
 
-    public static DevConsole init(BiConsumer<DevConsole, IDisplayObject> debugFunction) {
+    public static DevConsole init(BiConsumer<DevConsole, DisplayObject> debugFunction) {
         DevConsoleFrame devConsoleFrame = new DevConsoleFrame(debugFunction);
-        D2D2.stage().add(devConsoleFrame);
+        D2D2.stage().addChild(devConsoleFrame);
         return devConsoleFrame.getConsole();
     }
 

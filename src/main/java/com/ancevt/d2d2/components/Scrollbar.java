@@ -21,7 +21,7 @@ import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.interactive.InteractiveSprite;
-import com.ancevt.d2d2.display.texture.Texture;
+import com.ancevt.d2d2.display.texture.TextureClip;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 
@@ -49,7 +49,7 @@ public class Scrollbar extends Component {
 
         rect = new ScrollbarRect(this);
         rect.setColor(Color.WHITE);
-        add(rect);
+        addChild(rect);
 
         addEventListener(Scrollbar.class, Event.RESIZE, this::this_resize);
         addEventListener(Scrollbar.class, InteractiveEvent.HOVER, this::this_hover);
@@ -145,15 +145,15 @@ public class Scrollbar extends Component {
 
         private static final float DEFAULT_HEIGHT = 60.0f;
         private static final String ASSET_1X1 = "d2d2-core-1x1.png";
-        private static Texture texture;
+        private static TextureClip textureClip;
 
         private final Scrollbar scrollbar;
 
         private int oldY;
 
-        private static Texture get1x1Texture() {
-            if (texture != null) return texture;
-            return texture = D2D2.textureManager().loadTextureAtlas(ASSET_1X1).createTexture();
+        private static TextureClip get1x1Texture() {
+            if (textureClip != null) return textureClip;
+            return textureClip = D2D2.getTextureManager().loadTextureAtlas(ASSET_1X1).createTexture();
         }
 
         public ScrollbarRect(Scrollbar scrollbar) {

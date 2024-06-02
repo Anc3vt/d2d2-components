@@ -19,12 +19,12 @@ package com.ancevt.d2d2.components.dev;
 
 import com.ancevt.d2d2.components.ComponentFont;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.Container;
+import com.ancevt.d2d2.display.SimpleContainer;
 import com.ancevt.d2d2.display.text.BitmapFont;
 import com.ancevt.d2d2.display.text.BitmapText;
 import lombok.Getter;
 
-public class ChatMessage extends Container {
+public class ChatMessage extends SimpleContainer {
 
     private static final float DEFAULT_WIDTH = 1000;
     public static final float DEFAULT_HEIGHT = 16;
@@ -55,7 +55,7 @@ public class ChatMessage extends Container {
         bitmapText.setWordWrap(false);
 
 
-        add(bitmapText);
+        addChild(bitmapText);
     }
 
     public void setMulticolorEnabled(boolean multicolorEnabled) {

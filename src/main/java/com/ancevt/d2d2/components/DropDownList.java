@@ -18,8 +18,8 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.display.Sprite;
+import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.display.SpriteFactory;
 import com.ancevt.d2d2.display.interactive.Combined9Sprites;
 import com.ancevt.d2d2.display.text.BitmapFont;
@@ -62,28 +62,28 @@ public class DropDownList<T> extends Component {
         scrollPane.setItemHeight(DEFAULT_HEIGHT);
 
         bg = new RectangleShape(1, 1, BACKGROUND_COLOR);
-        add(bg);
+        addChild(bg);
 
         borders = new Combined9Sprites(
-            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_TOP_LEFT),
-            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_TOP),
-            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_TOP_RIGHT),
-            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_LEFT),
-            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_CENTER),
-            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_RIGHT),
-            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_LEFT),
-            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM),
-            D2D2.textureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_RIGHT)
+            D2D2.getTextureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_TOP_LEFT),
+            D2D2.getTextureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_TOP),
+            D2D2.getTextureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_TOP_RIGHT),
+            D2D2.getTextureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_LEFT),
+            D2D2.getTextureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_CENTER),
+            D2D2.getTextureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_RIGHT),
+            D2D2.getTextureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_LEFT),
+            D2D2.getTextureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM),
+            D2D2.getTextureManager().getTexture(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_RIGHT)
         );
         borders.setColor(FOREGROUND_COLOR);
-        add(borders);
+        addChild(borders);
 
         bitmapText = new BitmapText();
         bitmapText.setBitmapFont(ComponentFont.getBitmapFontSmall());
-        add(bitmapText);
+        addChild(bitmapText);
 
-        arrow = SpriteFactory.createSprite(ComponentAssets.DROP_DOWN_LIST_ARROW);
-        add(arrow);
+        arrow = SpriteFactory.createSpriteByTextureKey(ComponentAssets.DROP_DOWN_LIST_ARROW);
+        addChild(arrow);
 
         addEventListener(Event.RESIZE, this::this_resize);
         addEventListener(InteractiveEvent.DOWN, this::this_down);
@@ -132,7 +132,7 @@ public class DropDownList<T> extends Component {
 
         scrollPane.setScrollPosition(0);
 
-        stage().add(scrollPane, getAbsoluteX(), getAbsoluteY() + getHeight());
+        stage().addChild(scrollPane, getAbsoluteX(), getAbsoluteY() + getHeight());
 
         if (y > stage().getHeight()) {
             scrollPane.setY(0);
@@ -253,13 +253,13 @@ public class DropDownList<T> extends Component {
             this.object = object;
 
             bg = new RectangleShape(1, 1, BACKGROUND_COLOR);
-            add(bg);
+            addChild(bg);
 
             bitmapText = new BitmapText();
             bitmapText.setBitmapFont(dropDownList.getBitmapFont());
             bitmapText.setText(text);
             cutText(bitmapText, getWidth());
-            add(bitmapText);
+            addChild(bitmapText);
 
             addEventListener(Event.RESIZE, this::this_resize);
             addEventListener(InteractiveEvent.DOWN, this::this_down);

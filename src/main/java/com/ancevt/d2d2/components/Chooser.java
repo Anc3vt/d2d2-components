@@ -18,7 +18,7 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.Container;
+import com.ancevt.d2d2.display.SimpleContainer;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 import lombok.Data;
@@ -30,7 +30,7 @@ import lombok.experimental.SuperBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Chooser<T> extends Container {
+public class Chooser<T> extends SimpleContainer {
 
     private static final float DEFAULT_WIDTH = 180;
 
@@ -61,11 +61,11 @@ public class Chooser<T> extends Container {
         buttonApply = new Button("Apply");
         buttonApply.addEventListener(Button.ButtonEvent.BUTTON_PRESSED, this::applyButton_buttonPressed);
 
-        add(bitmapText);
+        addChild(bitmapText);
 
-        add(buttonLeft);
-        add(buttonRight);
-        add(buttonApply);
+        addChild(buttonLeft);
+        addChild(buttonRight);
+        addChild(buttonApply);
 
         setWidth(DEFAULT_WIDTH);
     }

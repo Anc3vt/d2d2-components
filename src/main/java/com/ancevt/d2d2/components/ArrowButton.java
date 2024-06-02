@@ -18,7 +18,7 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.Container;
+import com.ancevt.d2d2.display.SimpleContainer;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.SpriteFactory;
 import com.ancevt.d2d2.event.Event;
@@ -30,7 +30,7 @@ import lombok.experimental.SuperBuilder;
 
 import static com.ancevt.d2d2.components.ComponentAssets.ARROW_BUTTON;
 
-public class ArrowButton extends Container {
+public class ArrowButton extends SimpleContainer {
 
     private final Sprite sprite;
     private final Sprite shadow;
@@ -38,15 +38,15 @@ public class ArrowButton extends Container {
     private int direction;
 
     public ArrowButton() {
-        sprite = SpriteFactory.createSprite(ARROW_BUTTON);
-        shadow = SpriteFactory.createSprite(ARROW_BUTTON);
+        sprite = SpriteFactory.createSpriteByTextureKey(ARROW_BUTTON);
+        shadow = SpriteFactory.createSpriteByTextureKey(ARROW_BUTTON);
         shadow.setColor(Color.BLACK);
 
-        add(shadow, 1, 1);
-        add(sprite);
+        addChild(shadow, 1, 1);
+        addChild(sprite);
 
         interactiveButton = new InteractiveContainer(sprite.getWidth(), sprite.getHeight());
-        add(interactiveButton);
+        addChild(interactiveButton);
 
         interactiveButton.addEventListener(InteractiveEvent.DOWN, this::interactiveButton_down);
 
@@ -55,7 +55,7 @@ public class ArrowButton extends Container {
 
     @Override
     public float getWidth() {
-        return sprite.getTexture().width();
+        return sprite.getTexture().getWidth();
     }
 
     public void setEnabled(boolean enabled) {
@@ -72,7 +72,7 @@ public class ArrowButton extends Container {
         if (direction == -1) {
             sprite.setScaleX(-1f);
             shadow.setScaleX(-1f);
-            sprite.setX(sprite.getTexture().width());
+            sprite.setX(sprite.getTexture().getWidth());
         } else {
             sprite.setScaleX(1f);
             shadow.setScaleX(1f);

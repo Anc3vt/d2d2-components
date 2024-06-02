@@ -23,7 +23,7 @@ import com.ancevt.commons.string.ConvertableString;
 import com.ancevt.commons.string.TextTable;
 import com.ancevt.commons.util.ApplicationMainClassNameExtractor;
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.common.IDisposable;
+import com.ancevt.d2d2.common.Disposable;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Stage;
 import com.ancevt.d2d2.event.Event;
@@ -53,7 +53,7 @@ import java.util.regex.Pattern;
 
 @Getter
 @Slf4j
-public class Console extends Chat implements IDisposable {
+public class Console extends Chat implements Disposable {
 
     private static final float PADDING = 20;
 

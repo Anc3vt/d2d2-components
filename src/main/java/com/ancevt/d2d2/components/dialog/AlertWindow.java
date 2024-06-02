@@ -21,7 +21,7 @@ import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.components.Button;
 import com.ancevt.d2d2.components.ComponentFont;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.Container;
+import com.ancevt.d2d2.display.SimpleContainer;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
@@ -30,7 +30,7 @@ import com.ancevt.d2d2.input.KeyCode;
 import static com.ancevt.d2d2.D2D2.stage;
 import static com.ancevt.d2d2.event.Event.ADD_TO_STAGE;
 
-public class AlertWindow extends Container {
+public class AlertWindow extends SimpleContainer {
 
     private static final float DEFAULT_WIDTH = 400f;
     private static final float DEFAULT_HEIGHT = 200f;
@@ -44,16 +44,16 @@ public class AlertWindow extends Container {
     public AlertWindow() {
         bg = new RectangleShape(DEFAULT_WIDTH, DEFAULT_HEIGHT, Color.BLACK);
         bg.setAlpha(0.95f);
-        add(bg);
+        addChild(bg);
 
         bitmapText = new BitmapText();
         bitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddle());
         bitmapText.setSize(bg.getWidth() - PADDING * 2, bg.getHeight() - PADDING_CONTROLS);
-        add(bitmapText, PADDING, PADDING);
+        addChild(bitmapText, PADDING, PADDING);
 
         Button buttonOk = new Button("OK");
         buttonOk.setXY((getWidth() - buttonOk.getWidth()) / 2, getHeight() - PADDING_CONTROLS);
-        add(buttonOk);
+        addChild(buttonOk);
 
         buttonOk.addEventListener(Button.ButtonEvent.BUTTON_PRESSED, event -> {
             var e = (Button.ButtonEvent) event;
@@ -127,10 +127,10 @@ public class AlertWindow extends Container {
         );
     }
 
-    public static AlertWindow show(String text, Container doc) {
+    public static AlertWindow show(String text, SimpleContainer doc) {
         AlertWindow alertWindow = new AlertWindow();
         alertWindow.setText(text);
-        doc.add(alertWindow);
+        doc.addChild(alertWindow);
         alertWindow.center();
         return alertWindow;
     }

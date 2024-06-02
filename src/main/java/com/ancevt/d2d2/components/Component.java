@@ -17,10 +17,10 @@
  */
 package com.ancevt.d2d2.components;
 
-import com.ancevt.d2d2.common.BorderedRect;
+import com.ancevt.d2d2.display.shape.BorderedRectangle;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.IContainer;
-import com.ancevt.d2d2.display.IDisplayObject;
+import com.ancevt.d2d2.display.Container;
+import com.ancevt.d2d2.display.DisplayObject;
 import com.ancevt.d2d2.display.interactive.InteractiveContainer;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
@@ -55,7 +55,7 @@ abstract public class Component extends InteractiveContainer {
     private static final float DEFAULT_PADDING_RIGHT = 2.0f;
     private static final float DEFAULT_PADDING_BOTTOM = 2.0f;
 
-    private final BorderedRect componentFocusRect;
+    private final BorderedRectangle componentFocusRect;
     private boolean componentFocusRectEnabled;
     @Getter
     private Padding padding;
@@ -76,7 +76,7 @@ abstract public class Component extends InteractiveContainer {
 
         componentFocusRectEnabled = false;
 
-        componentFocusRect = new BorderedRect(0, 0, null, FOCUS_RECT_COLOR);
+        componentFocusRect = new BorderedRectangle(0, 0, null, FOCUS_RECT_COLOR);
         componentFocusRect.setBorderWidth(FOCUS_RECT_BORDER_WIDTH);
         componentFocusRect.setAlpha(FOCUS_RECT_ALPHA);
 
@@ -90,7 +90,7 @@ abstract public class Component extends InteractiveContainer {
 
     private void this_focusIn(Event event) {
         var e = (InteractiveEvent) event;
-        if (componentFocusRectEnabled && !e.isByMouseDown() && !componentFocusRect.hasParent()) add(componentFocusRect);
+        if (componentFocusRectEnabled && !e.isByMouseDown() && !componentFocusRect.hasParent()) addChild(componentFocusRect);
 
         FrameManager.getInstance().activateFrame(getFrame());
     }
@@ -122,7 +122,7 @@ abstract public class Component extends InteractiveContainer {
 
                 Timer.setTimeout(t -> {
                     if (!tooltipCancelHover.get() && isHovering()) {
-                        stage().add(tooltip, Mouse.getX(), Mouse.getY());
+                        stage().addChild(tooltip, Mouse.getX(), Mouse.getY());
                         if (tooltip.getX() + tooltip.getWidth() > stage().getWidth()) {
                             tooltip.setX(stage().getWidth() - tooltip.getWidth());
                         }
@@ -241,7 +241,7 @@ abstract public class Component extends InteractiveContainer {
     }
 
     public Frame getFrame() {
-        IContainer container = this;
+        Container container = this;
         while (container != null) {
             if (container instanceof Frame frame) return frame;
             container = container.getParent();
@@ -256,7 +256,7 @@ abstract public class Component extends InteractiveContainer {
         super.dispose();
 
         for (int i = 0; i < getNumChildren(); i++) {
-            IDisplayObject child = getChild(i);
+            DisplayObject child = getChild(i);
             if (child instanceof Component component) {
                 component.dispose();
             }

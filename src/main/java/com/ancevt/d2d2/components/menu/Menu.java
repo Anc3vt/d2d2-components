@@ -19,7 +19,7 @@ package com.ancevt.d2d2.components.menu;
 
 import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.components.Component;
-import com.ancevt.d2d2.display.IDisplayObject;
+import com.ancevt.d2d2.display.DisplayObject;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.Mouse;
@@ -96,7 +96,7 @@ public class Menu extends Component {
         update();
         float x = Mouse.getX();
         float y = Mouse.getY() + 1;
-        stage().add(this, x, y);
+        stage().addChild(this, x, y);
 
         if (getX() + getWidth() > stage().getWidth()) {
             setX(stage().getWidth() - getWidth());
@@ -120,7 +120,7 @@ public class Menu extends Component {
         update();
         float x = fromItem.getAbsoluteX() + fromItem.getWidth();
         float y = fromItem.getAbsoluteY();
-        stage().add(this, x, y);
+        stage().addChild(this, x, y);
 
         if (getY() + getHeight() > stage().getHeight()) {
             setY(y - getHeight() + MenuItem.HEIGHT);
@@ -149,19 +149,19 @@ public class Menu extends Component {
 
     @Override
     public void update() {
-        displayedItems.forEach(IDisplayObject::removeFromParent);
+        displayedItems.forEach(DisplayObject::removeFromParent);
         displayedItems.clear();
 
         float y = 0;
         for (MenuItem item : items) {
             if (item == null) {
                 RectangleShape separatorBg = new RectangleShape(getWidth(), 6, MENU_BACKGROUND_COLOR);
-                add(separatorBg, 0, y);
+                addChild(separatorBg, 0, y);
                 RectangleShape separator = new RectangleShape(getWidth() - 8, 2, MENU_SEPARATOR_COLOR);
-                add(separator, 4, y + 2);
+                addChild(separator, 4, y + 2);
                 y += 6;
             } else {
-                add(item, 0, y);
+                addChild(item, 0, y);
                 displayedItems.add(item);
                 y += item.getHeight();
             }

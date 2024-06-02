@@ -44,7 +44,7 @@ public class ScrollPane extends Component {
     public ScrollPane() {
         bg = new RectangleShape(1, 1, BACKGROUND_COLOR);
         bg.setAlpha(PANEL_BG_ALPHA);
-        add(bg);
+        addChild(bg);
 
         scrollStep = DEFAULT_SCROLL_STEP;
 
@@ -52,7 +52,7 @@ public class ScrollPane extends Component {
 
         scrollbar = new Scrollbar();
         scrollbar.addEventListener(ScrollPane.class, Event.CHANGE, this::scrollbar_change);
-        add(scrollbar);
+        addChild(scrollbar);
 
         addEventListener(ScrollPane.class, Event.RESIZE, this::this_resize);
         addEventListener(ScrollPane.class, InteractiveEvent.WHEEL, this::this_wheel);
@@ -194,7 +194,7 @@ public class ScrollPane extends Component {
         for (int i = scrollPosition; y < getHeight() - itemHeight && i < components.size(); i++) {
             if (i < 0) continue;
             Component item = components.get(i);
-            add(item, 0, y);
+            addChild(item, 0, y);
             item.move(getPadding().getLeft(), getPadding().getTop());
             item.setSize(
                 getWidth() - getPadding().getRight() - getPadding().getLeft(),
@@ -207,7 +207,7 @@ public class ScrollPane extends Component {
 
         scrollbar.removeFromParent();
         if (val < 1.0f) {
-            add(scrollbar);
+            addChild(scrollbar);
         }
 
         scrollbar.setRectLength(getHeight() * val);

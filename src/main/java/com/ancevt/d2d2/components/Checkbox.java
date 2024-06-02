@@ -37,8 +37,8 @@ public class Checkbox extends Component {
     private boolean checked;
 
     public Checkbox() {
-        sprite = SpriteFactory.createSprite(CHECKBOX_UNCHECKED);
-        add(sprite);
+        sprite = SpriteFactory.createSpriteByTextureKey(CHECKBOX_UNCHECKED);
+        addChild(sprite);
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
@@ -46,7 +46,7 @@ public class Checkbox extends Component {
         this();
         label = new BitmapText(text);
         label.setBitmapFont(ComponentFont.getBitmapFontMiddle());
-        add(label, sprite.getWidth() + PADDING, 0);
+        addChild(label, sprite.getWidth() + PADDING, 0);
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
         addEventListener(Checkbox.class, InteractiveEvent.DOWN, this::this_down);
@@ -68,7 +68,7 @@ public class Checkbox extends Component {
             if (label == null) {
                 label = new BitmapText(text);
                 label.setBitmapFont(ComponentFont.getBitmapFontMiddle());
-                add(label, sprite.getWidth() + PADDING, 0);
+                addChild(label, sprite.getWidth() + PADDING, 0);
             }
         }
     }

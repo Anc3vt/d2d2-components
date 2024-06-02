@@ -74,11 +74,11 @@ public class Frame extends Component {
         bg1 = new RectangleShape();
         bg1.setAlpha(backgroundAlpha);
         bg1.setColor(colorBackground1);
-        add(bg1);
+        addChild(bg1);
 
         frameTitle = new FrameTitle();
         frameTitle.setTextColor(Component.INACTIVE_FRAME_TITLE_COLOR);
-        add(frameTitle);
+        addChild(frameTitle);
 
         borders = new Combined9Sprites(new String[]{
             ComponentAssets.RECT_BORDER_9_SIDE_TOP_LEFT,
@@ -92,7 +92,7 @@ public class Frame extends Component {
             ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_RIGHT
         });
         borders.setColor(colorBorder);
-        add(borders);
+        addChild(borders);
 
         setComponentFocusRectVisibleEnabled(false);
 
@@ -101,7 +101,7 @@ public class Frame extends Component {
         addEventListener(Frame.class, ComponentEvent.ACTIVATE, this::this_activate);
         addEventListener(Frame.class, ComponentEvent.DEACTIVATE, this::this_deactivate);
 
-        add(contentPanel, getPadding().getLeft(), frameTitle.getY() + frameTitle.getHeight() + getPadding().getTop());
+        addChild(contentPanel, getPadding().getLeft(), frameTitle.getY() + frameTitle.getHeight() + getPadding().getTop());
 
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
