@@ -33,7 +33,7 @@ public class Panel extends Component {
 
         bg = new RectangleShape(1, 1, Color.BLACK);
         bg.setAlpha(Component.PANEL_BG_ALPHA);
-        add(bg);
+        addChild(bg);
 
         addEventListener(Panel.class, Event.RESIZE, this::this_resize);
 

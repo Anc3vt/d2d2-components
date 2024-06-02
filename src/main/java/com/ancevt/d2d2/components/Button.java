@@ -46,9 +46,9 @@ public class Button extends Component {
     }
 
     public Button(String text) {
-        leftPart = SpriteFactory.createSprite(BUTTON_LEFT_PART);
-        rightPart = SpriteFactory.createSprite(BUTTON_RIGHT_PART);
-        middlePart = SpriteFactory.createSprite(BUTTON_MIDDLE_PART);
+        leftPart = SpriteFactory.createSpriteByTextureKey(BUTTON_LEFT_PART);
+        rightPart = SpriteFactory.createSpriteByTextureKey(BUTTON_RIGHT_PART);
+        middlePart = SpriteFactory.createSpriteByTextureKey(BUTTON_MIDDLE_PART);
 
         bitmapText = new BitmapText();
         bitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddle());
@@ -83,14 +83,14 @@ public class Button extends Component {
             middlePart.setColor(color);
         });
 
-        add(leftPart);
-        add(middlePart);
-        add(rightPart);
+        addChild(leftPart);
+        addChild(middlePart);
+        addChild(rightPart);
 
         middlePart.setVertexBleedingFix(0d);
         middlePart.setTextureBleedingFix(0d);
 
-        add(bitmapText);
+        addChild(bitmapText);
 
         setSize(DEFAULT_WIDTH, leftPart.getHeight());
         setText(text);
@@ -131,9 +131,9 @@ public class Button extends Component {
     public void setWidth(float width) {
         super.setWidth(width);
 
-        middlePart.setX(leftPart.getTexture().width());
-        middlePart.setScaleX(width - leftPart.getTexture().width() - rightPart.getTexture().width());
-        rightPart.setX(leftPart.getTexture().width() + middlePart.getScaleX());
+        middlePart.setX(leftPart.getTexture().getWidth());
+        middlePart.setScaleX(width - leftPart.getTexture().getWidth() - rightPart.getTexture().getWidth());
+        rightPart.setX(leftPart.getTexture().getWidth() + middlePart.getScaleX());
 
         fixTextXY();
     }

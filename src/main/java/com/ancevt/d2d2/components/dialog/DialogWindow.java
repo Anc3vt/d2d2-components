@@ -21,8 +21,8 @@ import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.components.Button;
 import com.ancevt.d2d2.components.ComponentFont;
 import com.ancevt.d2d2.display.Color;
+import com.ancevt.d2d2.display.SimpleContainer;
 import com.ancevt.d2d2.display.Container;
-import com.ancevt.d2d2.display.IContainer;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
@@ -31,7 +31,7 @@ import com.ancevt.d2d2.input.KeyCode;
 import static com.ancevt.d2d2.D2D2.stage;
 import static com.ancevt.d2d2.event.Event.ADD_TO_STAGE;
 
-public class DialogWindow extends Container {
+public class DialogWindow extends SimpleContainer {
 
     private static final float DEFAULT_WIDTH = 400f;
     private static final float DEFAULT_HEIGHT = 200f;
@@ -48,22 +48,22 @@ public class DialogWindow extends Container {
     public DialogWindow() {
         bg = new RectangleShape(DEFAULT_WIDTH, DEFAULT_HEIGHT, Color.BLACK);
         bg.setAlpha(0.95f);
-        add(bg);
+        addChild(bg);
 
         bitmapText = new BitmapText();
         bitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddle());
         bitmapText.setSize(bg.getWidth() - PADDING * 2, bg.getHeight() - PADDING_CONTROLS);
-        add(bitmapText, PADDING, PADDING);
+        addChild(bitmapText, PADDING, PADDING);
 
         buttonOk = new Button("OK");
         buttonOk.setXY((getWidth() - buttonOk.getWidth()) / 2 - 50, getHeight() - PADDING_CONTROLS);
         buttonOk.addEventListener(Button.ButtonEvent.BUTTON_PRESSED, event -> ok());
-        add(buttonOk);
+        addChild(buttonOk);
 
         buttonCancel = new Button("Cancel");
         buttonCancel.setXY((getWidth() - buttonOk.getWidth()) / 2 + 50, getHeight() - PADDING_CONTROLS);
         buttonCancel.addEventListener(Button.ButtonEvent.BUTTON_PRESSED, event -> cancel());
-        add(buttonCancel);
+        addChild(buttonCancel);
 
         addEventListener(this, ADD_TO_STAGE, this::add_to_stage);
     }
@@ -149,10 +149,10 @@ public class DialogWindow extends Container {
         );
     }
 
-    public static DialogWindow show(String text, IContainer cont) {
+    public static DialogWindow show(String text, Container cont) {
         DialogWindow dialogWindow = new DialogWindow();
         dialogWindow.setText(text);
-        cont.add(dialogWindow);
+        cont.addChild(dialogWindow);
         dialogWindow.center();
         return dialogWindow;
     }

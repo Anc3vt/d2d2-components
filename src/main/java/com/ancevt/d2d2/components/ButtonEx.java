@@ -19,16 +19,16 @@ package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.IColored;
+import com.ancevt.d2d2.display.Colored;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.SpriteFactory;
 import com.ancevt.d2d2.display.interactive.Combined9Sprites;
 import com.ancevt.d2d2.display.text.BitmapText;
-import com.ancevt.d2d2.display.texture.Texture;
+import com.ancevt.d2d2.display.texture.TextureClip;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 
-public class ButtonEx extends Component implements IColored {
+public class ButtonEx extends Component implements Colored {
 
     private static final float DEFAULT_WIDTH = 30.0f;
     private static final float DEFAULT_HEIGHT = 30.0f;
@@ -52,36 +52,36 @@ public class ButtonEx extends Component implements IColored {
         setPushEventsUp(false);
 
         bg = new Combined9Sprites(
-            D2D2.textureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_TOP_LEFT),
-            D2D2.textureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_TOP),
-            D2D2.textureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_TOP_RIGHT),
-            D2D2.textureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_LEFT),
-            D2D2.textureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_CENTER),
-            D2D2.textureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_RIGHT),
-            D2D2.textureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_BOTTOM_LEFT),
-            D2D2.textureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_BOTTOM),
-            D2D2.textureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_BOTTOM_RIGHT)
+            D2D2.getTextureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_TOP_LEFT),
+            D2D2.getTextureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_TOP),
+            D2D2.getTextureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_TOP_RIGHT),
+            D2D2.getTextureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_LEFT),
+            D2D2.getTextureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_CENTER),
+            D2D2.getTextureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_RIGHT),
+            D2D2.getTextureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_BOTTOM_LEFT),
+            D2D2.getTextureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_BOTTOM),
+            D2D2.getTextureManager().getTexture(ComponentAssets.BUTTON_9_SIDE_BOTTOM_RIGHT)
         );
 
         bg.setEnabled(false);
-        add(bg);
+        addChild(bg);
 
         selectedBorder = new Combined9Sprites(
-            D2D2.textureManager().getTexture(ComponentAssets.BORDER_9_SIDE_TOP_LEFT),
-            D2D2.textureManager().getTexture(ComponentAssets.BORDER_9_SIDE_TOP),
-            D2D2.textureManager().getTexture(ComponentAssets.BORDER_9_SIDE_TOP_RIGHT),
-            D2D2.textureManager().getTexture(ComponentAssets.BORDER_9_SIDE_LEFT),
-            D2D2.textureManager().getTexture(ComponentAssets.BORDER_9_SIDE_CENTER),
-            D2D2.textureManager().getTexture(ComponentAssets.BORDER_9_SIDE_RIGHT),
-            D2D2.textureManager().getTexture(ComponentAssets.BORDER_9_SIDE_BOTTOM_LEFT),
-            D2D2.textureManager().getTexture(ComponentAssets.BORDER_9_SIDE_BOTTOM),
-            D2D2.textureManager().getTexture(ComponentAssets.BORDER_9_SIDE_BOTTOM_RIGHT)
+            D2D2.getTextureManager().getTexture(ComponentAssets.BORDER_9_SIDE_TOP_LEFT),
+            D2D2.getTextureManager().getTexture(ComponentAssets.BORDER_9_SIDE_TOP),
+            D2D2.getTextureManager().getTexture(ComponentAssets.BORDER_9_SIDE_TOP_RIGHT),
+            D2D2.getTextureManager().getTexture(ComponentAssets.BORDER_9_SIDE_LEFT),
+            D2D2.getTextureManager().getTexture(ComponentAssets.BORDER_9_SIDE_CENTER),
+            D2D2.getTextureManager().getTexture(ComponentAssets.BORDER_9_SIDE_RIGHT),
+            D2D2.getTextureManager().getTexture(ComponentAssets.BORDER_9_SIDE_BOTTOM_LEFT),
+            D2D2.getTextureManager().getTexture(ComponentAssets.BORDER_9_SIDE_BOTTOM),
+            D2D2.getTextureManager().getTexture(ComponentAssets.BORDER_9_SIDE_BOTTOM_RIGHT)
         );
 
         selectedBorder.setEnabled(false);
         selectedBorder.setVisible(false);
         selectedBorder.setColor(colorTogglePushedInBorder);
-        add(selectedBorder);
+        addChild(selectedBorder);
 
         addEventListener(Button.class, InteractiveEvent.DOWN, event -> {
             if (toggleMode) {
@@ -228,7 +228,7 @@ public class ButtonEx extends Component implements IColored {
             bitmapText = new BitmapText();
             bitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddle());
             bitmapText.setMulticolor(true);
-            add(bitmapText);
+            addChild(bitmapText);
         }
 
         bitmapText.setText("" + text);
@@ -243,16 +243,16 @@ public class ButtonEx extends Component implements IColored {
         return bitmapText.getPlainText();
     }
 
-    public void setIcon(Texture texture) {
+    public void setIcon(TextureClip textureClip) {
         if (iconSprite == null) {
-            iconSprite = SpriteFactory.createSprite();
-            add(iconSprite);
+            iconSprite = SpriteFactory.createEmptySprite();
+            addChild(iconSprite);
         }
-        iconSprite.setTexture(texture);
+        iconSprite.setTexture(textureClip);
         update();
     }
 
-    public Texture getIcon() {
+    public TextureClip getIcon() {
         return iconSprite == null ? null : iconSprite.getTexture();
     }
 

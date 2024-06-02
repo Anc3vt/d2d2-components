@@ -60,9 +60,9 @@ public class TextInput extends Component {
 
         bg.setAlpha(backgroundAlpha);
 
-        add(bg);
+        addChild(bg);
         // add(selection, uiText.getX(), 4); // selection is completely not implemented yet
-        add(bitmapText);
+        addChild(bitmapText);
 
         caret = new Caret(this);
         caret.setXY(bitmapText.getX(), 4);
@@ -135,7 +135,7 @@ public class TextInput extends Component {
 
     public void setFocusRectVisibleEnabled(boolean focusRectEnabled) {
         if (focusRectEnabled) {
-            add(focusRect);
+            addChild(focusRect);
         } else {
             focusRect.removeFromParent();
         }
@@ -422,7 +422,7 @@ public class TextInput extends Component {
 
     public void focus() {
         super.focus();
-        add(caret);
+        addChild(caret);
     }
 
     private void insertText(String textToInsert) {

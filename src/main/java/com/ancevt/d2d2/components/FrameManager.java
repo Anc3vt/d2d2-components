@@ -17,7 +17,7 @@
  */
 package com.ancevt.d2d2.components;
 
-import com.ancevt.d2d2.display.IContainer;
+import com.ancevt.d2d2.display.Container;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -71,10 +71,10 @@ public class FrameManager {
         activeFrame = frame;
 
         if(activeFrame != null) {
-            IContainer parent = activeFrame.getParent();
+            Container parent = activeFrame.getParent();
             if(parent != null) {
-                parent.remove(activeFrame);
-                parent.add(activeFrame);
+                parent.removeChild(activeFrame);
+                parent.addChild(activeFrame);
             }
 
             activeFrame.dispatchEvent(ComponentEvent.builder().type(ComponentEvent.ACTIVATE).build());

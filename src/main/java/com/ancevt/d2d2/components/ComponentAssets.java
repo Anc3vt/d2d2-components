@@ -18,7 +18,7 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.display.texture.Texture;
+import com.ancevt.d2d2.display.texture.TextureClip;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -85,7 +85,7 @@ public class ComponentAssets {
 
     public static void init() {
         if (!initialized) {
-            D2D2.textureManager().loadTextureDataInfo("d2d2-components.inf");
+            D2D2.getTextureManager().loadTextureDataInfo("d2d2-components.inf");
             Cursor.setDefaultCursorTheme();
             initialized = true;
         } else {
@@ -93,7 +93,7 @@ public class ComponentAssets {
         }
     }
 
-    public static Texture getTexture(String textureKey) {
-        return D2D2.textureManager().getTexture(textureKey);
+    public static TextureClip getTexture(String textureKey) {
+        return D2D2.getTextureManager().getTexture(textureKey);
     }
 }

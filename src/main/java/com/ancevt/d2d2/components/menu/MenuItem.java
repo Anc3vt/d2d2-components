@@ -17,13 +17,13 @@
  */
 package com.ancevt.d2d2.components.menu;
 
-import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.components.Component;
 import com.ancevt.d2d2.components.ComponentAssets;
 import com.ancevt.d2d2.components.ComponentFont;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.SpriteFactory;
+import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
@@ -34,8 +34,7 @@ public class MenuItem extends Component {
 
     static final float HEIGHT = 30.0f;
 
-    private static final Runnable STUB_ACTION = () -> {
-    };
+    private static final Runnable STUB_ACTION = () -> {};
 
     final RectangleShape bg;
     private final BitmapText bitmapText;
@@ -49,14 +48,14 @@ public class MenuItem extends Component {
         this.parentMenu = parentMenu;
         bg = new RectangleShape();
         bg.setColor(MENU_BACKGROUND_COLOR);
-        add(bg);
+        addChild(bg);
 
         action = STUB_ACTION;
 
         bitmapText = new BitmapText();
         bitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddle());
         bitmapText.setMulticolor(true);
-        add(bitmapText, 10, (HEIGHT - bitmapText.getTextHeight()) / 2);
+        addChild(bitmapText, 10, (HEIGHT - bitmapText.getTextHeight()) / 2);
 
         addEventListener(Event.RESIZE, this::this_resize);
         addEventListener(InteractiveEvent.HOVER, this::this_hover);
@@ -102,9 +101,9 @@ public class MenuItem extends Component {
         if (childMenuArrow != null) childMenuArrow.removeFromParent();
 
         if (childMenu != null) {
-            childMenuArrow = SpriteFactory.createSprite(ComponentAssets.MENU_CHILD_ARROW);
+            childMenuArrow = SpriteFactory.createSpriteByTextureKey(ComponentAssets.MENU_CHILD_ARROW);
             childMenuArrow.setColor(Color.LIGHT_GRAY);
-            add(childMenuArrow);
+            addChild(childMenuArrow);
             update();
         }
     }

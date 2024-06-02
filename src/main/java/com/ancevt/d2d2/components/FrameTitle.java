@@ -35,12 +35,12 @@ public class FrameTitle extends Component {
         setTabbingEnabled(false);
 
         bg = new RectangleShape(1, 1, DEFAULT_TITLE_BACKGROUND_COLOR);
-        add(bg);
+        addChild(bg);
 
         bitmapText = new BitmapText();
         bitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddle());
         bitmapText.setMulticolor(true);
-        add(bitmapText, 10, 10);
+        addChild(bitmapText, 10, 10);
 
         addEventListener(Event.RESIZE, this::this_resize);
 

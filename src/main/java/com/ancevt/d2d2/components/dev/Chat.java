@@ -23,8 +23,8 @@ import com.ancevt.d2d2.components.ComponentFont;
 import com.ancevt.d2d2.components.TextInput;
 import com.ancevt.d2d2.components.TextInputEvent;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.Container;
-import com.ancevt.d2d2.display.DisplayObject;
+import com.ancevt.d2d2.display.SimpleContainer;
+import com.ancevt.d2d2.display.BaseDisplayObject;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.KeyCode;
@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Chat extends Container {
+public class Chat extends SimpleContainer {
 
     private String lastText;
     private static final int INPUT_MAX_LENGTH = 100;
@@ -174,7 +174,7 @@ public class Chat extends Container {
 
         textInput.setMaxSize(D2D2.stage().getWidth(), 16);
 
-        displayedMessages.forEach(DisplayObject::removeFromParent);
+        displayedMessages.forEach(BaseDisplayObject::removeFromParent);
 
         int y = 0;
 
@@ -185,7 +185,7 @@ public class Chat extends Container {
 
             chatMessage.bitmapText.setWidth(getWidth());
 
-            add(chatMessage, 0, y);
+            addChild(chatMessage, 0, y);
             y += (int) chatMessage.getHeight();
         }
     }
@@ -266,7 +266,7 @@ public class Chat extends Container {
         Timer.setTimeout(t -> {
             setAlpha(1.0f);
             alphaTime = ALPHA_TIME;
-            add(textInput);
+            addChild(textInput);
             textInput.focus();
             dispatchEvent(ChatEvent.builder()
                 .type(ChatEvent.CHAT_INPUT_OPEN)
@@ -275,7 +275,7 @@ public class Chat extends Container {
     }
 
     public void closeInput() {
-        remove(textInput);
+        removeChild(textInput);
 
         dispatchEvent(ChatEvent.builder()
             .type(ChatEvent.CHAT_INPUT_CLOSE)
