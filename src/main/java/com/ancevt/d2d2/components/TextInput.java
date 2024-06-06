@@ -286,12 +286,14 @@ public class TextInput extends Component {
     private void this_focusIn(Event event) {
         focusRect.setVisible(true);
         setCaretPosition(Integer.MAX_VALUE);
+        dispatchEvent(ComponentEvent.builder().type(ComponentEvent.FOCUS_IN).build());
         focus();
     }
 
     private void this_focusOut(Event event) {
         focusRect.setVisible(false);
         caret.removeFromParent();
+        dispatchEvent(ComponentEvent.builder().type(ComponentEvent.FOCUS_OUT).build());
     }
 
     private void this_down(Event event) {

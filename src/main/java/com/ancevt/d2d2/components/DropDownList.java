@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.ancevt.d2d2.D2D2.stage;
+import static com.ancevt.d2d2.D2D2.getStage;
 
 public class DropDownList<T> extends Component {
 
@@ -132,28 +132,28 @@ public class DropDownList<T> extends Component {
 
         scrollPane.setScrollPosition(0);
 
-        stage().addChild(scrollPane, getAbsoluteX(), getAbsoluteY() + getHeight());
+        getStage().addChild(scrollPane, getAbsoluteX(), getAbsoluteY() + getHeight());
 
-        if (y > stage().getHeight()) {
+        if (y > getStage().getHeight()) {
             scrollPane.setY(0);
-            scrollPane.setHeight(stage().getHeight());
+            scrollPane.setHeight(getStage().getHeight());
         } else {
             scrollPane.setHeight(y);
 
-            if (scrollPane.getY() + scrollPane.getHeight() > stage().getHeight()) {
+            if (scrollPane.getY() + scrollPane.getHeight() > getStage().getHeight()) {
                 scrollPane.setY(getAbsoluteY() - scrollPane.getHeight());
             }
 
             if (scrollPane.getY() < 0) scrollPane.setY(0);
         }
 
-        stage().removeEventListener(this, InteractiveEvent.DOWN);
-        stage().addEventListener(this, InteractiveEvent.DOWN, event -> {
+        getStage().removeEventListener(this, InteractiveEvent.DOWN);
+        getStage().addEventListener(this, InteractiveEvent.DOWN, event -> {
             var e = (InteractiveEvent) event;
 
             if (e.getX() < scrollPane.getX() || e.getX() > scrollPane.getX() + scrollPane.getWidth()
                 || e.getY() < scrollPane.getY() || e.getY() > scrollPane.getY() + scrollPane.getHeight()) {
-                stage().removeEventListener(this, InteractiveEvent.DOWN);
+                getStage().removeEventListener(this, InteractiveEvent.DOWN);
                 close();
             }
         });
@@ -162,7 +162,7 @@ public class DropDownList<T> extends Component {
     }
 
     private void close() {
-        stage().removeEventListener(this, InteractiveEvent.DOWN);
+        getStage().removeEventListener(this, InteractiveEvent.DOWN);
         oldTime = System.currentTimeMillis();
         scrollPane.removeFromParent();
         displayedItemList.forEach(Item::removeFromParent);

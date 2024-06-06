@@ -77,8 +77,8 @@ public class Chat extends SimpleContainer {
         displayedMessages = new CopyOnWriteArrayList<>();
         history = new ArrayList<>();
 
-        width = D2D2.stage().getWidth() / 2.0f;
-        height = D2D2.stage().getHeight() / 3.0f;
+        width = D2D2.getStage().getWidth() / 2.0f;
+        height = D2D2.getStage().getHeight() / 3.0f;
 
         textInput.setWidth(20);
         textInput.addEventListener(TextInputEvent.ENTER, this::textInputEvent);
@@ -118,10 +118,10 @@ public class Chat extends SimpleContainer {
         if (this.inputEnabled == b) return;
         this.inputEnabled = b;
 
-        D2D2.stage().removeEventListener(this, InteractiveEvent.KEY_DOWN);
+        D2D2.getStage().removeEventListener(this, InteractiveEvent.KEY_DOWN);
 
         if (inputEnabled) {
-            D2D2.stage().addEventListener(InteractiveEvent.KEY_DOWN, event -> {
+            D2D2.getStage().addEventListener(InteractiveEvent.KEY_DOWN, event -> {
                 InteractiveEvent stageEvent = (InteractiveEvent) event;
                 switch (stageEvent.getKeyCode()) {
                     case KeyCode.PAGE_UP -> {
@@ -172,7 +172,7 @@ public class Chat extends SimpleContainer {
     private void redraw() {
         textInput.setXY(0, height);
 
-        textInput.setMaxSize(D2D2.stage().getWidth(), 16);
+        textInput.setMaxSize(D2D2.getStage().getWidth(), 16);
 
         displayedMessages.forEach(BaseDisplayObject::removeFromParent);
 

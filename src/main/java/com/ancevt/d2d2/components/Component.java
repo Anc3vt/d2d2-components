@@ -30,7 +30,7 @@ import lombok.Getter;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.ancevt.d2d2.D2D2.stage;
+import static com.ancevt.d2d2.D2D2.getStage;
 
 abstract public class Component extends InteractiveContainer {
 
@@ -122,13 +122,13 @@ abstract public class Component extends InteractiveContainer {
 
                 Timer.setTimeout(t -> {
                     if (!tooltipCancelHover.get() && isHovering()) {
-                        stage().addChild(tooltip, Mouse.getX(), Mouse.getY());
-                        if (tooltip.getX() + tooltip.getWidth() > stage().getWidth()) {
-                            tooltip.setX(stage().getWidth() - tooltip.getWidth());
+                        getStage().addChild(tooltip, Mouse.getX(), Mouse.getY());
+                        if (tooltip.getX() + tooltip.getWidth() > getStage().getWidth()) {
+                            tooltip.setX(getStage().getWidth() - tooltip.getWidth());
                         }
 
-                        if (tooltip.getY() + tooltip.getHeight() > stage().getHeight()) {
-                            tooltip.setY(stage().getHeight() - tooltip.getHeight());
+                        if (tooltip.getY() + tooltip.getHeight() > getStage().getHeight()) {
+                            tooltip.setY(getStage().getHeight() - tooltip.getHeight());
                         }
 
                         tooltip.removeEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.OUT);
