@@ -28,7 +28,7 @@ import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.KeyCode;
 
-import static com.ancevt.d2d2.D2D2.stage;
+import static com.ancevt.d2d2.D2D2.getStage;
 import static com.ancevt.d2d2.event.Event.ADD_TO_STAGE;
 
 public class DialogWindow extends SimpleContainer {
@@ -70,7 +70,7 @@ public class DialogWindow extends SimpleContainer {
 
     private void add_to_stage(Event event) {
         removeEventListener(this, ADD_TO_STAGE);
-        stage().addEventListener(this, InteractiveEvent.KEY_DOWN, e1 -> {
+        getStage().addEventListener(this, InteractiveEvent.KEY_DOWN, e1 -> {
             var e = (InteractiveEvent) e1;
             switch (e.getKeyCode()) {
                 case KeyCode.ENTER -> ok();
@@ -127,7 +127,7 @@ public class DialogWindow extends SimpleContainer {
     }
 
     public void ok() {
-        stage().removeEventListener(this, InteractiveEvent.KEY_DOWN);
+        getStage().removeEventListener(this, InteractiveEvent.KEY_DOWN);
         removeFromParent();
         if (onOkFunction != null) {
             onOkFunction.run();
@@ -135,7 +135,7 @@ public class DialogWindow extends SimpleContainer {
     }
 
     public void cancel() {
-        stage().removeEventListener(this, InteractiveEvent.KEY_DOWN);
+        getStage().removeEventListener(this, InteractiveEvent.KEY_DOWN);
         removeFromParent();
         if (onCancelFunction != null) {
             onCancelFunction.run();
@@ -144,8 +144,8 @@ public class DialogWindow extends SimpleContainer {
 
     public void center() {
         setXY(
-            (stage().getWidth() - getWidth()) / 2f,
-            (stage().getHeight() - getHeight()) / 2f
+            (getStage().getWidth() - getWidth()) / 2f,
+            (getStage().getHeight() - getHeight()) / 2f
         );
     }
 

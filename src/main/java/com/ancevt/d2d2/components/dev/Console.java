@@ -84,8 +84,8 @@ public class Console extends Chat implements Disposable {
         setInputEnabled(true);
         addEventListener(ChatEvent.CHAT_TEXT_ENTER, this::this_chatTextEnter);
         addEventListener(ChatEvent.CHAT_INPUT_CLOSE, this::this_chatInputClose);
-        D2D2.stage().addEventListener(this, LifecycleEvent.START_MAIN_LOOP, this::stage_startMainLoop);
-        D2D2.stage().addEventListener(this, LifecycleEvent.EXIT_MAIN_LOOP, this::stage_exitMainLoop);
+        D2D2.getStage().addEventListener(this, LifecycleEvent.START_MAIN_LOOP, this::stage_startMainLoop);
+        D2D2.getStage().addEventListener(this, LifecycleEvent.EXIT_MAIN_LOOP, this::stage_exitMainLoop);
         openInput();
         loadOutputHistory();
 
@@ -241,7 +241,7 @@ public class Console extends Chat implements Disposable {
         if (this.maximized == maximized) return;
         this.maximized = maximized;
 
-        Stage stage = D2D2.stage();
+        Stage stage = D2D2.getStage();
         stage.removeEventListener(this, Event.RESIZE);
 
         if (maximized) {
@@ -252,8 +252,8 @@ public class Console extends Chat implements Disposable {
     }
 
     private void stage_resize(Event event) {
-        setWidth(D2D2.stage().getWidth() - PADDING * 2);
-        setHeight(D2D2.stage().getHeight() - PADDING * 2);
+        setWidth(D2D2.getStage().getWidth() - PADDING * 2);
+        setHeight(D2D2.getStage().getHeight() - PADDING * 2);
     }
 
     private void this_chatInputClose(Event event) {
@@ -341,9 +341,9 @@ public class Console extends Chat implements Disposable {
 
     @Override
     public void dispose() {
-        D2D2.stage().removeEventListener(this, InteractiveEvent.KEY_DOWN);
-        D2D2.stage().removeEventListener(this, LifecycleEvent.START_MAIN_LOOP);
-        D2D2.stage().removeEventListener(this, LifecycleEvent.EXIT_MAIN_LOOP);
+        D2D2.getStage().removeEventListener(this, InteractiveEvent.KEY_DOWN);
+        D2D2.getStage().removeEventListener(this, LifecycleEvent.START_MAIN_LOOP);
+        D2D2.getStage().removeEventListener(this, LifecycleEvent.EXIT_MAIN_LOOP);
         disposed = true;
     }
 
