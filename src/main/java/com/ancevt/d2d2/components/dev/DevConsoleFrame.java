@@ -125,7 +125,12 @@ public class DevConsoleFrame extends Frame {
                         console.textInput.setText(text);
                     }
                 }, 10);
-                setXY(10, 10);
+                if (getX() > D2D2.getStage().getWidth() || getX() < -getWidth()) {
+                    setX(10);
+                }
+                if (getY() > D2D2.getStage().getHeight() || getY() < 0) {
+                    setY(10);
+                }
             }
         });
 

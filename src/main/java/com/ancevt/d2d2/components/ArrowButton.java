@@ -55,7 +55,7 @@ public class ArrowButton extends SimpleContainer {
 
     @Override
     public float getWidth() {
-        return sprite.getTexture().getWidth();
+        return sprite.getTextureClip().getWidth();
     }
 
     public void setEnabled(boolean enabled) {
@@ -72,7 +72,7 @@ public class ArrowButton extends SimpleContainer {
         if (direction == -1) {
             sprite.setScaleX(-1f);
             shadow.setScaleX(-1f);
-            sprite.setX(sprite.getTexture().getWidth());
+            sprite.setX(sprite.getTextureClip().getWidth());
         } else {
             sprite.setScaleX(1f);
             shadow.setScaleX(1f);

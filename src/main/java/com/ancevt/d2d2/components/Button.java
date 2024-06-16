@@ -131,9 +131,9 @@ public class Button extends Component {
     public void setWidth(float width) {
         super.setWidth(width);
 
-        middlePart.setX(leftPart.getTexture().getWidth());
-        middlePart.setScaleX(width - leftPart.getTexture().getWidth() - rightPart.getTexture().getWidth());
-        rightPart.setX(leftPart.getTexture().getWidth() + middlePart.getScaleX());
+        middlePart.setX(leftPart.getTextureClip().getWidth());
+        middlePart.setScaleX(width - leftPart.getTextureClip().getWidth() - rightPart.getTextureClip().getWidth());
+        rightPart.setX(leftPart.getTextureClip().getWidth() + middlePart.getScaleX());
 
         fixTextXY();
     }

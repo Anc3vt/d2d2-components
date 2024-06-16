@@ -94,6 +94,6 @@ public class ComponentAssets {
     }
 
     public static TextureClip getTexture(String textureKey) {
-        return D2D2.getTextureManager().getTexture(textureKey);
+        return D2D2.getTextureManager().getTextureClip(textureKey);
     }
 }
