@@ -32,7 +32,7 @@ import java.util.function.BiConsumer;
 
 public class DevConsole extends Console {
 
-    private Container currentContainer = D2D2.getStage();
+    private Container currentContainer = D2D2.stage();
 
     @Getter
     @Setter
@@ -40,11 +40,11 @@ public class DevConsole extends Console {
 
     private DevConsole() {
         addVariableListener("console.height", (varName, value) -> setHeight(value.toFloatOrDefault(getHeight())));
-        addVariableListener("stage.bgcolor", (varName, value) -> D2D2.getStage().setBackgroundColor(Color.of(value.toString())));
+        addVariableListener("stage.bgcolor", (varName, value) -> D2D2.stage().setBackgroundColor(Color.of(value.toString())));
         addVariableListener("cid", (varName, value) -> {
             int id = value.toIntOrDefault(0);
 
-            Container.findDisplayObjectById(D2D2.getStage(), id).ifPresentOrElse(
+            Container.findDisplayObjectById(D2D2.stage(), id).ifPresentOrElse(
                 o -> {
                     currentContainer = (Container) o;
                     print(getPrompt().get());
@@ -71,7 +71,7 @@ public class DevConsole extends Console {
 
         addCommand("cname", "c", args -> {
             String name = args.next(String.class, "");
-            Container.findDisplayObjectByName(D2D2.getStage(), name).ifPresentOrElse(
+            Container.findDisplayObjectByName(D2D2.stage(), name).ifPresentOrElse(
                 o -> {
                     setVar("cid", "" + o.getDisplayObjectId());
                 },
@@ -106,16 +106,16 @@ public class DevConsole extends Console {
                     throw new RuntimeException(e);
                 }
 
-                D2D2.getEngine().getDisplayManager().focusWindow();
+                D2D2.engine().displayManager().focusWindow();
 
                 return;
             }
 
             ConvertableString cs = ConvertableString.convert(args.next(String.class, "0"));
 
-            int id = cs.toIntOrSupply(() -> Container.findDisplayObjectByName(D2D2.getStage(), cs.toString()).get().getDisplayObjectId());
+            int id = cs.toIntOrSupply(() -> Container.findDisplayObjectByName(D2D2.stage(), cs.toString()).get().getDisplayObjectId());
 
-            Container.findDisplayObjectById(D2D2.getStage(), id)
+            Container.findDisplayObjectById(D2D2.stage(), id)
                 .ifPresentOrElse(
                     o -> {
                         debugFunction.accept(this, o);
@@ -126,7 +126,7 @@ public class DevConsole extends Console {
                             throw new RuntimeException(e);
                         }
 
-                        D2D2.getEngine().getDisplayManager().focusWindow();
+                        D2D2.engine().displayManager().focusWindow();
                     },
                     () -> print("No such display object with id: " + id, Color.DARK_RED)
                 );
@@ -218,7 +218,7 @@ public class DevConsole extends Console {
     public static DevConsole init(BiConsumer<DevConsole, DisplayObject> debugFunction) {
         DevConsole devConsole = new DevConsole();
         devConsole.setDebugFunction(debugFunction);
-        D2D2.getStage().addChild(devConsole, 10, 10);
+        D2D2.stage().addChild(devConsole, 10, 10);
         return devConsole;
     }
 
