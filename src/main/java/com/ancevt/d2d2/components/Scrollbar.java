@@ -153,7 +153,7 @@ public class Scrollbar extends Component {
 
         private static TextureClip get1x1Texture() {
             if (textureClip != null) return textureClip;
-            return textureClip = D2D2.getTextureManager().loadTextureAtlas(ASSET_1X1).createTextureClip();
+            return textureClip = D2D2.textureManager().loadTextureAtlas(ASSET_1X1).createTextureClip();
         }
 
         public ScrollbarRect(Scrollbar scrollbar) {

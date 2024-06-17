@@ -29,7 +29,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
-import static com.ancevt.d2d2.D2D2.getStage;
+import static com.ancevt.d2d2.D2D2.stage;
 
 public class Frame extends Component {
 
@@ -306,7 +306,7 @@ public class Frame extends Component {
     }
 
     public void center() {
-        setXY((getStage().getWidth() - getWidth()) / 2, (getStage().getHeight() - getHeight()) / 2);
+        setXY((stage().getWidth() - getWidth()) / 2, (stage().getHeight() - getHeight()) / 2);
     }
 
     private void this_resize(Event event) {

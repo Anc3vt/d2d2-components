@@ -52,30 +52,30 @@ public class ButtonEx extends Component implements Colored {
         setPushEventsUp(false);
 
         bg = new Combined9Sprites(
-            D2D2.getTextureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_TOP_LEFT),
-            D2D2.getTextureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_TOP),
-            D2D2.getTextureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_TOP_RIGHT),
-            D2D2.getTextureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_LEFT),
-            D2D2.getTextureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_CENTER),
-            D2D2.getTextureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_RIGHT),
-            D2D2.getTextureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_BOTTOM_LEFT),
-            D2D2.getTextureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_BOTTOM),
-            D2D2.getTextureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_BOTTOM_RIGHT)
+            D2D2.textureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_TOP_LEFT),
+            D2D2.textureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_TOP),
+            D2D2.textureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_TOP_RIGHT),
+            D2D2.textureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_LEFT),
+            D2D2.textureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_CENTER),
+            D2D2.textureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_RIGHT),
+            D2D2.textureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_BOTTOM_LEFT),
+            D2D2.textureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_BOTTOM),
+            D2D2.textureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_BOTTOM_RIGHT)
         );
 
         bg.setEnabled(false);
         addChild(bg);
 
         selectedBorder = new Combined9Sprites(
-            D2D2.getTextureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_TOP_LEFT),
-            D2D2.getTextureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_TOP),
-            D2D2.getTextureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_TOP_RIGHT),
-            D2D2.getTextureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_LEFT),
-            D2D2.getTextureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_CENTER),
-            D2D2.getTextureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_RIGHT),
-            D2D2.getTextureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_BOTTOM_LEFT),
-            D2D2.getTextureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_BOTTOM),
-            D2D2.getTextureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_BOTTOM_RIGHT)
+            D2D2.textureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_TOP_LEFT),
+            D2D2.textureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_TOP),
+            D2D2.textureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_TOP_RIGHT),
+            D2D2.textureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_LEFT),
+            D2D2.textureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_CENTER),
+            D2D2.textureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_RIGHT),
+            D2D2.textureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_BOTTOM_LEFT),
+            D2D2.textureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_BOTTOM),
+            D2D2.textureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_BOTTOM_RIGHT)
         );
 
         selectedBorder.setEnabled(false);
