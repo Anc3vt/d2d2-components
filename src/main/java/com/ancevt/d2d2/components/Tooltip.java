@@ -18,11 +18,11 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.display.Sprite;
-import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.display.Color;
+import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.SpriteFactory;
 import com.ancevt.d2d2.display.interactive.Combined9Sprites;
+import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.display.text.BitmapText;
 import com.ancevt.d2d2.display.texture.TextureClip;
 import com.ancevt.d2d2.event.Event;
@@ -101,17 +101,17 @@ public class Tooltip extends Component {
         return spriteBg.isVisible();
     }
 
-    public void setTexture(TextureClip textureClip) {
+    public void setImage(TextureClip textureClip) {
         sprite.setTextureClip(textureClip);
         rebuild();
     }
 
-    public TextureClip getTexture() {
+    public TextureClip getImage() {
         return sprite.getTextureClip();
     }
 
-    public void setText(Object text) {
-        bitmapText.setText("" + text);
+    public void setText(String text) {
+        bitmapText.setText(text);
         rebuild();
     }
 
@@ -160,6 +160,8 @@ public class Tooltip extends Component {
     }
 
     private void handleMaxSize() {
+        sprite.setScale(10f);
+
         if (sprite.getTextureClip() != null) {
             if (maxImageWidth != 0) {
                 while (sprite.getWidth() * sprite.getScaleX() > maxImageWidth) {
