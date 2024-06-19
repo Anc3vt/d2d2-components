@@ -223,7 +223,7 @@ public class ButtonEx extends Component implements Colored {
         bg.setColor(isEnabled() ? colorBackground : colorBackgroundDisabled);
     }
 
-    public void setText(Object text) {
+    public void setText(String text) {
         if (bitmapText == null) {
             bitmapText = new BitmapText();
             bitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddle());
