@@ -68,6 +68,8 @@ public class DevConsoleFrame extends Frame {
             console.textInput.focus();
         });
 
+        setX(20);
+
         loadState();
     }
 
@@ -86,8 +88,8 @@ public class DevConsoleFrame extends Frame {
             );
 
             setXY(
-                convert(map.get("x")).toFloatOrDefault(10),
-                convert(map.get("y")).toFloatOrDefault(10)
+                convert(map.get("x")).toFloatOrDefault(40),
+                convert(map.get("y")).toFloatOrDefault(40)
             );
 
             setAlpha(

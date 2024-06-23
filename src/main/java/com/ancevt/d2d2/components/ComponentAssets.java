@@ -86,7 +86,7 @@ public class ComponentAssets {
     public static void init() {
         if (!initialized) {
             D2D2.textureManager().loadTextureDataInfo("d2d2-components.inf");
-            Cursor.setDefaultCursorTheme();
+            //Cursor.setDefaultCursorTheme();
             initialized = true;
         } else {
             log.warn("Components already initialized");
