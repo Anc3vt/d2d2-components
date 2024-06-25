@@ -19,7 +19,7 @@ package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.SpriteFactory;
-import com.ancevt.d2d2.display.text.BitmapText;
+import com.ancevt.d2d2.display.text.Text;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 
@@ -32,7 +32,7 @@ public class Checkbox extends Component {
     private static final float DEFAULT_WIDTH = 200.0f;
     private static final float DEFAULT_HEIGHT = 30.0f;
 
-    private BitmapText label;
+    private Text label;
     private final Sprite sprite;
     private boolean checked;
 
@@ -44,8 +44,8 @@ public class Checkbox extends Component {
 
     public Checkbox(String text) {
         this();
-        label = new BitmapText(text);
-        label.setBitmapFont(ComponentFont.getBitmapFontMiddle());
+        label = new Text(text);
+        label.setFont(ComponentFont.getFontMiddle());
         addChild(label, sprite.getWidth() + PADDING, 0);
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
@@ -66,8 +66,8 @@ public class Checkbox extends Component {
             }
         } else {
             if (label == null) {
-                label = new BitmapText(text);
-                label.setBitmapFont(ComponentFont.getBitmapFontMiddle());
+                label = new Text(text);
+                label.setFont(ComponentFont.getFontMiddle());
                 addChild(label, sprite.getWidth() + PADDING, 0);
             }
         }
@@ -94,7 +94,7 @@ public class Checkbox extends Component {
     private void fixMarkup() {
         sprite.setXY(PADDING, (getHeight() - sprite.getHeight()) / 2);
         if (label != null) {
-            float h = label.getBitmapFont().getZeroCharHeight();
+            float h = label.getFont().getZeroCharHeight();
             label.setXY(PADDING + sprite.getWidth() + PADDING, (getHeight() - h) / 2 + 1);
             label.setSize(getWidth() - PADDING - sprite.getWidth() - PADDING, h);
         }

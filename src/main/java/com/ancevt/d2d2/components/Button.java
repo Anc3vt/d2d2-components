@@ -20,7 +20,7 @@ package com.ancevt.d2d2.components;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.SpriteFactory;
-import com.ancevt.d2d2.display.text.BitmapText;
+import com.ancevt.d2d2.display.text.Text;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import lombok.Data;
@@ -39,7 +39,7 @@ public class Button extends Component {
     private final Sprite leftPart;
     private final Sprite rightPart;
     private final Sprite middlePart;
-    private final BitmapText bitmapText;
+    private final Text text;
 
     public Button() {
         this(DEFAULT_TEXT);
@@ -50,15 +50,15 @@ public class Button extends Component {
         rightPart = SpriteFactory.createSpriteByTextureKey(BUTTON_RIGHT_PART);
         middlePart = SpriteFactory.createSpriteByTextureKey(BUTTON_MIDDLE_PART);
 
-        bitmapText = new BitmapText();
-        bitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddle());
+        this.text = new Text();
+        this.text.setFont(ComponentFont.getFontMiddle());
 
         addEventListener(Button.class, InteractiveEvent.DOWN, event -> {
             leftPart.setY(1);
             middlePart.setY(1);
             rightPart.setY(1);
             fixTextXY();
-            bitmapText.moveY(1);
+            this.text.moveY(1);
             dispatchEvent(ButtonEvent.builder().type(ButtonEvent.BUTTON_PRESSED).build());
         });
 
@@ -90,7 +90,7 @@ public class Button extends Component {
         middlePart.setVertexBleedingFix(0d);
         middlePart.setTextureBleedingFix(0d);
 
-        addChild(bitmapText);
+        addChild(this.text);
 
         setSize(DEFAULT_WIDTH, leftPart.getHeight());
         setText(text);
@@ -105,7 +105,7 @@ public class Button extends Component {
     }
 
     private void setCorrespondingColors() {
-        bitmapText.setColor(isEnabled() ? TEXT_COLOR : TEXT_COLOR_DISABLED);
+        text.setColor(isEnabled() ? TEXT_COLOR : TEXT_COLOR_DISABLED);
         Color color = isEnabled() ? FOREGROUND_COLOR : FOREGROUND_COLOR_DISABLED;
         leftPart.setColor(color);
         rightPart.setColor(color);
@@ -113,12 +113,12 @@ public class Button extends Component {
     }
 
     public void setText(String text) {
-        bitmapText.setText(text);
+        this.text.setText(text);
         fixTextXY();
     }
 
     public String getText() {
-        return bitmapText.getText();
+        return text.getText();
     }
 
     @Override
@@ -139,9 +139,9 @@ public class Button extends Component {
     }
 
     private void fixTextXY() {
-        float w = bitmapText.getTextWidth() - 5;
-        float h = bitmapText.getBitmapFont().getZeroCharHeight();
-        bitmapText.setXY((getWidth() - w) / 2, (getHeight() - h) / 2);
+        float w = text.getTextWidth() - 5;
+        float h = text.getFont().getZeroCharHeight();
+        text.setXY((getWidth() - w) / 2, (getHeight() - h) / 2);
     }
 
     @Override

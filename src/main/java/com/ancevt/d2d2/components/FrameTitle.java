@@ -19,7 +19,7 @@ package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.text.BitmapText;
+import com.ancevt.d2d2.display.text.Text;
 import com.ancevt.d2d2.event.Event;
 
 public class FrameTitle extends Component {
@@ -28,7 +28,7 @@ public class FrameTitle extends Component {
     private static final Color DEFAULT_TITLE_BACKGROUND_COLOR = Color.of(0x505050);
 
     private final RectangleShape bg;
-    private final BitmapText bitmapText;
+    private final Text text;
 
     public FrameTitle() {
         setComponentFocusRectVisibleEnabled(false);
@@ -37,10 +37,10 @@ public class FrameTitle extends Component {
         bg = new RectangleShape(1, 1, DEFAULT_TITLE_BACKGROUND_COLOR);
         addChild(bg);
 
-        bitmapText = new BitmapText();
-        bitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddle());
-        bitmapText.setMulticolor(true);
-        addChild(bitmapText, 10, 10);
+        text = new Text();
+        text.setFont(ComponentFont.getFontMiddle());
+        text.setMulticolor(true);
+        addChild(text, 10, 10);
 
         addEventListener(Event.RESIZE, this::this_resize);
 
@@ -48,8 +48,8 @@ public class FrameTitle extends Component {
     }
 
     private void this_resize(Event event) {
-        bitmapText.setX((getWidth() - bitmapText.getTextWidth()) / 2);
-        bitmapText.setY((DEFAULT_TITLE_HEIGHT - bitmapText.getTextHeight()) / 2);
+        text.setX((getWidth() - text.getTextWidth()) / 2);
+        text.setY((DEFAULT_TITLE_HEIGHT - text.getTextHeight()) / 2);
     }
 
     @Override
@@ -71,11 +71,11 @@ public class FrameTitle extends Component {
     }
 
     public void setTextColor(Color color) {
-        bitmapText.setColor(color);
+        text.setColor(color);
     }
 
     public Color getTextColor() {
-        return bitmapText.getColor();
+        return text.getColor();
     }
 
     public void setBackgroundColor(Color color) {
@@ -87,12 +87,12 @@ public class FrameTitle extends Component {
     }
 
     public void setText(String text) {
-        bitmapText.setText(text);
+        this.text.setText(text);
         applyResize();
     }
 
     public String getText() {
-        return bitmapText.getText();
+        return text.getText();
     }
 
 }

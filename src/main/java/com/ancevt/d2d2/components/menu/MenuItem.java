@@ -24,7 +24,7 @@ import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.SpriteFactory;
 import com.ancevt.d2d2.display.shape.RectangleShape;
-import com.ancevt.d2d2.display.text.BitmapText;
+import com.ancevt.d2d2.display.text.Text;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 
@@ -37,7 +37,7 @@ public class MenuItem extends Component {
     private static final Runnable STUB_ACTION = () -> {};
 
     final RectangleShape bg;
-    private final BitmapText bitmapText;
+    private final Text text;
 
     private Sprite childMenuArrow;
     private Menu childMenu;
@@ -52,10 +52,10 @@ public class MenuItem extends Component {
 
         action = STUB_ACTION;
 
-        bitmapText = new BitmapText();
-        bitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddle());
-        bitmapText.setMulticolor(true);
-        addChild(bitmapText, 10, (HEIGHT - bitmapText.getTextHeight()) / 2);
+        text = new Text();
+        text.setFont(ComponentFont.getFontMiddle());
+        text.setMulticolor(true);
+        addChild(text, 10, (HEIGHT - text.getTextHeight()) / 2);
 
         addEventListener(Event.RESIZE, this::this_resize);
         addEventListener(InteractiveEvent.HOVER, this::this_hover);
@@ -77,15 +77,15 @@ public class MenuItem extends Component {
     }
 
     public void setText(Object text) {
-        bitmapText.setText("" + text);
+        this.text.setText("" + text);
     }
 
     public String getText() {
-        return bitmapText.getText();
+        return text.getText();
     }
 
     public String getPlainText() {
-        return bitmapText.getPlainText();
+        return text.getPlainText();
     }
 
     public void setAction(Runnable action) {
@@ -131,6 +131,6 @@ public class MenuItem extends Component {
         if (childMenuArrow != null) {
             childMenuArrow.setXY(getWidth() - childMenuArrow.getWidth() - 5, (HEIGHT - childMenuArrow.getHeight()) / 2);
         }
-        bitmapText.setWidth(getWidth());
+        text.setWidth(getWidth());
     }
 }

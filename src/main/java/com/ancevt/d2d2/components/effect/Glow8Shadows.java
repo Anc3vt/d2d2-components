@@ -22,7 +22,7 @@ import com.ancevt.d2d2.display.SimpleContainer;
 import com.ancevt.d2d2.display.Colored;
 import com.ancevt.d2d2.display.DisplayObject;
 import com.ancevt.d2d2.display.SimpleSprite;
-import com.ancevt.d2d2.display.text.BitmapText;
+import com.ancevt.d2d2.display.text.Text;
 
 public class Glow8Shadows extends SimpleContainer {
 
@@ -50,10 +50,10 @@ public class Glow8Shadows extends SimpleContainer {
 
 
             if (sprite == null) {
-                if (source instanceof BitmapText bitmapText) {
-                    bitmapText = bitmapText.cloneBitmapText();
-                    bitmapText.setCacheAsSprite(true);
-                    sprite = bitmapText.cachedSprite();
+                if (source instanceof Text text) {
+                    text = text.cloneBitmapText();
+                    text.setCacheAsSprite(true);
+                    sprite = text.cachedSprite();
                 } else if (source instanceof SimpleSprite s) {
                     sprite = s.cloneSprite();
                 } else {
