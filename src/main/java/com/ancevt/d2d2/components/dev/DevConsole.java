@@ -23,7 +23,7 @@ import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.Container;
 import com.ancevt.d2d2.display.DisplayObject;
-import com.ancevt.d2d2.display.text.BitmapText;
+import com.ancevt.d2d2.display.text.Text;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -165,9 +165,9 @@ public class DevConsole extends Console {
                 sb.append(c.getNumChildren());
             }
 
-            if (o instanceof BitmapText bitmapText) {
+            if (o instanceof Text text) {
                 sb.append(" <666666>\"");
-                sb.append(StringLimiter.limitString(bitmapText.getPlainText(), 100));
+                sb.append(StringLimiter.limitString(text.getPlainText(), 100));
                 sb.append("\"<FFFFFF>");
             }
 

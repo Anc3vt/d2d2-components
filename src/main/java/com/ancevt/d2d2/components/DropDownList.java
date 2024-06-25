@@ -22,8 +22,8 @@ import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.display.SpriteFactory;
 import com.ancevt.d2d2.display.interactive.Combined9Sprites;
-import com.ancevt.d2d2.display.text.BitmapFont;
-import com.ancevt.d2d2.display.text.BitmapText;
+import com.ancevt.d2d2.display.text.Font;
+import com.ancevt.d2d2.display.text.Text;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 
@@ -42,7 +42,7 @@ public class DropDownList<T> extends Component {
     private final RectangleShape bg;
     private final Combined9Sprites borders;
 
-    private final BitmapText bitmapText;
+    private final Text text;
     private final Sprite arrow;
 
     private final Map<T, Item<T>> itemMap;
@@ -78,9 +78,9 @@ public class DropDownList<T> extends Component {
         borders.setColor(FOREGROUND_COLOR);
         addChild(borders);
 
-        bitmapText = new BitmapText();
-        bitmapText.setBitmapFont(ComponentFont.getBitmapFontSmall());
-        addChild(bitmapText);
+        text = new Text();
+        text.setFont(ComponentFont.getFontSmall());
+        addChild(text);
 
         arrow = SpriteFactory.createSpriteByTextureKey(ComponentAssets.DROP_DOWN_LIST_ARROW);
         addChild(arrow);
@@ -95,10 +95,10 @@ public class DropDownList<T> extends Component {
         borders.setSize(getWidth(), getHeight());
         bg.setSize(getWidth(), getHeight());
         arrow.setXY(getWidth() - arrow.getWidth() - 10, (getHeight() - arrow.getHeight()) / 2);
-        bitmapText.setXY(10, (getHeight() - bitmapText.getTextHeight()) / 2);
+        text.setXY(10, (getHeight() - text.getTextHeight()) / 2);
         //bitmapText.setWidth(getWidth() - 10 - arrow.getWidth() - 10 - 10);
-        bitmapText.setAutosize(true);
-        cutText(bitmapText, getWidth());
+        text.setAutosize(true);
+        cutText(text, getWidth());
     }
 
     private long oldTime;
@@ -172,19 +172,19 @@ public class DropDownList<T> extends Component {
         open = false;
     }
 
-    public void setBitmapFont(BitmapFont bitmapFont) {
-        bitmapText.setBitmapFont(bitmapFont);
+    public void setBitmapFont(Font font) {
+        text.setFont(font);
     }
 
-    public BitmapFont getBitmapFont() {
-        return bitmapText.getBitmapFont();
+    public Font getBitmapFont() {
+        return text.getFont();
     }
 
     public void clear() {
         if (open) close();
         itemMap.clear();
         itemList.clear();
-        bitmapText.setText("");
+        text.setText("");
     }
 
     public void addItem(String text, T object) {
@@ -201,9 +201,9 @@ public class DropDownList<T> extends Component {
     public void setItem(T object) {
         Item<T> item = itemMap.get(object);
         if (item == null) throw new IllegalStateException("No such item \"%s\"".formatted(object.toString()));
-        bitmapText.setText(item.getText());
+        text.setText(item.getText());
         selectedItem = item;
-        cutText(bitmapText, getWidth());
+        cutText(text, getWidth());
         dispatchEvent(Event.builder().type(Event.CHANGE).build());
     }
 
@@ -226,7 +226,7 @@ public class DropDownList<T> extends Component {
 
     }
 
-    private static void cutText(BitmapText bitmapText, float width) {
+    private static void cutText(Text bitmapText, float width) {
         String text = bitmapText.getText();
         if (bitmapText.getTextWidth() > width) {
             int length = (int) ((width / bitmapText.getCharWidth()) - 5);
@@ -241,25 +241,25 @@ public class DropDownList<T> extends Component {
 
         private static final float HEIGHT = 24.0f;
 
-        private final String text;
+        private final String textString;
         private final T object;
         private final DropDownList<T> dropDownList;
         private final RectangleShape bg;
-        private final BitmapText bitmapText;
+        private final Text text;
 
         public Item(DropDownList<T> dropDownList, String text, T object) {
             this.dropDownList = dropDownList;
-            this.text = text;
+            textString = text;
             this.object = object;
 
             bg = new RectangleShape(1, 1, BACKGROUND_COLOR);
             addChild(bg);
 
-            bitmapText = new BitmapText();
-            bitmapText.setBitmapFont(dropDownList.getBitmapFont());
-            bitmapText.setText(text);
-            cutText(bitmapText, getWidth());
-            addChild(bitmapText);
+            this.text = new Text();
+            this.text.setFont(dropDownList.getBitmapFont());
+            this.text.setText(text);
+            cutText(this.text, getWidth());
+            addChild(this.text);
 
             addEventListener(Event.RESIZE, this::this_resize);
             addEventListener(InteractiveEvent.DOWN, this::this_down);
@@ -269,9 +269,9 @@ public class DropDownList<T> extends Component {
 
         private void this_resize(Event event) {
             bg.setSize(getWidth(), getHeight());
-            bitmapText.setAutosize(true);
-            bitmapText.setXY(10, (getHeight() - bitmapText.getTextHeight()) / 2);
-            cutText(bitmapText, getWidth());
+            text.setAutosize(true);
+            text.setXY(10, (getHeight() - text.getTextHeight()) / 2);
+            cutText(text, getWidth());
         }
 
         private void this_down(Event event) {
@@ -280,7 +280,7 @@ public class DropDownList<T> extends Component {
         }
 
         public String getText() {
-            return text;
+            return textString;
         }
 
         public T getObject() {

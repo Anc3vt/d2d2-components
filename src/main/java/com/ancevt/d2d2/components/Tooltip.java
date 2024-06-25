@@ -23,7 +23,7 @@ import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.SpriteFactory;
 import com.ancevt.d2d2.display.interactive.Combined9Sprites;
 import com.ancevt.d2d2.display.shape.RectangleShape;
-import com.ancevt.d2d2.display.text.BitmapText;
+import com.ancevt.d2d2.display.text.Text;
 import com.ancevt.d2d2.display.texture.TextureClip;
 import com.ancevt.d2d2.event.Event;
 
@@ -37,7 +37,7 @@ public class Tooltip extends Component {
 
     private final RectangleShape bg;
     private final Combined9Sprites borders;
-    private final BitmapText bitmapText;
+    private final Text text;
     private final Sprite spriteBg;
     private final Sprite sprite;
     private float maxImageWidth;
@@ -71,10 +71,10 @@ public class Tooltip extends Component {
         sprite = SpriteFactory.createEmptySprite();
         addChild(sprite, 10, 10);
 
-        bitmapText = new BitmapText(ComponentFont.getBitmapFontMiddle());
-        bitmapText.setMulticolor(true);
-        bitmapText.setAutosize(true);
-        addChild(bitmapText, 10, 10);
+        text = new Text(ComponentFont.getFontMiddle());
+        text.setMulticolor(true);
+        text.setAutosize(true);
+        addChild(text, 10, 10);
 
         addEventListener(Tooltip.class, Event.RESIZE, this::this_resize);
         addEventListener(Tooltip.class, Event.ADD_TO_STAGE, this::this_addToStage);
@@ -111,7 +111,7 @@ public class Tooltip extends Component {
     }
 
     public void setText(String text) {
-        bitmapText.setText(text);
+        this.text.setText(text);
         rebuild();
     }
 
@@ -119,10 +119,10 @@ public class Tooltip extends Component {
         float spriteWidth = sprite.getTextureClip() == null ? 0.0f : sprite.getWidth() * sprite.getScaleX();
         float spriteHeight = sprite.getTextureClip() == null ? 0.0f : sprite.getHeight() * sprite.getScaleY();
 
-        bitmapText.setX(10 + spriteWidth + 10);
+        text.setX(10 + spriteWidth + 10);
 
-        float textWidth = bitmapText.getWidth();
-        float textHeight = bitmapText.getHeight();
+        float textWidth = text.getWidth();
+        float textHeight = text.getHeight();
 
         float w = 10.0f + spriteWidth + 10.0f + textWidth + 10;
         float h = 10.0f + spriteHeight + 10.0f;
@@ -141,11 +141,11 @@ public class Tooltip extends Component {
     }
 
     public String getText() {
-        return bitmapText.getText();
+        return text.getText();
     }
 
     public String getPlainText() {
-        return bitmapText.getPlainText();
+        return text.getPlainText();
     }
 
     public void setImageScale(float scale) {

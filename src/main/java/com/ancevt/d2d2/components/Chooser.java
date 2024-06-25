@@ -19,7 +19,7 @@ package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.SimpleContainer;
-import com.ancevt.d2d2.display.text.BitmapText;
+import com.ancevt.d2d2.display.text.Text;
 import com.ancevt.d2d2.event.Event;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -36,7 +36,7 @@ public class Chooser<T> extends SimpleContainer {
 
     private final ArrowButton buttonLeft;
     private final ArrowButton buttonRight;
-    private final BitmapText bitmapText;
+    private final Text text;
     private final List<Pair<String, T>> items;
     private final Button buttonApply;
     private int index;
@@ -55,13 +55,13 @@ public class Chooser<T> extends SimpleContainer {
         buttonRight.setDirection(1);
         buttonRight.addEventListener(ArrowButton.ArrowButtonEvent.ARROW_BUTTON_PRESS, this::buttonRight_arrowButtonPress);
 
-        bitmapText = new BitmapText();
-        bitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddle());
+        text = new Text();
+        text.setFont(ComponentFont.getFontMiddle());
 
         buttonApply = new Button("Apply");
         buttonApply.addEventListener(Button.ButtonEvent.BUTTON_PRESSED, this::applyButton_buttonPressed);
 
-        addChild(bitmapText);
+        addChild(text);
 
         addChild(buttonLeft);
         addChild(buttonRight);
@@ -77,7 +77,7 @@ public class Chooser<T> extends SimpleContainer {
     private void setCurrentItemAsSelected() {
         selectedItemPair = items.get(index);
         buttonApply.setEnabled(false);
-        bitmapText.setColor(Color.WHITE);
+        text.setColor(Color.WHITE);
         dispatchEvent(ChooserEvent.builder().type(ChooserEvent.CHOOSER_APPLY).build());
     }
 
@@ -156,14 +156,14 @@ public class Chooser<T> extends SimpleContainer {
             buttonRight.setEnabled(true);
         }
 
-        bitmapText.setText(items.get(index).getFirst());
-        bitmapText.setWidth(getWidth());
+        text.setText(items.get(index).getFirst());
+        text.setWidth(getWidth());
 
         float width = getWidth() - buttonLeft.getWidth() * 3;
 
-        if (bitmapText.getTextWidth() > width) {
-            String text = bitmapText.getText();
-            int l = (int) (width / bitmapText.getCharWidth()) - 5;
+        if (text.getTextWidth() > width) {
+            String text = this.text.getText();
+            int l = (int) (width / this.text.getCharWidth()) - 5;
             if (l <= text.length()) {
                 try {
                     text = text.substring(0, l).concat("...");
@@ -171,14 +171,14 @@ public class Chooser<T> extends SimpleContainer {
                     text = "[!]";
                 }
             }
-            bitmapText.setText(text);
+            this.text.setText(text);
         }
 
-        float w = bitmapText.getTextWidth() + 8;
-        bitmapText.setX((getWidth() - w) / 2);
+        float w = text.getTextWidth() + 8;
+        text.setX((getWidth() - w) / 2);
 
         buttonApply.setEnabled(selectedItemPair != items.get(index));
-        bitmapText.setColor(selectedItemPair == items.get(index) ? Color.LIGHT_GREEN : Color.WHITE);
+        text.setColor(selectedItemPair == items.get(index) ? Color.LIGHT_GREEN : Color.WHITE);
     }
 
     public int getIndex() {

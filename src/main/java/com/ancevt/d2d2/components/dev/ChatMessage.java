@@ -20,8 +20,8 @@ package com.ancevt.d2d2.components.dev;
 import com.ancevt.d2d2.components.ComponentFont;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.SimpleContainer;
-import com.ancevt.d2d2.display.text.BitmapFont;
-import com.ancevt.d2d2.display.text.BitmapText;
+import com.ancevt.d2d2.display.text.Font;
+import com.ancevt.d2d2.display.text.Text;
 import lombok.Getter;
 
 public class ChatMessage extends SimpleContainer {
@@ -32,39 +32,39 @@ public class ChatMessage extends SimpleContainer {
     @Getter
     private final int id;
     @Getter
-    private final String text;
+    private final String textString;
     @Getter
     private final Color textColor;
-    final BitmapText bitmapText;
+    final Text text;
 
     @Getter
     private boolean multicolorEnabled;
 
     public ChatMessage(int id, String messageText, Color textColor) {
         this.id = id;
-        this.text = messageText;
+        textString = messageText;
         this.textColor = textColor;
-        bitmapText = new BitmapText();
-        bitmapText.setText(messageText);
-        bitmapText.setBitmapFont(getBitmapFont());
-        bitmapText.setSpacing(-0.5f);
-        bitmapText.setWidth(DEFAULT_WIDTH);
-        bitmapText.setHeight(DEFAULT_HEIGHT);
-        bitmapText.setColor(textColor);
-        bitmapText.setVertexBleedingFix(0);
-        bitmapText.setWordWrap(false);
+        text = new Text();
+        text.setText(messageText);
+        text.setFont(getFont());
+        text.setSpacing(-0.5f);
+        text.setWidth(DEFAULT_WIDTH);
+        text.setHeight(DEFAULT_HEIGHT);
+        text.setColor(textColor);
+        text.setVertexBleedingFix(0);
+        text.setWordWrap(false);
 
 
-        addChild(bitmapText);
+        addChild(text);
     }
 
     public void setMulticolorEnabled(boolean multicolorEnabled) {
-        bitmapText.setMulticolor(multicolorEnabled);
+        text.setMulticolor(multicolorEnabled);
         this.multicolorEnabled = multicolorEnabled;
     }
 
-    public BitmapFont getBitmapFont() {
-        return ComponentFont.getBitmapFontMiddleGlow();
+    public Font getFont() {
+        return ComponentFont.getFontMiddleGlow();
     }
 
     @Override
@@ -72,7 +72,7 @@ public class ChatMessage extends SimpleContainer {
         return "ChatMessage{" +
             "id=" + id +
             ", text='" + text + '\'' +
-            ", textUiText=" + bitmapText +
+            ", textUiText=" + text +
             ", textColor=" + textColor +
             '}';
     }

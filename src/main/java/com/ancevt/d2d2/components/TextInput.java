@@ -17,11 +17,11 @@
  */
 package com.ancevt.d2d2.components;
 
-import com.ancevt.d2d2.display.shape.RectangleShape;
 import com.ancevt.d2d2.display.Color;
 import com.ancevt.d2d2.display.interactive.Combined9Sprites;
-import com.ancevt.d2d2.display.text.BitmapFont;
-import com.ancevt.d2d2.display.text.BitmapText;
+import com.ancevt.d2d2.display.shape.RectangleShape;
+import com.ancevt.d2d2.display.text.Font;
+import com.ancevt.d2d2.display.text.Text;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.Clipboard;
@@ -40,32 +40,32 @@ public class TextInput extends Component {
 
     private final RectangleShape bg;
     private final RectangleShape selection;
-    private final BitmapText bitmapText;
+    private final Text text;
     private final Combined9Sprites focusRect;
     private final Caret caret;
     private boolean selecting;
     private int selectionFromIndex;
     private int selectionToIndex;
     private int selectionStartIndex;
-    private String text;
+    private String textString;
 
     private Padding padding = new Padding(10, 0, 10, 0);
 
     public TextInput() {
         bg = new RectangleShape(DEFAULT_WIDTH, DEFAULT_HEIGHT, colorBackground);
         selection = new RectangleShape(0, DEFAULT_HEIGHT - 8, colorSelection);
-        bitmapText = new BitmapText();
-        bitmapText.setAutosize(true);
-        bitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddle());
+        text = new Text();
+        text.setAutosize(true);
+        text.setFont(ComponentFont.getFontMiddle());
 
         bg.setAlpha(backgroundAlpha);
 
         addChild(bg);
         // add(selection, uiText.getX(), 4); // selection is completely not implemented yet
-        addChild(bitmapText);
+        addChild(text);
 
         caret = new Caret(this);
-        caret.setXY(bitmapText.getX(), 4);
+        caret.setXY(text.getX(), 4);
 
         focusRect = new Combined9Sprites(new String[]{
             ComponentAssets.RECT_BORDER_9_SIDE_TOP_LEFT,
@@ -98,12 +98,12 @@ public class TextInput extends Component {
         setEnabled(true);
     }
 
-    public void setBitmapFont(BitmapFont bitmapFont) {
-        bitmapText.setBitmapFont(bitmapFont);
+    public void setBitmapFont(Font font) {
+        text.setFont(font);
     }
 
-    public BitmapFont getBitmapFont() {
-        return bitmapText.getBitmapFont();
+    public Font getBitmapFont() {
+        return text.getFont();
     }
 
     private void this_hover(Event event) {
@@ -128,8 +128,8 @@ public class TextInput extends Component {
     private void this_resize(Event event) {
         caret.setHeight(getHeight() - getHeight() / 3f);
         caret.setY((getHeight() - caret.getHeight()) / 2);
-        bitmapText.setXY(padding.getLeft(), (getHeight() - bitmapText.getCharHeight()) / 2 + 2);
-        bitmapText.setWidth(getWidth() - padding.getLeft() - padding.getRight());
+        text.setXY(padding.getLeft(), (getHeight() - text.getCharHeight()) / 2 + 2);
+        text.setWidth(getWidth() - padding.getLeft() - padding.getRight());
         focusRect.setSize(getWidth(), getHeight());
     }
 
@@ -176,9 +176,9 @@ public class TextInput extends Component {
     private void this_keyType(Event event) {
         var e = (InteractiveEvent) event;
         String keyType = e.getKeyType();
-        if (!bitmapText.getBitmapFont().isCharSupported(keyType.charAt(0))) return;
+        if (!text.getFont().isCharSupported(keyType.charAt(0))) return;
 
-        if (text.length() * bitmapText.getCharWidth() < getWidth() - 10) {
+        if (textString.length() * text.getCharWidth() < getWidth() - 10) {
             insertText(keyType);
         }
     }
@@ -219,16 +219,16 @@ public class TextInput extends Component {
             }
             case KeyCode.DELETE -> {
                 int index = getCaretPosition();
-                if (index < text.length()) {
-                    setText(text.substring(0, index) + text.substring(index + 1));
+                if (index < textString.length()) {
+                    setText(textString.substring(0, index) + textString.substring(index + 1));
                 }
             }
             case KeyCode.HOME -> setCaretPosition(0);
 
-            case KeyCode.END -> setCaretPosition(text.length());
+            case KeyCode.END -> setCaretPosition(textString.length());
 
             case KeyCode.ENTER,
-                KeyCode.RIGHT_ENTER -> {
+                 KeyCode.RIGHT_ENTER -> {
                 dispatchEvent(TextInputEvent.builder()
                     .type(TextInputEvent.ENTER)
                     .text(getText())
@@ -272,7 +272,7 @@ public class TextInput extends Component {
         if (enabled == isEnabled()) return;
 
         super.setEnabled(enabled);
-        bitmapText.setColor(enabled ? Component.TEXT_COLOR : Component.TEXT_COLOR_DISABLED);
+        text.setColor(enabled ? Component.TEXT_COLOR : Component.TEXT_COLOR_DISABLED);
     }
 
     public void setBackgroundColor(Color backgroundColor) {
@@ -300,18 +300,18 @@ public class TextInput extends Component {
         InteractiveEvent e = (InteractiveEvent) event;
 
         float x = e.getX() - padding.getLeft();
-        float c = bitmapText.getCharWidth();
-        float s = bitmapText.getAbsoluteScaleX();
+        float c = text.getCharWidth();
+        float s = text.getAbsoluteScaleX();
 
         setCaretPosition((int) ((x / c) / s));
     }
 
     public void setTextColor(Color textColor) {
-        bitmapText.setColor(textColor);
+        text.setColor(textColor);
     }
 
     public Color getTextColor() {
-        return bitmapText.getColor();
+        return text.getColor();
     }
 
     public void setSelection(int fromIndex, int toIndex) {
@@ -335,14 +335,14 @@ public class TextInput extends Component {
     }
 
     private void redrawSelection() {
-        selection.setX(bitmapText.getX() + selectionFromIndex * bitmapText.getCharWidth());
-        selection.setWidth((selectionToIndex - selectionFromIndex) * bitmapText.getCharWidth());
+        selection.setX(text.getX() + selectionFromIndex * text.getCharWidth());
+        selection.setWidth((selectionToIndex - selectionFromIndex) * text.getCharWidth());
     }
 
-    public void setText(String text) {
-        this.text = text;
-        this.bitmapText.setText(text);
-        if (getCaretPosition() > text.length()) {
+    public void setText(String textString) {
+        this.textString = textString;
+        this.text.setText(textString);
+        if (getCaretPosition() > textString.length()) {
             setCaretPosition(Integer.MAX_VALUE);
         }
 
@@ -353,17 +353,17 @@ public class TextInput extends Component {
     }
 
     public String getText() {
-        return text;
+        return textString;
     }
 
     public void setCaretPosition(int index) {
         index = fixIndex(index);
-        caret.setX(padding.getLeft() + (index * bitmapText.getCharWidth()) - 1);
+        caret.setX(padding.getLeft() + (index * text.getCharWidth()) - 1);
         caret.setAlpha(1f);
     }
 
     private int fixIndex(int index) {
-        int len = text.length();
+        int len = textString.length();
 
         if (index > len) {
             index = len;
@@ -374,7 +374,7 @@ public class TextInput extends Component {
     }
 
     public int getCaretPosition() {
-        return (int) ((caret.getX() - padding.getLeft() + 1) / bitmapText.getCharWidth());
+        return (int) ((caret.getX() - padding.getLeft() + 1) / text.getCharWidth());
     }
 
     @Override
@@ -432,10 +432,10 @@ public class TextInput extends Component {
             setText(textToInsert);
         }
         int index = getCaretPosition();
-        setText(text.substring(0, index) + textToInsert + text.substring(index));
+        setText(textString.substring(0, index) + textToInsert + textString.substring(index));
         setCaretPosition(getCaretPosition() + textToInsert.length());
 
-        while (text.length() * bitmapText.getCharWidth() > getWidth() - padding.getLeft() - padding.getRight()) {
+        while (textString.length() * text.getCharWidth() > getWidth() - padding.getLeft() - padding.getRight()) {
             removeChar();
         }
     }
@@ -443,7 +443,7 @@ public class TextInput extends Component {
     private void removeChar() {
         int index = getCaretPosition();
         if (index > 0) {
-            String newText = text.substring(0, index - 1) + text.substring(index);
+            String newText = textString.substring(0, index - 1) + textString.substring(index);
             setCaretPosition(getCaretPosition() - 1);
             setText(newText);
         }
@@ -461,7 +461,7 @@ public class TextInput extends Component {
     }
 
     private char getCharUnderCaret() {
-        return text.charAt(getCaretPosition() - 1);
+        return textString.charAt(getCaretPosition() - 1);
     }
 
     public void clear() {

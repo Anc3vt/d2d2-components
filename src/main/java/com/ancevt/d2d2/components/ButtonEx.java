@@ -23,7 +23,7 @@ import com.ancevt.d2d2.display.Colored;
 import com.ancevt.d2d2.display.Sprite;
 import com.ancevt.d2d2.display.SpriteFactory;
 import com.ancevt.d2d2.display.interactive.Combined9Sprites;
-import com.ancevt.d2d2.display.text.BitmapText;
+import com.ancevt.d2d2.display.text.Text;
 import com.ancevt.d2d2.display.texture.TextureClip;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
@@ -44,7 +44,7 @@ public class ButtonEx extends Component implements Colored {
     private Color colorTextDisabled = Color.GRAY;
 
     private Sprite iconSprite;
-    private BitmapText bitmapText;
+    private Text text;
     private boolean toggleMode;
     private boolean selected;
 
@@ -91,7 +91,7 @@ public class ButtonEx extends Component implements Colored {
                     .build());
             } else {
                 bg.setY(1);
-                if (bitmapText != null) bitmapText.moveY(1);
+                if (text != null) text.moveY(1);
                 if (iconSprite != null) iconSprite.moveY(1);
             }
         });
@@ -106,7 +106,7 @@ public class ButtonEx extends Component implements Colored {
             }
 
             bg.setY(0);
-            if (bitmapText != null) bitmapText.moveY(0);
+            if (text != null) text.moveY(0);
             if (iconSprite != null) iconSprite.moveY(0);
             update();
             bg.setColor(e.isOnArea() ? colorHoverBackground : colorBackground);
@@ -177,7 +177,7 @@ public class ButtonEx extends Component implements Colored {
 
     public void setColorText(Color colorText) {
         this.colorText = colorText;
-        if (isEnabled() && bitmapText != null) bitmapText.setColor(colorText);
+        if (isEnabled() && text != null) text.setColor(colorText);
     }
 
     public Color getColorTextDisabled() {
@@ -186,7 +186,7 @@ public class ButtonEx extends Component implements Colored {
 
     public void setColorTextDisabled(Color colorTextDisabled) {
         this.colorTextDisabled = colorTextDisabled;
-        if (!isEnabled() && bitmapText != null) bitmapText.setColor(colorTextDisabled);
+        if (!isEnabled() && text != null) text.setColor(colorTextDisabled);
     }
 
     public void setToggleMode(boolean toggleMode) {
@@ -215,7 +215,7 @@ public class ButtonEx extends Component implements Colored {
     }
 
     private void setCorrespondingColors() {
-        if (bitmapText != null) bitmapText.setColor(isEnabled() ? colorText : colorTextDisabled);
+        if (text != null) text.setColor(isEnabled() ? colorText : colorTextDisabled);
         if (iconSprite != null) {
             iconSprite.setColor(isEnabled() ? Color.WHITE : Color.DARK_GRAY);
             iconSprite.setAlpha(isEnabled() ? 1.0f : 0.5f);
@@ -224,23 +224,23 @@ public class ButtonEx extends Component implements Colored {
     }
 
     public void setText(String text) {
-        if (bitmapText == null) {
-            bitmapText = new BitmapText();
-            bitmapText.setBitmapFont(ComponentFont.getBitmapFontMiddle());
-            bitmapText.setMulticolor(true);
-            addChild(bitmapText);
+        if (this.text == null) {
+            this.text = new Text();
+            this.text.setFont(ComponentFont.getFontMiddle());
+            this.text.setMulticolor(true);
+            addChild(this.text);
         }
 
-        bitmapText.setText("" + text);
+        this.text.setText("" + text);
         update();
     }
 
     public String getText() {
-        return bitmapText.getText();
+        return text.getText();
     }
 
     public String getPlainText() {
-        return bitmapText.getPlainText();
+        return text.getPlainText();
     }
 
     public void setIcon(TextureClip textureClip) {
@@ -273,7 +273,7 @@ public class ButtonEx extends Component implements Colored {
 
     @Override
     public void update() {
-        if (iconSprite != null && bitmapText != null) {
+        if (iconSprite != null && text != null) {
             throw new IllegalStateException("Can't set both text and icon");
         }
 
@@ -288,13 +288,13 @@ public class ButtonEx extends Component implements Colored {
             float h = getHeight();
             iconSprite.setXY((w - sw) / 2, (h - sh) / 2);
         }
-        if (bitmapText != null) {
-            bitmapText.setSize(getWidth(), getHeight());
+        if (text != null) {
+            text.setSize(getWidth(), getHeight());
             float w = getWidth();
             float h = getHeight();
-            float tw = bitmapText.getTextWidth();
-            float th = bitmapText.getCharHeight();
-            bitmapText.setXY((w - tw) / 2, (h - th) / 2 - 3);
+            float tw = text.getTextWidth();
+            float th = text.getCharHeight();
+            text.setXY((w - tw) / 2, (h - th) / 2 - 3);
         }
     }
 }

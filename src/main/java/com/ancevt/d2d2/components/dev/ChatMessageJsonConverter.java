@@ -45,7 +45,7 @@ public class ChatMessageJsonConverter {
     public static String chatMessageToJson(ChatMessage chatMessage) {
         JsonObject object = new JsonObject();
         object.addProperty("id", chatMessage.getId());
-        addPropertyIfNotNull(object, "text", chatMessage.getText());
+        addPropertyIfNotNull(object, "text", chatMessage.getTextString());
         addPropertyIfNotNull(object, "textColorHex", chatMessage.getTextColor() != null ? chatMessage.getTextColor().toHexString() : null);
         return gson.toJson(object);
     }

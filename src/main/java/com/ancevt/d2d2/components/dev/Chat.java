@@ -183,7 +183,7 @@ public class Chat extends SimpleContainer {
             chatMessage.setMulticolorEnabled(multicolorEnabled);
             displayedMessages.add(chatMessage);
 
-            chatMessage.bitmapText.setWidth(getWidth());
+            chatMessage.text.setWidth(getWidth());
 
             addChild(chatMessage, 0, y);
             y += (int) chatMessage.getHeight();
@@ -304,7 +304,7 @@ public class Chat extends SimpleContainer {
                         textInput.setText(text.substring(0, INPUT_MAX_LENGTH));
                         return;
                     }
-                    int w = text.length() * ComponentFont.getBitmapFontMiddle().getCharInfo('0').width();
+                    int w = text.length() * ComponentFont.getFontMiddle().getCharInfo('0').width();
                     textInput.setWidth(w + 20);
                 }
 

@@ -18,7 +18,7 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.display.text.BitmapFont;
+import com.ancevt.d2d2.display.text.Font;
 
 public class ComponentFont {
 
@@ -28,31 +28,31 @@ public class ComponentFont {
 
     //private static final String FONT_ASSET_MIDDLE_GLOW = "Terminus-16-Bold-Glow";
     private static final String FONT_ASSET_MIDDLE_GLOW = "TerminusTTF-Bold-4.49.3-16";
-    private static BitmapFont bitmapFontMiddle;
-    private static BitmapFont bitmapFontMiddleGlow;
-    private static BitmapFont bitmapFontSmall;
+    private static Font fontMiddle;
+    private static Font fontMiddleGlow;
+    private static Font fontSmall;
 
-    public static BitmapFont getBitmapFontMiddle() {
-        if (bitmapFontMiddle == null) {
-            bitmapFontMiddle = D2D2.bitmapFontManager().loadBitmapFont(FONT_ASSET_MIDDLE);
-            bitmapFontMiddle.setPaddingTop(-3f);
+    public static Font getFontMiddle() {
+        if (fontMiddle == null) {
+            fontMiddle = D2D2.bitmapFontManager().loadBitmapFont(FONT_ASSET_MIDDLE);
+            fontMiddle.setPaddingTop(-3f);
         }
-        return bitmapFontMiddle;
+        return fontMiddle;
     }
 
-    public static BitmapFont getBitmapFontMiddleGlow() {
-        if (bitmapFontMiddleGlow == null) {
-            bitmapFontMiddleGlow = D2D2.bitmapFontManager().loadBitmapFont(FONT_ASSET_MIDDLE_GLOW);
-            bitmapFontMiddleGlow.setPaddingTop(-3f);
+    public static Font getFontMiddleGlow() {
+        if (fontMiddleGlow == null) {
+            fontMiddleGlow = D2D2.bitmapFontManager().loadBitmapFont(FONT_ASSET_MIDDLE_GLOW);
+            fontMiddleGlow.setPaddingTop(-3f);
         }
-        return bitmapFontMiddleGlow;
+        return fontMiddleGlow;
     }
 
-    public static BitmapFont getBitmapFontSmall() {
-        if (bitmapFontSmall == null) {
-            bitmapFontSmall = D2D2.bitmapFontManager().loadBitmapFont(FONT_ASSET_SMALL);
-            bitmapFontSmall.setPaddingTop(-1f);
+    public static Font getFontSmall() {
+        if (fontSmall == null) {
+            fontSmall = D2D2.bitmapFontManager().loadBitmapFont(FONT_ASSET_SMALL);
+            fontSmall.setPaddingTop(-1f);
         }
-        return bitmapFontSmall;
+        return fontSmall;
     }
 }
