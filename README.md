@@ -18,7 +18,7 @@ D2D2 Components is an extension to the [D2D2 Core framework](https://github.com/
 
 The goal of D2D2 Components is to extend the functionality of D2D2 Core by providing a comprehensive library of visual GUI components, simplifying the development of Java applications and games with interactive user interfaces. By offering a flexible and easy-to-use set of components, developers can focus on building engaging user experiences without the complexity of low-level graphics programming.
 
-## Example Usage
+## com.ancevt.learn.test.Example Usage
 
 ```java
 public static void main(String[] args) {
