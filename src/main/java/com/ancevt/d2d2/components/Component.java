@@ -120,7 +120,7 @@ abstract public class Component extends InteractiveContainer {
                     tooltip.removeFromParent();
                 });
 
-                Timer.setTimeout(t -> {
+                Timer.setTimeout(1000, t -> {
                     if (!tooltipCancelHover.get() && isHovering()) {
                         stage().addChild(tooltip, Mouse.getX(), Mouse.getY());
                         if (tooltip.getX() + tooltip.getWidth() > stage().getWidth()) {
@@ -136,16 +136,16 @@ abstract public class Component extends InteractiveContainer {
                             tooltip.removeFromParent();
                         });
                     }
-                }, 1000);
+                });
             });
 
             addEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.OUT, event -> {
-                Timer.setTimeout(t -> {
+                Timer.setTimeout(1000, t -> {
                     if (!isHovering() && !tooltip.isHovering()) {
                         tooltip.removeEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.OUT);
                         tooltip.removeFromParent();
                     }
-                }, 1000);
+                });
             });
         }
     }

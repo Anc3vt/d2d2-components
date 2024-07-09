@@ -117,7 +117,7 @@ public class DevConsoleFrame extends Frame {
             InteractiveEvent e = event.casted();
             if (e.getKeyCode() == KeyCode.TILDA && e.isShift()) {
                 setVisible(!isVisible());
-                Timer.setTimeout(t -> {
+                Timer.setTimeout(10, t -> {
                     String text = console.textInput.getText();
                     if (text.endsWith("`") ||
                         text.endsWith("ё") ||
@@ -126,7 +126,7 @@ public class DevConsoleFrame extends Frame {
                         text = text.substring(0, text.length() - 1);
                         console.textInput.setText(text);
                     }
-                }, 10);
+                });
                 if (getX() > D2D2.stage().getWidth() || getX() < -getWidth()) {
                     setX(10);
                 }

@@ -263,7 +263,7 @@ public class Chat extends SimpleContainer {
     }
 
     public void openInput() {
-        Timer.setTimeout(t -> {
+        Timer.setTimeout(100, t -> {
             setAlpha(1.0f);
             alphaTime = ALPHA_TIME;
             addChild(textInput);
@@ -271,7 +271,7 @@ public class Chat extends SimpleContainer {
             dispatchEvent(ChatEvent.builder()
                 .type(ChatEvent.CHAT_INPUT_OPEN)
                 .build());
-        }, 100);
+        });
     }
 
     public void closeInput() {
