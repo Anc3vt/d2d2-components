@@ -47,9 +47,9 @@ public class DevConsole extends Console {
             Container.findDisplayObjectById(D2D2.stage(), id).ifPresentOrElse(
                 o -> {
                     currentContainer = (Container) o;
-                    print(getPrompt().get());
+                    println(getPrompt().get());
                 },
-                () -> print("No such display object with id: " + id, Color.DARK_RED)
+                () -> println("No such display object with id: " + id, Color.DARK_RED)
             );
         });
 
@@ -66,7 +66,7 @@ public class DevConsole extends Console {
 
         addCommand("tree", "t", args -> {
             String typeFilters = args.get(String.class, "-t", "");
-            print(treeString(currentContainer, typeFilters), Color.GRAY);
+            println(treeString(currentContainer, typeFilters), Color.GRAY);
         });
 
         addCommand("cname", "c", args -> {
@@ -75,7 +75,7 @@ public class DevConsole extends Console {
                 o -> {
                     setVar("cid", "" + o.getDisplayObjectId());
                 },
-                () -> print("No such display object with name: " + name, Color.DARK_RED)
+                () -> println("No such display object with name: " + name, Color.DARK_RED)
             );
         });
 
@@ -89,7 +89,7 @@ public class DevConsole extends Console {
             }
         });
 
-        addCommand("mem", args -> print(MemoryInfo.getMemoryInfo()));
+        addCommand("mem", args -> println(MemoryInfo.getMemoryInfo()));
 
         addCommand("gc", args -> {
             System.gc();
@@ -128,7 +128,7 @@ public class DevConsole extends Console {
 
                         D2D2.engine().displayManager().focusWindow();
                     },
-                    () -> print("No such display object with id: " + id, Color.DARK_RED)
+                    () -> println("No such display object with id: " + id, Color.DARK_RED)
                 );
         });
 

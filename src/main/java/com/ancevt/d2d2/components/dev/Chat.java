@@ -229,13 +229,13 @@ public class Chat extends SimpleContainer {
         redraw();
     }
 
-    public void print(String messageText) {
-        print(messageText, Color.LIGHT_GRAY);
+    public void println(String messageText) {
+        println(messageText, Color.LIGHT_GRAY);
     }
 
-    public void print(String messageText, Color color) {
+    public void println(String messageText, Color color) {
         if (messageText.contains("\n")) {
-            messageText.lines().forEach(line -> print(line, color));
+            messageText.lines().forEach(line -> println(line, color));
         } else {
             addMessage(messageText, color);
         }

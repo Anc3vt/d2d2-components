@@ -139,7 +139,7 @@ public class Console extends Chat implements Disposable {
                     listener.accept(variable, e.getValue());
                 } catch (Exception ex) {
                     log.error(ex.getMessage(), ex);
-                    print(StackTraceUtil.stringify(ex), Color.RED);
+                    println(StackTraceUtil.stringify(ex), Color.RED);
                 }
             }
         });
@@ -160,7 +160,7 @@ public class Console extends Chat implements Disposable {
         String oldValue = context.get(varName);
         if (oldValue != null) {
             context.remove(varName);
-            print("delete '" + varName + "', old value: '" + oldValue + "'");
+            println("delete '" + varName + "', old value: '" + oldValue + "'");
             dispatchEvent(ConsoleEvent.builder()
                 .type(ConsoleEvent.VAR_VALUE_CHANGE)
                 .varName(varName)
@@ -176,22 +176,22 @@ public class Console extends Chat implements Disposable {
                 .build()
             );
         } else {
-            print("no such variable '" + varName + "'");
+            println("no such variable '" + varName + "'");
         }
     }
 
     private void commandVar(Args args) {
         if (!args.hasNext()) {
-            context.forEach((k, v) -> print(k + "=" + v));
+            context.forEach((k, v) -> println(k + "=" + v));
         } else {
             String varName = args.next();
             if (args.hasNext()) {
                 String oldValue = context.get(varName);
                 String newValue = args.next();
                 setVar(varName, newValue);
-                print(varName + "=" + oldValue + "->" + newValue);
+                println(varName + "=" + oldValue + "->" + newValue);
             } else {
-                print(varName + "=" + context.get(varName));
+                println(varName + "=" + context.get(varName));
             }
         }
     }
@@ -201,7 +201,7 @@ public class Console extends Chat implements Disposable {
         commands.stream()
             .filter(c -> !c.builtIn)
             .forEach(c -> textTable.addRow(c.command, c.alias, c.description));
-        print(textTable.render());
+        println(textTable.render());
     }
 
     public Console addCommand(String command, String alias, String description, Consumer<Args> func) {
@@ -282,12 +282,12 @@ public class Console extends Chat implements Disposable {
                     c.func.accept(args);
                 } catch (Exception ex) {
                     log.error(ex.getMessage(), ex);
-                    print(StackTraceUtil.stringify(ex), Color.RED);
+                    println(StackTraceUtil.stringify(ex), Color.RED);
                 }
                 return;
             }
         }
-        print("Unknown command: " + args.get(String.class, 0), Color.RED);
+        println("Unknown command: " + args.get(String.class, 0), Color.RED);
     }
 
     public static boolean checkSetVariablePattern(String input) {
