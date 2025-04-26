@@ -20,10 +20,10 @@ package com.ancevt.d2d2.components.dev;
 import com.ancevt.commons.string.ConvertableString;
 import com.ancevt.commons.string.StringLimiter;
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.Container;
-import com.ancevt.d2d2.display.DisplayObject;
-import com.ancevt.d2d2.display.text.Text;
+import com.ancevt.d2d2.scene.Color;
+import com.ancevt.d2d2.scene.Container;
+import com.ancevt.d2d2.scene.SceneEntity;
+import com.ancevt.d2d2.scene.text.Text;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,7 +36,7 @@ public class DevConsole extends Console {
 
     @Getter
     @Setter
-    private BiConsumer<DevConsole, DisplayObject> debugFunction = (devConsole, o) -> {};
+    private BiConsumer<DevConsole, SceneEntity> debugFunction = (devConsole, o) -> {};
 
     private DevConsole() {
         addVariableListener("console.height", (varName, value) -> setHeight(value.toFloatOrDefault(getHeight())));
@@ -136,13 +136,13 @@ public class DevConsole extends Console {
     }
 
     public String treeString(Container container, String typeFilters) {
-        TreeNode<DisplayObject> root = processFillNode(container, typeFilters);
+        TreeNode<SceneEntity> root = processFillNode(container, typeFilters);
 
 
         System.out.println(root.toTreeString());
 
         return root.toTreeString(treeNode -> {
-            DisplayObject o = treeNode.getValue();
+            SceneEntity o = treeNode.getValue();
 
             String classSimpleName = o.getClass().getSimpleName();
 
@@ -175,13 +175,13 @@ public class DevConsole extends Console {
         });
     }
 
-    private TreeNode<DisplayObject> processFillNode(DisplayObject o, String typeFilters) {
-        TreeNode<DisplayObject> node = TreeNode.of(o);
+    private TreeNode<SceneEntity> processFillNode(SceneEntity o, String typeFilters) {
+        TreeNode<SceneEntity> node = TreeNode.of(o);
 
         if (o instanceof Container c && c != this && c.getClass() != DevConsoleFrame.class) {
             int num = c.getNumChildren();
             for (int i = 0; i < num; i++) {
-                DisplayObject child = c.getChild(i);
+                SceneEntity child = c.getChild(i);
                 if (checkTypeFiltersForClass(child.getClass(), typeFilters)) {
                     node.add(processFillNode(child, typeFilters));
                 }
@@ -215,7 +215,7 @@ public class DevConsole extends Console {
     }
 
 
-    public static DevConsole init(BiConsumer<DevConsole, DisplayObject> debugFunction) {
+    public static DevConsole init(BiConsumer<DevConsole, SceneEntity> debugFunction) {
         DevConsole devConsole = new DevConsole();
         devConsole.setDebugFunction(debugFunction);
         D2D2.stage().addChild(devConsole, 10, 10);

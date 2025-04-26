@@ -17,9 +17,9 @@
  */
 package com.ancevt.d2d2.components.menu;
 
-import com.ancevt.d2d2.display.shape.RectangleShape;
+import com.ancevt.d2d2.scene.shape.RectangleShape;
 import com.ancevt.d2d2.components.Component;
-import com.ancevt.d2d2.display.DisplayObject;
+import com.ancevt.d2d2.scene.SceneEntity;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.Mouse;
@@ -149,7 +149,7 @@ public class Menu extends Component {
 
     @Override
     public void update() {
-        displayedItems.forEach(DisplayObject::removeFromParent);
+        displayedItems.forEach(SceneEntity::removeFromParent);
         displayedItems.clear();
 
         float y = 0;

@@ -18,13 +18,13 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.Sprite;
-import com.ancevt.d2d2.display.SpriteFactory;
-import com.ancevt.d2d2.display.interactive.Combined9Sprites;
-import com.ancevt.d2d2.display.shape.RectangleShape;
-import com.ancevt.d2d2.display.text.Text;
-import com.ancevt.d2d2.display.texture.TextureClip;
+import com.ancevt.d2d2.scene.Color;
+import com.ancevt.d2d2.scene.Sprite;
+import com.ancevt.d2d2.scene.SpriteFactory;
+import com.ancevt.d2d2.scene.interactive.Combined9Sprites;
+import com.ancevt.d2d2.scene.shape.RectangleShape;
+import com.ancevt.d2d2.scene.text.Text;
+import com.ancevt.d2d2.scene.texture.TextureClip;
 import com.ancevt.d2d2.event.Event;
 
 

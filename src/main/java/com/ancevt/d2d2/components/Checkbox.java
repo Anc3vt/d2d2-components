@@ -17,9 +17,9 @@
  */
 package com.ancevt.d2d2.components;
 
-import com.ancevt.d2d2.display.Sprite;
-import com.ancevt.d2d2.display.SpriteFactory;
-import com.ancevt.d2d2.display.text.Text;
+import com.ancevt.d2d2.scene.Sprite;
+import com.ancevt.d2d2.scene.SpriteFactory;
+import com.ancevt.d2d2.scene.text.Text;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 

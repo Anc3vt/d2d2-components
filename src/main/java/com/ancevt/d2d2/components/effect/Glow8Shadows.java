@@ -17,16 +17,16 @@
  */
 package com.ancevt.d2d2.components.effect;
 
-import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.SimpleContainer;
-import com.ancevt.d2d2.display.Colored;
-import com.ancevt.d2d2.display.DisplayObject;
-import com.ancevt.d2d2.display.SimpleSprite;
-import com.ancevt.d2d2.display.text.Text;
+import com.ancevt.d2d2.scene.Color;
+import com.ancevt.d2d2.scene.ContainerImpl;
+import com.ancevt.d2d2.scene.Colored;
+import com.ancevt.d2d2.scene.SceneEntity;
+import com.ancevt.d2d2.scene.SpriteImpl;
+import com.ancevt.d2d2.scene.text.Text;
 
-public class Glow8Shadows extends SimpleContainer {
+public class Glow8Shadows extends ContainerImpl {
 
-    private final DisplayObject[] elements;
+    private final SceneEntity[] elements;
 
     public Glow8Shadows(Colored source, Color color, float distance, float alpha, float offsetX, float offsetY) {
         float[][] coords = {
@@ -41,7 +41,7 @@ public class Glow8Shadows extends SimpleContainer {
         };
 
 
-        SimpleSprite sprite = null;
+        SpriteImpl sprite = null;
 
 
         elements = new Colored[8];
@@ -54,7 +54,7 @@ public class Glow8Shadows extends SimpleContainer {
                     text = text.cloneBitmapText();
                     text.setCacheAsSprite(true);
                     sprite = text.cachedSprite();
-                } else if (source instanceof SimpleSprite s) {
+                } else if (source instanceof SpriteImpl s) {
                     sprite = s.cloneSprite();
                 } else {
                     throw new IllegalArgumentException("Could not glow8 display object type: " + source.getClass().getName());

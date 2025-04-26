@@ -18,7 +18,7 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.display.text.Font;
+import com.ancevt.d2d2.scene.text.Font;
 
 public class ComponentFont {
 

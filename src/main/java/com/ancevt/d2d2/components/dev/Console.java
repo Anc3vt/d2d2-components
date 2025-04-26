@@ -24,8 +24,8 @@ import com.ancevt.commons.string.TextTable;
 import com.ancevt.commons.util.ApplicationMainClassNameExtractor;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.common.Disposable;
-import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.Stage;
+import com.ancevt.d2d2.scene.Color;
+import com.ancevt.d2d2.scene.Scene;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.event.LifecycleEvent;
@@ -241,13 +241,13 @@ public class Console extends Chat implements Disposable {
         if (this.maximized == maximized) return;
         this.maximized = maximized;
 
-        Stage stage = D2D2.stage();
-        stage.removeEventListener(this, Event.RESIZE);
+        Scene scene = D2D2.stage();
+        scene.removeEventListener(this, Event.RESIZE);
 
         if (maximized) {
-            stage.addEventListener(this, Event.RESIZE, this::stage_resize);
+            scene.addEventListener(this, Event.RESIZE, this::stage_resize);
             stage_resize(null);
-            stage.setXY(PADDING, PADDING);
+            scene.setXY(PADDING, PADDING);
         }
     }
 

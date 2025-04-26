@@ -17,20 +17,20 @@
  */
 package com.ancevt.d2d2.components;
 
-import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.SimpleContainer;
-import com.ancevt.d2d2.display.Sprite;
-import com.ancevt.d2d2.display.SpriteFactory;
+import com.ancevt.d2d2.scene.Color;
+import com.ancevt.d2d2.scene.ContainerImpl;
+import com.ancevt.d2d2.scene.Sprite;
+import com.ancevt.d2d2.scene.SpriteFactory;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
-import com.ancevt.d2d2.display.interactive.InteractiveContainer;
+import com.ancevt.d2d2.scene.interactive.InteractiveContainer;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 
 import static com.ancevt.d2d2.components.ComponentAssets.ARROW_BUTTON;
 
-public class ArrowButton extends SimpleContainer {
+public class ArrowButton extends ContainerImpl {
 
     private final Sprite sprite;
     private final Sprite shadow;

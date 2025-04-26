@@ -22,8 +22,8 @@ import com.ancevt.commons.fs.IsolatedDirectoryDictionaryUtil;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.components.ComponentEvent;
 import com.ancevt.d2d2.components.Frame;
-import com.ancevt.d2d2.display.Container;
-import com.ancevt.d2d2.display.DisplayObject;
+import com.ancevt.d2d2.scene.Container;
+import com.ancevt.d2d2.scene.SceneEntity;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.event.LifecycleEvent;
@@ -44,7 +44,7 @@ public class DevConsoleFrame extends Frame {
     @Getter
     private final DevConsole console;
 
-    public DevConsoleFrame(BiConsumer<DevConsole, DisplayObject> debugFunction) {
+    public DevConsoleFrame(BiConsumer<DevConsole, SceneEntity> debugFunction) {
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         setTitle("DevConsole");
         setManualResizable(true);
@@ -151,7 +151,7 @@ public class DevConsoleFrame extends Frame {
         console.setSize(getContentPanel().getWidth() - 20, getContentPanel().getHeight() - 48);
     }
 
-    public static DevConsole init(BiConsumer<DevConsole, DisplayObject> debugFunction) {
+    public static DevConsole init(BiConsumer<DevConsole, SceneEntity> debugFunction) {
         DevConsoleFrame devConsoleFrame = new DevConsoleFrame(debugFunction);
         D2D2.stage().addChild(devConsoleFrame);
         return devConsoleFrame.getConsole();

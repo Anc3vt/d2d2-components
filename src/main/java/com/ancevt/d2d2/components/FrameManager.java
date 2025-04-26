@@ -17,7 +17,7 @@
  */
 package com.ancevt.d2d2.components;
 
-import com.ancevt.d2d2.display.Container;
+import com.ancevt.d2d2.scene.Container;
 import lombok.Getter;
 
 import java.util.ArrayList;

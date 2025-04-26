@@ -18,10 +18,10 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.display.shape.RectangleShape;
-import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.interactive.InteractiveSprite;
-import com.ancevt.d2d2.display.texture.TextureClip;
+import com.ancevt.d2d2.scene.shape.RectangleShape;
+import com.ancevt.d2d2.scene.Color;
+import com.ancevt.d2d2.scene.interactive.InteractiveSprite;
+import com.ancevt.d2d2.scene.texture.TextureClip;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 

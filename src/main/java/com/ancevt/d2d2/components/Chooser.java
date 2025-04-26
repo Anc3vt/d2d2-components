@@ -17,9 +17,9 @@
  */
 package com.ancevt.d2d2.components;
 
-import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.SimpleContainer;
-import com.ancevt.d2d2.display.text.Text;
+import com.ancevt.d2d2.scene.Color;
+import com.ancevt.d2d2.scene.ContainerImpl;
+import com.ancevt.d2d2.scene.text.Text;
 import com.ancevt.d2d2.event.Event;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -30,7 +30,7 @@ import lombok.experimental.SuperBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Chooser<T> extends SimpleContainer {
+public class Chooser<T> extends ContainerImpl {
 
     private static final float DEFAULT_WIDTH = 180;
 

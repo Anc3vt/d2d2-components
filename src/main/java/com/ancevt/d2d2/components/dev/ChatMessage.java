@@ -18,13 +18,13 @@
 package com.ancevt.d2d2.components.dev;
 
 import com.ancevt.d2d2.components.ComponentFont;
-import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.SimpleContainer;
-import com.ancevt.d2d2.display.text.Font;
-import com.ancevt.d2d2.display.text.Text;
+import com.ancevt.d2d2.scene.Color;
+import com.ancevt.d2d2.scene.ContainerImpl;
+import com.ancevt.d2d2.scene.text.Font;
+import com.ancevt.d2d2.scene.text.Text;
 import lombok.Getter;
 
-public class ChatMessage extends SimpleContainer {
+public class ChatMessage extends ContainerImpl {
 
     private static final float DEFAULT_WIDTH = 1000;
     public static final float DEFAULT_HEIGHT = 16;

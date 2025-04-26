@@ -22,9 +22,9 @@ import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.components.ComponentFont;
 import com.ancevt.d2d2.components.TextInput;
 import com.ancevt.d2d2.components.TextInputEvent;
-import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.SimpleContainer;
-import com.ancevt.d2d2.display.BaseDisplayObject;
+import com.ancevt.d2d2.scene.Color;
+import com.ancevt.d2d2.scene.ContainerImpl;
+import com.ancevt.d2d2.scene.AbstractSceneEntity;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.KeyCode;
@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Chat extends SimpleContainer {
+public class Chat extends ContainerImpl {
 
     private String lastText;
     private static final int INPUT_MAX_LENGTH = 100;
@@ -174,7 +174,7 @@ public class Chat extends SimpleContainer {
 
         textInput.setMaxSize(D2D2.stage().getWidth(), 16);
 
-        displayedMessages.forEach(BaseDisplayObject::removeFromParent);
+        displayedMessages.forEach(AbstractSceneEntity::removeFromParent);
 
         int y = 0;
 

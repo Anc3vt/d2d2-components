@@ -17,11 +17,11 @@
  */
 package com.ancevt.d2d2.components;
 
-import com.ancevt.d2d2.display.shape.BorderedRectangle;
-import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.Container;
-import com.ancevt.d2d2.display.DisplayObject;
-import com.ancevt.d2d2.display.interactive.InteractiveContainer;
+import com.ancevt.d2d2.scene.shape.BorderedRectangle;
+import com.ancevt.d2d2.scene.Color;
+import com.ancevt.d2d2.scene.Container;
+import com.ancevt.d2d2.scene.SceneEntity;
+import com.ancevt.d2d2.scene.interactive.InteractiveContainer;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.Mouse;
@@ -256,7 +256,7 @@ abstract public class Component extends InteractiveContainer {
         super.dispose();
 
         for (int i = 0; i < getNumChildren(); i++) {
-            DisplayObject child = getChild(i);
+            SceneEntity child = getChild(i);
             if (child instanceof Component component) {
                 component.dispose();
             }

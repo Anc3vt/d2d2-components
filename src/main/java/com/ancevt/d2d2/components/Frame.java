@@ -17,10 +17,10 @@
  */
 package com.ancevt.d2d2.components;
 
-import com.ancevt.d2d2.display.shape.RectangleShape;
-import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.interactive.Combined9Sprites;
-import com.ancevt.d2d2.display.interactive.DragUtil;
+import com.ancevt.d2d2.scene.shape.RectangleShape;
+import com.ancevt.d2d2.scene.Color;
+import com.ancevt.d2d2.scene.interactive.Combined9Sprites;
+import com.ancevt.d2d2.scene.interactive.DragUtil;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.Mouse;

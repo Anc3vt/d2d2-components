@@ -17,11 +17,11 @@
  */
 package com.ancevt.d2d2.components;
 
-import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.interactive.Combined9Sprites;
-import com.ancevt.d2d2.display.shape.RectangleShape;
-import com.ancevt.d2d2.display.text.Font;
-import com.ancevt.d2d2.display.text.Text;
+import com.ancevt.d2d2.scene.Color;
+import com.ancevt.d2d2.scene.interactive.Combined9Sprites;
+import com.ancevt.d2d2.scene.shape.RectangleShape;
+import com.ancevt.d2d2.scene.text.Font;
+import com.ancevt.d2d2.scene.text.Text;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.Clipboard;

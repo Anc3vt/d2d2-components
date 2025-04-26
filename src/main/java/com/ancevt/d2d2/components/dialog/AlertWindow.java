@@ -17,12 +17,12 @@
  */
 package com.ancevt.d2d2.components.dialog;
 
-import com.ancevt.d2d2.display.shape.RectangleShape;
+import com.ancevt.d2d2.scene.shape.RectangleShape;
 import com.ancevt.d2d2.components.Button;
 import com.ancevt.d2d2.components.ComponentFont;
-import com.ancevt.d2d2.display.Color;
-import com.ancevt.d2d2.display.SimpleContainer;
-import com.ancevt.d2d2.display.text.Text;
+import com.ancevt.d2d2.scene.Color;
+import com.ancevt.d2d2.scene.ContainerImpl;
+import com.ancevt.d2d2.scene.text.Text;
 import com.ancevt.d2d2.event.Event;
 import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.input.KeyCode;
@@ -30,7 +30,7 @@ import com.ancevt.d2d2.input.KeyCode;
 import static com.ancevt.d2d2.D2D2.stage;
 import static com.ancevt.d2d2.event.Event.ADD_TO_STAGE;
 
-public class AlertWindow extends SimpleContainer {
+public class AlertWindow extends ContainerImpl {
 
     private static final float DEFAULT_WIDTH = 400f;
     private static final float DEFAULT_HEIGHT = 200f;
@@ -127,7 +127,7 @@ public class AlertWindow extends SimpleContainer {
         );
     }
 
-    public static AlertWindow show(String text, SimpleContainer doc) {
+    public static AlertWindow show(String text, ContainerImpl doc) {
         AlertWindow alertWindow = new AlertWindow();
         alertWindow.setText(text);
         doc.addChild(alertWindow);

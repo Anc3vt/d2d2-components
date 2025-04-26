@@ -17,7 +17,7 @@
  */
 package com.ancevt.d2d2.components.dev;
 
-import com.ancevt.d2d2.display.Color;
+import com.ancevt.d2d2.scene.Color;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
