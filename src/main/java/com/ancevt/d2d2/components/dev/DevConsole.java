@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,7 +37,8 @@ public class DevConsole extends Console {
 
     @Getter
     @Setter
-    private BiConsumer<DevConsole, SceneEntity> debugFunction = (devConsole, o) -> {};
+    private BiConsumer<DevConsole, SceneEntity> debugFunction = (devConsole, o) -> {
+    };
 
     private DevConsole() {
         addVariableListener("console.height", (varName, value) -> setHeight(value.toFloatOrDefault(getHeight())));
@@ -46,11 +47,11 @@ public class DevConsole extends Console {
             int id = value.toIntOrDefault(0);
 
             Container.findDisplayObjectById(D2D2.stage(), id).ifPresentOrElse(
-                o -> {
-                    currentContainer = (Container) o;
-                    println(getPrompt().get());
-                },
-                () -> println("No such display object with id: " + id, Color.DARK_RED)
+                    o -> {
+                        currentContainer = (Container) o;
+                        println(getPrompt().get());
+                    },
+                    () -> println("No such display object with id: " + id, Color.DARK_RED)
             );
         });
 
@@ -73,10 +74,10 @@ public class DevConsole extends Console {
         addCommand("cname", "c", args -> {
             String name = args.next(String.class, "");
             Container.findDisplayObjectByName(D2D2.stage(), name).ifPresentOrElse(
-                o -> {
-                    setVar("cid", "" + o.getDisplayObjectId());
-                },
-                () -> println("No such display object with name: " + name, Color.DARK_RED)
+                    o -> {
+                        setVar("cid", "" + o.getDisplayObjectId());
+                    },
+                    () -> println("No such display object with name: " + name, Color.DARK_RED)
             );
         });
 
@@ -117,20 +118,20 @@ public class DevConsole extends Console {
             int id = cs.toIntOrSupply(() -> Container.findDisplayObjectByName(D2D2.stage(), cs.toString()).get().getDisplayObjectId());
 
             Container.findDisplayObjectById(D2D2.stage(), id)
-                .ifPresentOrElse(
-                    o -> {
-                        debugFunction.accept(this, o);
+                    .ifPresentOrElse(
+                            o -> {
+                                debugFunction.accept(this, o);
 
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    throw new RuntimeException(e);
+                                }
 
-                        D2D2.engine().displayManager().focusWindow();
-                    },
-                    () -> println("No such display object with id: " + id, Color.DARK_RED)
-                );
+                                D2D2.engine().displayManager().focusWindow();
+                            },
+                            () -> println("No such display object with id: " + id, Color.DARK_RED)
+                    );
         });
 
         setMulticolorEnabled(true);
@@ -138,9 +139,6 @@ public class DevConsole extends Console {
 
     public String treeString(Container container, String typeFilters) {
         TreeNode<SceneEntity> root = processFillNode(container, typeFilters);
-
-
-        System.out.println(root.toTreeString());
 
         return root.toTreeString(treeNode -> {
             SceneEntity o = treeNode.getValue();
@@ -224,6 +222,7 @@ public class DevConsole extends Console {
     }
 
     public static DevConsole init() {
-        return init((devConsole, o) -> {});
+        return init((devConsole, o) -> {
+        });
     }
 }

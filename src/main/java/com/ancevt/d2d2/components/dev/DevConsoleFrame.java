@@ -67,6 +67,8 @@ public class DevConsoleFrame extends Frame {
 
         setX(20);
 
+
+
         loadState();
     }
 
