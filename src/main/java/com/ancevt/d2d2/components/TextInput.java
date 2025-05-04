@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,15 +18,15 @@
 
 package com.ancevt.d2d2.components;
 
+import com.ancevt.d2d2.event.CommonEvent;
+import com.ancevt.d2d2.event.InputEvent;
+import com.ancevt.d2d2.input.Clipboard;
+import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.interactive.Combined9Sprites;
 import com.ancevt.d2d2.scene.shape.RectangleShape;
 import com.ancevt.d2d2.scene.text.Font;
 import com.ancevt.d2d2.scene.text.Text;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveEvent;
-import com.ancevt.d2d2.input.Clipboard;
-import com.ancevt.d2d2.input.KeyCode;
 
 public class TextInput extends Component {
 
@@ -69,31 +69,31 @@ public class TextInput extends Component {
         caret.setXY(text.getX(), 4);
 
         focusRect = new Combined9Sprites(new String[]{
-            ComponentAssets.RECT_BORDER_9_SIDE_TOP_LEFT,
-            ComponentAssets.RECT_BORDER_9_SIDE_TOP,
-            ComponentAssets.RECT_BORDER_9_SIDE_TOP_RIGHT,
-            ComponentAssets.RECT_BORDER_9_SIDE_LEFT,
-            ComponentAssets.RECT_BORDER_9_SIDE_CENTER,
-            ComponentAssets.RECT_BORDER_9_SIDE_RIGHT,
-            ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_LEFT,
-            ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM,
-            ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_RIGHT
+                ComponentAssets.RECT_BORDER_9_SIDE_TOP_LEFT,
+                ComponentAssets.RECT_BORDER_9_SIDE_TOP,
+                ComponentAssets.RECT_BORDER_9_SIDE_TOP_RIGHT,
+                ComponentAssets.RECT_BORDER_9_SIDE_LEFT,
+                ComponentAssets.RECT_BORDER_9_SIDE_CENTER,
+                ComponentAssets.RECT_BORDER_9_SIDE_RIGHT,
+                ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_LEFT,
+                ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM,
+                ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_RIGHT
         });
         focusRect.setColor(colorFocusRect);
         focusRect.setVisible(false);
 
         setText("");
 
-        addEventListener(TextInput.class, InteractiveEvent.DOWN, this::this_down);
-        addEventListener(TextInput.class, InteractiveEvent.FOCUS_IN, this::this_focusIn);
-        addEventListener(TextInput.class, InteractiveEvent.FOCUS_OUT, this::this_focusOut);
-        addEventListener(TextInput.class, InteractiveEvent.KEY_DOWN, this::this_keyDown);
-        addEventListener(TextInput.class, InteractiveEvent.KEY_UP, this::this_keyUp);
-        addEventListener(TextInput.class, InteractiveEvent.KEY_TYPE, this::this_keyType);
-        addEventListener(TextInput.class, InteractiveEvent.HOVER, this::this_hover);
-        addEventListener(TextInput.class, InteractiveEvent.OUT, this::this_out);
+        addEventListener(TextInput.class, InputEvent.MouseDown.class, this::this_down);
+        addEventListener(TextInput.class, InputEvent.FocusIn.class, this::this_focusIn);
+        addEventListener(TextInput.class, InputEvent.FocusOut.class, this::this_focusOut);
+        addEventListener(TextInput.class, InputEvent.KeyDown.class, this::this_keyDown);
+        addEventListener(TextInput.class, InputEvent.KeyUp.class, this::this_keyUp);
+        addEventListener(TextInput.class, InputEvent.KeyType.class, this::this_keyType);
+        addEventListener(TextInput.class, InputEvent.MouseHover.class, this::this_hover);
+        addEventListener(TextInput.class, InputEvent.MouseOut.class, this::this_out);
 
-        addEventListener(TextInput.class, Event.RESIZE, this::this_resize);
+        addEventListener(TextInput.class, CommonEvent.Resize.class, this::this_resize);
 
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         setEnabled(true);
@@ -107,11 +107,11 @@ public class TextInput extends Component {
         return text.getFont();
     }
 
-    private void this_hover(Event event) {
+    private void this_hover(InputEvent.MouseHover event) {
         if (isEnabled()) Cursor.switchToText();
     }
 
-    private void this_out(Event event) {
+    private void this_out(InputEvent.MouseOut event) {
         Cursor.switchToIdle();
     }
 
@@ -126,7 +126,7 @@ public class TextInput extends Component {
         return padding;
     }
 
-    private void this_resize(Event event) {
+    private void this_resize(CommonEvent.Resize event) {
         caret.setHeight(getHeight() - getHeight() / 3f);
         caret.setY((getHeight() - caret.getHeight()) / 2);
         text.setXY(padding.getLeft(), (getHeight() - text.getCharHeight()) / 2 + 2);
@@ -174,9 +174,8 @@ public class TextInput extends Component {
         selection.setColor(colorSelection);
     }
 
-    private void this_keyType(Event event) {
-        var e = (InteractiveEvent) event;
-        String keyType = e.getKeyType();
+    private void this_keyType(InputEvent.KeyType e) {
+        String keyType = e.keyType();
         if (!text.getFont().isCharSupported(keyType.charAt(0))) return;
 
         if (textString.length() * text.getCharWidth() < getWidth() - 10) {
@@ -184,13 +183,12 @@ public class TextInput extends Component {
         }
     }
 
-    private void this_keyUp(Event event) {
+    private void this_keyUp(InputEvent.KeyUp event) {
 
     }
 
-    private void this_keyDown(Event event) {
-        var e = (InteractiveEvent) event;
-        switch (e.getKeyCode()) {
+    private void this_keyDown(InputEvent.KeyDown e) {
+        switch (e.keyCode()) {
 
             case KeyCode.RIGHT -> {
                 setCaretPosition(getCaretPosition() + 1);
@@ -215,7 +213,7 @@ public class TextInput extends Component {
                 }
             }
             case KeyCode.BACKSPACE -> {
-                if (e.isControl()) removeWord();
+                if (e.control()) removeWord();
                 else removeChar();
             }
             case KeyCode.DELETE -> {
@@ -230,18 +228,13 @@ public class TextInput extends Component {
 
             case KeyCode.ENTER,
                  KeyCode.RIGHT_ENTER -> {
-                dispatchEvent(TextInputEvent.builder()
-                    .type(TextInputEvent.ENTER)
-                    .text(getText())
-                    .keyCode(e.getKeyCode())
-                    .build());
-
+                dispatchEvent(TextInputEvent.Enter.create(getText(), e.keyCode()));
                 setCaretPosition(Integer.MAX_VALUE);
             }
         }
 
-        if (e.isControl()) {
-            switch (e.getCharacter()) {
+        if (e.control()) {
+            switch (e.character()) {
                 case 'X' -> {
                     Clipboard.set(getText());
                     setText("");
@@ -260,12 +253,7 @@ public class TextInput extends Component {
             }
         }
 
-        dispatchEvent(TextInputEvent.builder()
-            .type(TextInputEvent.KEY_DOWN)
-            .text(getText())
-            .keyCode(e.getKeyCode())
-            .build());
-
+        dispatchEvent(TextInputEvent.TextInputKeyDown.create(getText(), e.keyCode()));
     }
 
     @Override
@@ -284,26 +272,23 @@ public class TextInput extends Component {
         return bg.getColor();
     }
 
-    private void this_focusIn(Event event) {
+    private void this_focusIn(InputEvent.FocusIn event) {
         focusRect.setVisible(true);
         setCaretPosition(Integer.MAX_VALUE);
-        dispatchEvent(ComponentEvent.builder().type(ComponentEvent.FOCUS_IN).build());
+        dispatchEvent(InputEvent.FocusIn.create(event.byMouseDown()));
         focus();
     }
 
-    private void this_focusOut(Event event) {
+    private void this_focusOut(InputEvent.FocusOut event) {
         focusRect.setVisible(false);
         caret.removeFromParent();
-        dispatchEvent(ComponentEvent.builder().type(ComponentEvent.FOCUS_OUT).build());
+        dispatchEvent(InputEvent.FocusOut.create());
     }
 
-    private void this_down(Event event) {
-        InteractiveEvent e = (InteractiveEvent) event;
-
-        float x = e.getX() - padding.getLeft();
+    private void this_down(InputEvent.MouseDown e) {
+        float x = e.x() - padding.getLeft();
         float c = text.getCharWidth();
         float s = text.getAbsoluteScaleX();
-
         setCaretPosition((int) ((x / c) / s));
     }
 
@@ -347,10 +332,7 @@ public class TextInput extends Component {
             setCaretPosition(Integer.MAX_VALUE);
         }
 
-        dispatchEvent(TextInputEvent.builder()
-            .type(TextInputEvent.TEXT_CHANGE)
-            .text(getText())
-            .build());
+        dispatchEvent(TextInputEvent.TextChange.create(getText()));
     }
 
     public String getText() {
@@ -409,12 +391,12 @@ public class TextInput extends Component {
     @Override
     public void dispose() {
         super.dispose();
-        removeEventListener(TextInput.class, InteractiveEvent.DOWN);
-        removeEventListener(TextInput.class, InteractiveEvent.FOCUS_IN);
-        removeEventListener(TextInput.class, InteractiveEvent.FOCUS_OUT);
-        removeEventListener(TextInput.class, InteractiveEvent.KEY_DOWN);
-        removeEventListener(TextInput.class, InteractiveEvent.KEY_UP);
-        removeEventListener(TextInput.class, InteractiveEvent.KEY_TYPE);
+        removeEventListener(TextInput.class, InputEvent.MouseDown.class);
+        removeEventListener(TextInput.class, InputEvent.FocusIn.class);
+        removeEventListener(TextInput.class, InputEvent.FocusOut.class);
+        removeEventListener(TextInput.class, InputEvent.KeyDown.class);
+        removeEventListener(TextInput.class, InputEvent.KeyUp.class);
+        removeEventListener(TextInput.class, InputEvent.KeyType.class);
         removeFromParent();
     }
 

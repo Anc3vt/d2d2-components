@@ -18,19 +18,17 @@
 
 package com.ancevt.d2d2.components;
 
+import com.ancevt.d2d2.event.InputEvent;
+import com.ancevt.d2d2.event.core.Event;
+import com.ancevt.d2d2.event.core.EventPool;
+import com.ancevt.d2d2.event.core.EventPooled;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Sprite;
 import com.ancevt.d2d2.scene.SpriteFactory;
 import com.ancevt.d2d2.scene.text.Text;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveEvent;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.SuperBuilder;
+import lombok.Getter;
 
-import static com.ancevt.d2d2.components.ComponentAssets.BUTTON_LEFT_PART;
-import static com.ancevt.d2d2.components.ComponentAssets.BUTTON_MIDDLE_PART;
-import static com.ancevt.d2d2.components.ComponentAssets.BUTTON_RIGHT_PART;
+import static com.ancevt.d2d2.components.ComponentAssets.*;
 
 public class Button extends Component {
 
@@ -54,30 +52,30 @@ public class Button extends Component {
         this.text = new Text();
         this.text.setFont(ComponentFont.getFontMiddle());
 
-        addEventListener(Button.class, InteractiveEvent.DOWN, event -> {
+        addEventListener(Button.class, InputEvent.MouseDown.class, event -> {
             leftPart.setY(1);
             middlePart.setY(1);
             rightPart.setY(1);
             fixTextXY();
             this.text.moveY(1);
-            dispatchEvent(ButtonEvent.builder().type(ButtonEvent.BUTTON_PRESSED).build());
+            dispatchEvent(ButtonPressEvent.create());
         });
 
-        addEventListener(Button.class, InteractiveEvent.UP, event -> {
+        addEventListener(Button.class, InputEvent.MouseUp.class, event -> {
             leftPart.setY(0);
             middlePart.setY(0);
             rightPart.setY(0);
             fixTextXY();
         });
 
-        addEventListener(Button.class, InteractiveEvent.HOVER, event -> {
+        addEventListener(Button.class, InputEvent.MouseHover.class, event -> {
             Color color = HOVER_FOREGROUND_COLOR;
             leftPart.setColor(color);
             rightPart.setColor(color);
             middlePart.setColor(color);
         });
 
-        addEventListener(Button.class, InteractiveEvent.OUT, event -> {
+        addEventListener(Button.class, InputEvent.MouseOut.class, event -> {
             Color color = FOREGROUND_COLOR;
             leftPart.setColor(color);
             rightPart.setColor(color);
@@ -150,10 +148,11 @@ public class Button extends Component {
 
     }
 
-    @Data
-    @SuperBuilder
-    @EqualsAndHashCode(callSuper = true)
-    public static class ButtonEvent extends Event {
-        public static final String BUTTON_PRESSED = "buttonPressed";
+    @Getter
+    @EventPooled
+    public static class ButtonPressEvent extends Event {
+        public static ButtonPressEvent create() {
+            return EventPool.obtain(ButtonPressEvent.class);
+        }
     }
 }

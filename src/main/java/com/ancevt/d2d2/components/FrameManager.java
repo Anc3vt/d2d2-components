@@ -18,6 +18,7 @@
 
 package com.ancevt.d2d2.components;
 
+import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.scene.Container;
 import lombok.Getter;
 
@@ -66,7 +67,7 @@ public class FrameManager {
         if(frame == activeFrame) return;
 
         if(activeFrame != null) {
-            activeFrame.dispatchEvent(ComponentEvent.builder().type(ComponentEvent.DEACTIVATE).build());
+            activeFrame.dispatchEvent(CommonEvent.Deactivate.create());
         }
 
         activeFrame = frame;
@@ -78,7 +79,7 @@ public class FrameManager {
                 parent.addChild(activeFrame);
             }
 
-            activeFrame.dispatchEvent(ComponentEvent.builder().type(ComponentEvent.ACTIVATE).build());
+            activeFrame.dispatchEvent(CommonEvent.Activate.create());
         }
 
     }

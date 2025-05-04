@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,14 +21,12 @@ package com.ancevt.d2d2.components.dev;
 import com.ancevt.commons.fs.IsolatedDirectory;
 import com.ancevt.commons.fs.IsolatedDirectoryDictionaryUtil;
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.components.ComponentEvent;
 import com.ancevt.d2d2.components.Frame;
+import com.ancevt.d2d2.event.CommonEvent;
+import com.ancevt.d2d2.event.InputEvent;
+import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.scene.Container;
 import com.ancevt.d2d2.scene.SceneEntity;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveEvent;
-import com.ancevt.d2d2.event.LifecycleEvent;
-import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.time.Timer;
 import lombok.Getter;
 
@@ -59,22 +57,20 @@ public class DevConsoleFrame extends Frame {
 
         getContentPanel().addChild(console);
 
-        addEventListener(this, ComponentEvent.RESIZE, e -> onResize());
+        addEventListener(this, CommonEvent.Resize.class, e -> onResize());
         initTilda();
         onResize();
 
-        D2D2.stage().addEventListener(this, LifecycleEvent.EXIT_MAIN_LOOP, this::stage_exitMainLoop);
+        D2D2.stage().addEventListener(this, CommonEvent.Stop.class, this::stage_exitMainLoop);
 
-        addEventListener(this, InteractiveEvent.UP, event -> {
-            console.textInput.focus();
-        });
+        addEventListener(this, InputEvent.MouseUp.class, event -> console.textInput.focus());
 
         setX(20);
 
         loadState();
     }
 
-    private void stage_exitMainLoop(Event event) {
+    private void stage_exitMainLoop(CommonEvent.Stop event) {
         saveState();
     }
 
@@ -84,46 +80,45 @@ public class DevConsoleFrame extends Frame {
         dir.checkExists("framestate").ifPresent(filename -> {
             Map<String, Object> map = IsolatedDirectoryDictionaryUtil.read(dir, filename);
             setSize(
-                convert(map.get("w")).toFloatOrDefault(DEFAULT_WIDTH),
-                convert(map.get("h")).toFloatOrDefault(DEFAULT_HEIGHT)
+                    convert(map.get("w")).toFloatOrDefault(DEFAULT_WIDTH),
+                    convert(map.get("h")).toFloatOrDefault(DEFAULT_HEIGHT)
             );
 
             setXY(
-                convert(map.get("x")).toFloatOrDefault(40),
-                convert(map.get("y")).toFloatOrDefault(40)
+                    convert(map.get("x")).toFloatOrDefault(40),
+                    convert(map.get("y")).toFloatOrDefault(40)
             );
 
             setAlpha(
-                convert(map.get("alpha")).toFloatOrDefault(1f)
+                    convert(map.get("alpha")).toFloatOrDefault(1f)
             );
         });
     }
 
     private void saveState() {
         IsolatedDirectoryDictionaryUtil.write(
-            console.getIsolatedDirectory(),
-            Map.of(
-                "w", getWidth(),
-                "h", getHeight(),
-                "x", getX(),
-                "y", getY(),
-                "alpha", getAlpha()
-            ),
-            "framestate"
+                console.getIsolatedDirectory(),
+                Map.of(
+                        "w", getWidth(),
+                        "h", getHeight(),
+                        "x", getX(),
+                        "y", getY(),
+                        "alpha", getAlpha()
+                ),
+                "framestate"
         );
     }
 
     private void initTilda() {
-        D2D2.stage().addEventListener(this, InteractiveEvent.KEY_DOWN, event -> {
-            InteractiveEvent e = event.casted();
-            if (e.getKeyCode() == KeyCode.TILDA && e.isShift()) {
+        D2D2.stage().addEventListener(this, InputEvent.KeyDown.class, e -> {
+            if (e.keyCode() == KeyCode.TILDA && e.shift()) {
                 setVisible(!isVisible());
                 Timer.setTimeout(10, t -> {
                     String text = console.textInput.getText();
                     if (text.endsWith("`") ||
-                        text.endsWith("ё") ||
-                        text.endsWith("Ё") ||
-                        text.endsWith("~")) {
+                            text.endsWith("ё") ||
+                            text.endsWith("Ё") ||
+                            text.endsWith("~")) {
                         text = text.substring(0, text.length() - 1);
                         console.textInput.setText(text);
                     }
@@ -145,7 +140,8 @@ public class DevConsoleFrame extends Frame {
     }
 
     public DevConsoleFrame() {
-        this((devConsole, displayObject) -> {});
+        this((devConsole, displayObject) -> {
+        });
     }
 
     private void onResize() {
@@ -159,7 +155,8 @@ public class DevConsoleFrame extends Frame {
     }
 
     public static DevConsole init() {
-        return init((devConsole, displayObject) -> {});
+        return init((devConsole, displayObject) -> {
+        });
     }
 
 }

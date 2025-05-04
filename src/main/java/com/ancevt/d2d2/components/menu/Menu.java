@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,12 +18,11 @@
 
 package com.ancevt.d2d2.components.menu;
 
-import com.ancevt.d2d2.scene.shape.RectangleShape;
 import com.ancevt.d2d2.components.Component;
-import com.ancevt.d2d2.scene.SceneEntity;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveEvent;
+import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.input.Mouse;
+import com.ancevt.d2d2.scene.SceneEntity;
+import com.ancevt.d2d2.scene.shape.RectangleShape;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,8 +54,8 @@ public class Menu extends Component {
         MenuItem item = new MenuItem(this);
         item.setText(text);
         item.setChildMenu(childMenu);
-        item.addEventListener(this, InteractiveEvent.HOVER, this::item_hover);
-        item.addEventListener(this, InteractiveEvent.DOWN, this::item_down);
+        item.addEventListener(this, InputEvent.MouseHover.class, this::item_hover);
+        item.addEventListener(this, InputEvent.MouseDown.class, this::item_down);
         items.add(item);
         return this;
     }
@@ -64,20 +63,20 @@ public class Menu extends Component {
     public Menu addItem(Object text, Runnable action) {
         MenuItem item = new MenuItem(this);
         item.setText(text);
-        item.addEventListener(this, InteractiveEvent.HOVER, this::item_hover);
-        item.addEventListener(this, InteractiveEvent.DOWN, this::item_down);
+        item.addEventListener(this, InputEvent.MouseHover.class, this::item_hover);
+        item.addEventListener(this, InputEvent.MouseDown.class, this::item_down);
         items.add(item);
         item.setAction(action);
         return this;
     }
 
-    private void item_down(Event event) {
-        MenuItem item = (MenuItem) event.getSource();
+    private void item_down(InputEvent.MouseDown event) {
+        MenuItem item = event.targetAs(MenuItem.class);
         if (item.getAction() != null) item.getAction().run();
     }
 
-    private void item_hover(Event event) {
-        MenuItem item = (MenuItem) event.getSource();
+    private void item_hover(InputEvent.MouseHover event) {
+        MenuItem item = event.targetAs(MenuItem.class);
         if (item.hasChildMenu()) {
             if (activeChildMenu != null) deactivate(activeChildMenu);
             activeChildMenu = item.getChildMenu().activate(item);
@@ -107,9 +106,9 @@ public class Menu extends Component {
             setY(y - getHeight());
         }
 
-        stage().addEventListener(this, InteractiveEvent.DOWN, event -> {
+        stage().addEventListener(this, InputEvent.MouseDown.class, event -> {
             deactivate(this);
-            stage().removeEventListener(this, InteractiveEvent.DOWN);
+            stage().removeEventListener(this, InputEvent.MouseDown.class);
         });
 
         activeRootMenu = this;

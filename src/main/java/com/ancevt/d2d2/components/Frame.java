@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,17 +18,18 @@
 
 package com.ancevt.d2d2.components;
 
-import com.ancevt.d2d2.scene.shape.RectangleShape;
+import com.ancevt.d2d2.event.CommonEvent;
+import com.ancevt.d2d2.event.InputEvent;
+import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.core.Event;
+import com.ancevt.d2d2.event.core.EventPool;
+import com.ancevt.d2d2.event.core.EventPooled;
+import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.interactive.Combined9Sprites;
 import com.ancevt.d2d2.scene.interactive.DragUtil;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveEvent;
-import com.ancevt.d2d2.input.Mouse;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.ancevt.d2d2.scene.shape.RectangleShape;
 import lombok.Getter;
-import lombok.experimental.SuperBuilder;
 
 import static com.ancevt.d2d2.D2D2.stage;
 
@@ -82,25 +83,25 @@ public class Frame extends Component {
         addChild(frameTitle);
 
         borders = new Combined9Sprites(new String[]{
-            ComponentAssets.RECT_BORDER_9_SIDE_TOP_LEFT,
-            ComponentAssets.RECT_BORDER_9_SIDE_TOP,
-            ComponentAssets.RECT_BORDER_9_SIDE_TOP_RIGHT,
-            ComponentAssets.RECT_BORDER_9_SIDE_LEFT,
-            ComponentAssets.RECT_BORDER_9_SIDE_CENTER,
-            ComponentAssets.RECT_BORDER_9_SIDE_RIGHT,
-            ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_LEFT,
-            ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM,
-            ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_RIGHT
+                ComponentAssets.RECT_BORDER_9_SIDE_TOP_LEFT,
+                ComponentAssets.RECT_BORDER_9_SIDE_TOP,
+                ComponentAssets.RECT_BORDER_9_SIDE_TOP_RIGHT,
+                ComponentAssets.RECT_BORDER_9_SIDE_LEFT,
+                ComponentAssets.RECT_BORDER_9_SIDE_CENTER,
+                ComponentAssets.RECT_BORDER_9_SIDE_RIGHT,
+                ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_LEFT,
+                ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM,
+                ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_RIGHT
         });
         borders.setColor(colorBorder);
         addChild(borders);
 
         setComponentFocusRectVisibleEnabled(false);
 
-        addEventListener(Frame.class, Event.ADD_TO_STAGE, this::this_addToStage);
-        addEventListener(Frame.class, Event.RESIZE, this::this_resize);
-        addEventListener(Frame.class, ComponentEvent.ACTIVATE, this::this_activate);
-        addEventListener(Frame.class, ComponentEvent.DEACTIVATE, this::this_deactivate);
+        addEventListener(Frame.class, SceneEvent.AddToScene.class, this::this_addToStage);
+        addEventListener(Frame.class, CommonEvent.Resize.class, this::this_resize);
+        addEventListener(Frame.class, CommonEvent.Activate.class, this::this_activate);
+        addEventListener(Frame.class, CommonEvent.Deactivate.class, this::this_deactivate);
 
         addChild(contentPanel, getPadding().getLeft(), frameTitle.getY() + frameTitle.getHeight() + getPadding().getTop());
 
@@ -114,11 +115,11 @@ public class Frame extends Component {
         return frameTitle.getHeight();
     }
 
-    private void this_activate(Event event) {
+    private void this_activate(CommonEvent.Activate event) {
         frameTitle.setTextColor(Component.ACTIVE_FRAME_TITLE_COLOR);
     }
 
-    private void this_deactivate(Event event) {
+    private void this_deactivate(CommonEvent.Deactivate event) {
         frameTitle.setTextColor(Component.INACTIVE_FRAME_TITLE_COLOR);
     }
 
@@ -138,26 +139,26 @@ public class Frame extends Component {
         this.manualResizable = manualResizable;
 
         if (manualResizable) {
-            addEventListener("manualResize", Event.LOOP_UPDATE, this::this_manualResizeEachFrame);
-            addEventListener("manualResize", InteractiveEvent.DOWN, this::this_manualResizeDown);
-            addEventListener("manualResize", InteractiveEvent.UP, this::this_manualResizeUp);
-            addEventListener("manualResize", InteractiveEvent.DRAG, this::this_manualResizeDrag);
-            addEventListener("manualResize", InteractiveEvent.OUT, this::this_manualResizeOut);
+            addEventListener("manualResize", SceneEvent.LoopUpdate.class, this::this_manualResizeEachFrame);
+            addEventListener("manualResize", InputEvent.MouseDown.class, this::this_manualResizeDown);
+            addEventListener("manualResize", InputEvent.MouseUp.class, this::this_manualResizeUp);
+            addEventListener("manualResize", InputEvent.MouseDrag.class, this::this_manualResizeDrag);
+            addEventListener("manualResize", InputEvent.MouseOut.class, this::this_manualResizeOut);
         } else {
-            removeEventListener("manualResize", Event.LOOP_UPDATE);
-            removeEventListener("manualResize", InteractiveEvent.DOWN);
-            removeEventListener("manualResize", InteractiveEvent.UP);
-            removeEventListener("manualResize", InteractiveEvent.DRAG);
-            removeEventListener("manualResize", InteractiveEvent.OUT);
+            removeEventListener("manualResize", SceneEvent.LoopUpdate.class);
+            removeEventListener("manualResize", InputEvent.MouseDown.class);
+            removeEventListener("manualResize", InputEvent.MouseUp.class);
+            removeEventListener("manualResize", InputEvent.MouseDrag.class);
+            removeEventListener("manualResize", InputEvent.MouseOut.class);
         }
     }
 
-    private void this_manualResizeOut(Event event) {
+    private void this_manualResizeOut(InputEvent.MouseOut event) {
         Cursor.switchToIdle();
         frameTitle.setEnabled(true);
     }
 
-    private void this_manualResizeDown(Event event) {
+    private void this_manualResizeDown(InputEvent.MouseDown event) {
         manualResizeRight = isResizeCursorOnRight();
         manualResizeBottom = isResizeCursorOnBottom();
         if (isResizeCursorOnLeft()) {
@@ -173,7 +174,7 @@ public class Frame extends Component {
 
         if (!isResizeCursorInCenter()) {
             manualResizingNow = true;
-            dispatchEvent(FrameEvent.builder().type(FrameEvent.RESIZE_START).build());
+            dispatchEvent(ResizeStartEvent.create());
         }
     }
 
@@ -206,7 +207,7 @@ public class Frame extends Component {
         Cursor.switchToIdle();
 
         if (manualResizingNow) {
-            dispatchEvent(FrameEvent.builder().type(FrameEvent.RESIZE_COMPLETE).build());
+            dispatchEvent(ResizeCompleteEvent.create());
         }
     }
 
@@ -246,9 +247,9 @@ public class Frame extends Component {
         float mouseY = Mouse.getY();
 
         return mouseX > getAbsoluteX() + RESIZE_SPREAD &&
-            mouseX < getAbsoluteX() + getWidth() - RESIZE_SPREAD &&
-            mouseY > getAbsoluteY() + RESIZE_SPREAD &&
-            mouseY < getAbsoluteY() + getHeight() - RESIZE_SPREAD;
+                mouseX < getAbsoluteX() + getWidth() - RESIZE_SPREAD &&
+                mouseY > getAbsoluteY() + RESIZE_SPREAD &&
+                mouseY < getAbsoluteY() + getHeight() - RESIZE_SPREAD;
 
     }
 
@@ -257,7 +258,7 @@ public class Frame extends Component {
         float mouseY = Mouse.getY();
 
         return mouseY > getAbsoluteY() && mouseY < getAbsoluteY() + getHeight() &&
-            mouseX >= getAbsoluteX() + getWidth() - RESIZE_SPREAD && mouseX <= getAbsoluteX() + getWidth();
+                mouseX >= getAbsoluteX() + getWidth() - RESIZE_SPREAD && mouseX <= getAbsoluteX() + getWidth();
     }
 
     private boolean isResizeCursorOnBottomRight() {
@@ -269,7 +270,7 @@ public class Frame extends Component {
         float mouseY = Mouse.getY();
 
         return mouseX > getAbsoluteX() && mouseX < getAbsoluteX() + getWidth() &&
-            mouseY >= getAbsoluteY() + getHeight() - RESIZE_SPREAD && mouseY <= getAbsoluteY() + getHeight();
+                mouseY >= getAbsoluteY() + getHeight() - RESIZE_SPREAD && mouseY <= getAbsoluteY() + getHeight();
     }
 
     private boolean isResizeCursorOnBottomLeft() {
@@ -281,7 +282,7 @@ public class Frame extends Component {
         float mouseY = Mouse.getY();
 
         return mouseY > getAbsoluteY() && mouseY < getAbsoluteY() + getHeight() &&
-            mouseX > getAbsoluteX() && mouseX < getAbsoluteX() + RESIZE_SPREAD;
+                mouseX > getAbsoluteX() && mouseX < getAbsoluteX() + RESIZE_SPREAD;
     }
 
     private boolean isResizeCursorOnTopLeft() {
@@ -293,7 +294,7 @@ public class Frame extends Component {
         float mouseY = Mouse.getY();
 
         return mouseX > getAbsoluteX() && mouseX < getAbsoluteX() + getWidth() &&
-            mouseY > getAbsoluteY() && mouseY < getAbsoluteY() + RESIZE_SPREAD;
+                mouseY > getAbsoluteY() && mouseY < getAbsoluteY() + RESIZE_SPREAD;
     }
 
     private boolean isResizeCursorOnTopRight() {
@@ -301,7 +302,7 @@ public class Frame extends Component {
     }
 
     private void this_addToStage(Event event) {
-        removeEventListener(Frame.class, Event.ADD_TO_STAGE);
+        removeEventListener(Frame.class, SceneEvent.AddToScene.class);
         FrameManager.getInstance().activateFrame(this);
         //center();
     }
@@ -321,8 +322,8 @@ public class Frame extends Component {
         bg1.setAlpha(backgroundAlpha);
 
         contentPanel.setSize(
-            getWidth() - getPadding().getRight() * 2,
-            getHeight() - getTitleHeight() - getPadding().getBottom() * 2
+                getWidth() - getPadding().getRight() * 2,
+                getHeight() - getTitleHeight() - getPadding().getBottom() * 2
         );
 
         borders.setSize(getWidth(), getHeight());
@@ -362,12 +363,18 @@ public class Frame extends Component {
 
     }
 
-    @Data
-    @SuperBuilder
-    @EqualsAndHashCode(callSuper = true)
-    public static class FrameEvent extends Event {
-        public static final String RESIZE_START = "frameResizeStart";
-        public static final String RESIZE_COMPLETE = "frameResizeComplete";
+    @EventPooled
+    public static class ResizeStartEvent extends Event {
+        public static ResizeStartEvent create() {
+            return EventPool.obtain(ResizeStartEvent.class);
+        }
+    }
+
+    @EventPooled
+    public static class ResizeCompleteEvent extends Event {
+        public static ResizeCompleteEvent create() {
+            return EventPool.obtain(ResizeCompleteEvent.class);
+        }
     }
 
 }

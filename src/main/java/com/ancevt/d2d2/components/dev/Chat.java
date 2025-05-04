@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,12 +23,11 @@ import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.components.ComponentFont;
 import com.ancevt.d2d2.components.TextInput;
 import com.ancevt.d2d2.components.TextInputEvent;
+import com.ancevt.d2d2.event.InputEvent;
+import com.ancevt.d2d2.input.KeyCode;
+import com.ancevt.d2d2.scene.AbstractSceneEntity;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.ContainerImpl;
-import com.ancevt.d2d2.scene.AbstractSceneEntity;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveEvent;
-import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.time.Timer;
 import lombok.Getter;
 
@@ -82,15 +81,59 @@ public class Chat extends ContainerImpl {
         height = D2D2.stage().getHeight() / 3.0f;
 
         textInput.setWidth(20);
-        textInput.addEventListener(TextInputEvent.ENTER, this::textInputEvent);
-        textInput.addEventListener(TextInputEvent.TEXT_CHANGE, this::textInputEvent);
-        textInput.addEventListener(TextInputEvent.KEY_DOWN, this::textInputEvent);
+        textInput.addEventListener(TextInputEvent.Enter.class, this::textInput_enter);
+        textInput.addEventListener(TextInputEvent.TextChange.class, this::textInput_textChange);
+        textInput.addEventListener(TextInputEvent.TextInputKeyDown.class, this::textInput_keyDown);
         textInput.setComponentFocusRectVisibleEnabled(false);
         textInput.setFocusRectVisibleEnabled(false);
 
         loadInputHistory();
 
         redraw();
+    }
+
+    private void textInput_keyDown(TextInputEvent.TextInputKeyDown e) {
+        switch (e.getKeyCode()) {
+            case KeyCode.UP -> {
+                historyIndex--;
+                restoreHistory();
+            }
+            case KeyCode.DOWN -> {
+                historyIndex++;
+                restoreHistory();
+            }
+            case KeyCode.ESCAPE -> {
+                closeInput();
+            }
+        }
+    }
+
+    private void textInput_enter(TextInputEvent.Enter e) {
+        String text = e.getText();
+        if (!text.isBlank()) {
+            dispatchEvent(ChatEvent.TextEnter.create(text));
+            if (!Objects.equals(text, lastText)) {
+                history.add(text);
+                lastText = text;
+            }
+            historyIndex = history.size();
+        }
+
+        textInput.clear();
+        closeInput();
+    }
+
+    private void textInput_textChange(TextInputEvent.TextChange e) {
+        setAlpha(1.0f);
+        alphaTime = ALPHA_TIME;
+        String text = e.getText();
+        int length = text.length();
+        if (length > INPUT_MAX_LENGTH) {
+            textInput.setText(text.substring(0, INPUT_MAX_LENGTH));
+            return;
+        }
+        int w = text.length() * ComponentFont.getFontMiddle().getCharInfo('0').width();
+        textInput.setWidth(w + 20);
     }
 
     public void setMulticolorEnabled(boolean multicolorEnabled) {
@@ -119,12 +162,11 @@ public class Chat extends ContainerImpl {
         if (this.inputEnabled == b) return;
         this.inputEnabled = b;
 
-        D2D2.stage().removeEventListener(this, InteractiveEvent.KEY_DOWN);
+        D2D2.stage().removeEventListener(this, InputEvent.KeyDown.class);
 
         if (inputEnabled) {
-            D2D2.stage().addEventListener(InteractiveEvent.KEY_DOWN, event -> {
-                InteractiveEvent stageEvent = (InteractiveEvent) event;
-                switch (stageEvent.getKeyCode()) {
+            D2D2.stage().addEventListener(InputEvent.KeyDown.class, e -> {
+                switch (e.keyCode()) {
                     case KeyCode.PAGE_UP -> {
                         setScroll(getScroll() - 10);
                     }
@@ -269,18 +311,13 @@ public class Chat extends ContainerImpl {
             alphaTime = ALPHA_TIME;
             addChild(textInput);
             textInput.focus();
-            dispatchEvent(ChatEvent.builder()
-                .type(ChatEvent.CHAT_INPUT_OPEN)
-                .build());
+            dispatchEvent(ChatEvent.InputOpen.create());
         });
     }
 
     public void closeInput() {
         removeChild(textInput);
-
-        dispatchEvent(ChatEvent.builder()
-            .type(ChatEvent.CHAT_INPUT_CLOSE)
-            .build());
+        dispatchEvent(ChatEvent.InputClose.create());
     }
 
     public boolean isInputOpened() {
@@ -290,60 +327,6 @@ public class Chat extends ContainerImpl {
     public void clear() {
         messages.clear();
         redraw();
-    }
-
-    public void textInputEvent(Event event) {
-        if (event instanceof TextInputEvent uiTextInputEvent) {
-            switch (event.getType()) {
-
-                case TextInputEvent.TEXT_CHANGE -> {
-                    setAlpha(1.0f);
-                    alphaTime = ALPHA_TIME;
-                    String text = uiTextInputEvent.getText();
-                    int length = text.length();
-                    if (length > INPUT_MAX_LENGTH) {
-                        textInput.setText(text.substring(0, INPUT_MAX_LENGTH));
-                        return;
-                    }
-                    int w = text.length() * ComponentFont.getFontMiddle().getCharInfo('0').width();
-                    textInput.setWidth(w + 20);
-                }
-
-                case TextInputEvent.ENTER -> {
-                    String text = uiTextInputEvent.getText();
-                    if (!text.isBlank()) {
-                        dispatchEvent(ChatEvent.builder()
-                            .type(ChatEvent.CHAT_TEXT_ENTER)
-                            .text(text)
-                            .build());
-                        if (!Objects.equals(text, lastText)) {
-                            history.add(text);
-                            lastText = text;
-                        }
-                        historyIndex = history.size();
-                    }
-
-                    textInput.clear();
-                    closeInput();
-                }
-
-                case TextInputEvent.KEY_DOWN -> {
-                    switch (uiTextInputEvent.getKeyCode()) {
-                        case KeyCode.UP -> {
-                            historyIndex--;
-                            restoreHistory();
-                        }
-                        case KeyCode.DOWN -> {
-                            historyIndex++;
-                            restoreHistory();
-                        }
-                        case KeyCode.ESCAPE -> {
-                            closeInput();
-                        }
-                    }
-                }
-            }
-        }
     }
 
     private void restoreHistory() {

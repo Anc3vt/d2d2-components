@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,6 +19,8 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.event.CommonEvent;
+import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Colored;
 import com.ancevt.d2d2.scene.Sprite;
@@ -26,8 +28,6 @@ import com.ancevt.d2d2.scene.SpriteFactory;
 import com.ancevt.d2d2.scene.interactive.Combined9Sprites;
 import com.ancevt.d2d2.scene.text.Text;
 import com.ancevt.d2d2.scene.texture.TextureClip;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveEvent;
 
 public class ButtonEx extends Component implements Colored {
 
@@ -53,30 +53,30 @@ public class ButtonEx extends Component implements Colored {
         setPushEventsUp(false);
 
         bg = new Combined9Sprites(
-            D2D2.textureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_TOP_LEFT),
-            D2D2.textureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_TOP),
-            D2D2.textureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_TOP_RIGHT),
-            D2D2.textureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_LEFT),
-            D2D2.textureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_CENTER),
-            D2D2.textureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_RIGHT),
-            D2D2.textureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_BOTTOM_LEFT),
-            D2D2.textureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_BOTTOM),
-            D2D2.textureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_BOTTOM_RIGHT)
+                D2D2.textureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_TOP_LEFT),
+                D2D2.textureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_TOP),
+                D2D2.textureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_TOP_RIGHT),
+                D2D2.textureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_LEFT),
+                D2D2.textureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_CENTER),
+                D2D2.textureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_RIGHT),
+                D2D2.textureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_BOTTOM_LEFT),
+                D2D2.textureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_BOTTOM),
+                D2D2.textureManager().getTextureClip(ComponentAssets.BUTTON_9_SIDE_BOTTOM_RIGHT)
         );
 
         bg.setEnabled(false);
         addChild(bg);
 
         selectedBorder = new Combined9Sprites(
-            D2D2.textureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_TOP_LEFT),
-            D2D2.textureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_TOP),
-            D2D2.textureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_TOP_RIGHT),
-            D2D2.textureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_LEFT),
-            D2D2.textureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_CENTER),
-            D2D2.textureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_RIGHT),
-            D2D2.textureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_BOTTOM_LEFT),
-            D2D2.textureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_BOTTOM),
-            D2D2.textureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_BOTTOM_RIGHT)
+                D2D2.textureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_TOP_LEFT),
+                D2D2.textureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_TOP),
+                D2D2.textureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_TOP_RIGHT),
+                D2D2.textureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_LEFT),
+                D2D2.textureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_CENTER),
+                D2D2.textureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_RIGHT),
+                D2D2.textureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_BOTTOM_LEFT),
+                D2D2.textureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_BOTTOM),
+                D2D2.textureManager().getTextureClip(ComponentAssets.BORDER_9_SIDE_BOTTOM_RIGHT)
         );
 
         selectedBorder.setEnabled(false);
@@ -84,12 +84,10 @@ public class ButtonEx extends Component implements Colored {
         selectedBorder.setColor(colorTogglePushedInBorder);
         addChild(selectedBorder);
 
-        addEventListener(Button.class, InteractiveEvent.DOWN, event -> {
+        addEventListener(Button.class, InputEvent.MouseDown.class, event -> {
             if (toggleMode) {
                 setSelected(!isSelected());
-                dispatchEvent(Event.builder()
-                    .type(Event.CHANGE)
-                    .build());
+                dispatchEvent(CommonEvent.Change.create());
             } else {
                 bg.setY(1);
                 if (text != null) text.moveY(1);
@@ -97,26 +95,22 @@ public class ButtonEx extends Component implements Colored {
             }
         });
 
-        addEventListener(Button.class, InteractiveEvent.UP, event -> {
-            var e = (InteractiveEvent) event;
-
-            if (e.isOnArea()) {
-                dispatchEvent(ComponentEvent.builder()
-                    .type(ComponentEvent.ACTION)
-                    .build());
+        addEventListener(Button.class, InputEvent.MouseUp.class, e -> {
+            if (e.onArea()) {
+                dispatchEvent(CommonEvent.Action.create());
             }
 
             bg.setY(0);
             if (text != null) text.moveY(0);
             if (iconSprite != null) iconSprite.moveY(0);
             update();
-            bg.setColor(e.isOnArea() ? colorHoverBackground : colorBackground);
+            bg.setColor(e.onArea() ? colorHoverBackground : colorBackground);
         });
 
-        addEventListener(Button.class, InteractiveEvent.HOVER, event -> bg.setColor(colorHoverBackground));
-        addEventListener(Button.class, InteractiveEvent.OUT, event -> bg.setColor(colorBackground));
+        addEventListener(Button.class, InputEvent.MouseHover.class, event -> bg.setColor(colorHoverBackground));
+        addEventListener(Button.class, InputEvent.MouseOut.class, event -> bg.setColor(colorBackground));
 
-        addEventListener(Event.RESIZE, this::this_resize);
+        addEventListener(CommonEvent.Resize.class, this::this_resize);
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         setCorrespondingColors();
     }
@@ -129,7 +123,7 @@ public class ButtonEx extends Component implements Colored {
         selectedBorder.setTextures(textureKeys);
     }
 
-    private void this_resize(Event event) {
+    private void this_resize(CommonEvent.Resize e) {
         bg.setSize(getWidth(), getHeight());
         selectedBorder.setSize(getWidth(), getHeight());
     }
@@ -202,7 +196,7 @@ public class ButtonEx extends Component implements Colored {
     public void setSelected(boolean selected) {
         this.selected = selected;
         selectedBorder.setVisible(selected);
-        dispatchEvent(Event.builder().type(Event.CHANGE).build());
+        dispatchEvent(CommonEvent.Change.create());
     }
 
     public boolean isSelected() {

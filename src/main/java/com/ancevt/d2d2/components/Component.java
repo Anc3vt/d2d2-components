@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,14 +18,15 @@
 
 package com.ancevt.d2d2.components;
 
-import com.ancevt.d2d2.scene.shape.BorderedRectangle;
+import com.ancevt.d2d2.event.CommonEvent;
+import com.ancevt.d2d2.event.InputEvent;
+import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Container;
 import com.ancevt.d2d2.scene.SceneEntity;
 import com.ancevt.d2d2.scene.interactive.InteractiveContainer;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveEvent;
-import com.ancevt.d2d2.input.Mouse;
+import com.ancevt.d2d2.scene.shape.BorderedRectangle;
 import com.ancevt.d2d2.time.Timer;
 import lombok.Getter;
 
@@ -81,43 +82,43 @@ abstract public class Component extends InteractiveContainer {
         componentFocusRect.setBorderWidth(FOCUS_RECT_BORDER_WIDTH);
         componentFocusRect.setAlpha(FOCUS_RECT_ALPHA);
 
-        addEventListener(Component.class, InteractiveEvent.FOCUS_IN, this::this_focusIn);
-        addEventListener(Component.class, InteractiveEvent.FOCUS_OUT, this::this_focusOut);
+        addEventListener(Component.class, InputEvent.FocusIn.class, this::this_focusIn);
+        addEventListener(Component.class, InputEvent.FocusOut.class, this::this_focusOut);
 
         padding = new Padding(DEFAULT_PADDING_LEFT, DEFAULT_PADDING_TOP, DEFAULT_PADDING_RIGHT, DEFAULT_PADDING_BOTTOM);
 
         setTabbingEnabled(false);
     }
 
-    private void this_focusIn(Event event) {
-        var e = (InteractiveEvent) event;
-        if (componentFocusRectEnabled && !e.isByMouseDown() && !componentFocusRect.hasParent()) addChild(componentFocusRect);
+    private void this_focusIn(InputEvent.FocusIn e) {
+        if (componentFocusRectEnabled && !e.byMouseDown() && !componentFocusRect.hasParent())
+            addChild(componentFocusRect);
 
         FrameManager.getInstance().activateFrame(getFrame());
     }
 
-    private void this_focusOut(Event event) {
+    private void this_focusOut(InputEvent.FocusOut e) {
         componentFocusRect.removeFromParent();
     }
 
     public void setTooltip(Tooltip tooltip) {
         if (this.tooltip != null)
-            this.tooltip.removeEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.OUT);
+            this.tooltip.removeEventListener(Component.class + "" + Tooltip.class, InputEvent.MouseOut.class);
 
         this.tooltip = tooltip;
 
-        removeEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.HOVER);
-        removeEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.OUT);
+        removeEventListener(Component.class + "" + Tooltip.class, InputEvent.MouseHover.class);
+        removeEventListener(Component.class + "" + Tooltip.class, InputEvent.MouseOut.class);
 
         if (tooltip != null) {
-            addEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.HOVER, event -> {
+            addEventListener(Component.class + "" + Tooltip.class, InputEvent.MouseHover.class, event -> {
 
                 AtomicBoolean tooltipCancelHover = new AtomicBoolean(false);
 
-                removeEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.DOWN);
-                addEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.DOWN, event1 -> {
+                removeEventListener(Component.class + "" + Tooltip.class, InputEvent.MouseDown.class);
+                addEventListener(Component.class + "" + Tooltip.class, InputEvent.MouseDown.class, event1 -> {
                     tooltipCancelHover.set(true);
-                    removeEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.DOWN);
+                    removeEventListener(Component.class + "" + Tooltip.class, InputEvent.MouseDown.class);
                     tooltip.removeFromParent();
                 });
 
@@ -132,18 +133,18 @@ abstract public class Component extends InteractiveContainer {
                             tooltip.setY(stage().getHeight() - tooltip.getHeight());
                         }
 
-                        tooltip.removeEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.OUT);
-                        tooltip.addEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.OUT, event1 -> {
+                        tooltip.removeEventListener(Component.class + "" + Tooltip.class, InputEvent.MouseOut.class);
+                        tooltip.addEventListener(Component.class + "" + Tooltip.class, InputEvent.MouseOut.class, event1 -> {
                             tooltip.removeFromParent();
                         });
                     }
                 });
             });
 
-            addEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.OUT, event -> {
+            addEventListener(Component.class + "" + Tooltip.class, InputEvent.MouseOut.class, event -> {
                 Timer.setTimeout(1000, t -> {
                     if (!isHovering() && !tooltip.isHovering()) {
-                        tooltip.removeEventListener(Component.class + "" + Tooltip.class, InteractiveEvent.OUT);
+                        tooltip.removeEventListener(Component.class + "" + Tooltip.class, InputEvent.MouseOut.class);
                         tooltip.removeFromParent();
                     }
                 });
@@ -180,7 +181,7 @@ abstract public class Component extends InteractiveContainer {
         if (minHeight != 0.0f && height < minHeight) height = minHeight;
 
         super.setSize(width, height);
-        dispatchEvent(Event.builder().type(Event.RESIZE).build());
+        dispatchEvent(CommonEvent.Resize.create(width, height));
         componentFocusRect.setSize(width, height);
         update();
     }
@@ -191,7 +192,7 @@ abstract public class Component extends InteractiveContainer {
         if (minWidth != 0.0f && width < minWidth) width = minWidth;
 
         super.setWidth(width);
-        dispatchEvent(Event.builder().type(Event.RESIZE).build());
+        dispatchEvent(CommonEvent.Resize.create(width, getHeight()));
         componentFocusRect.setWidth(width);
         update();
     }
@@ -202,17 +203,17 @@ abstract public class Component extends InteractiveContainer {
         if (minHeight != 0.0f && height < minHeight) height = minHeight;
 
         super.setHeight(height);
-        dispatchEvent(Event.builder().type(Event.RESIZE).build());
+        dispatchEvent(CommonEvent.Resize.create(getWidth(), height));
         componentFocusRect.setHeight(height);
         update();
     }
 
     public void applyResize() {
-        dispatchEvent(Event.builder().type(Event.RESIZE).build());
+        dispatchEvent(CommonEvent.Resize.create(getWidth(), getHeight()));
     }
 
     public void disposeOnRemoveFromStage() {
-        addEventListener(Component.class, Event.REMOVE_FROM_STAGE, event -> dispose());
+        addEventListener(Component.class, SceneEvent.RemoveFromScene.class, event -> dispose());
     }
 
     public void setMinWidth(float value) {

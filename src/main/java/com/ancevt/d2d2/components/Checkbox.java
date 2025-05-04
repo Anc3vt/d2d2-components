@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,11 +18,10 @@
 
 package com.ancevt.d2d2.components;
 
+import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.scene.Sprite;
 import com.ancevt.d2d2.scene.SpriteFactory;
 import com.ancevt.d2d2.scene.text.Text;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveEvent;
 
 import static com.ancevt.d2d2.components.ComponentAssets.CHECKBOX_CHECKED;
 import static com.ancevt.d2d2.components.ComponentAssets.CHECKBOX_UNCHECKED;
@@ -50,12 +49,11 @@ public class Checkbox extends Component {
         addChild(label, sprite.getWidth() + PADDING, 0);
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
-        addEventListener(Checkbox.class, InteractiveEvent.DOWN, this::this_down);
+        addEventListener(Checkbox.class, InputEvent.MouseDown.class, this::this_down);
     }
 
-    private void this_down(Event event) {
+    private void this_down(InputEvent.MouseDown e) {
         if (!isEnabled()) return;
-
         setChecked(!isChecked());
     }
 

@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,19 +18,18 @@
 
 package com.ancevt.d2d2.components.dialog;
 
-import com.ancevt.d2d2.scene.shape.RectangleShape;
 import com.ancevt.d2d2.components.Button;
 import com.ancevt.d2d2.components.ComponentFont;
-import com.ancevt.d2d2.scene.Color;
-import com.ancevt.d2d2.scene.ContainerImpl;
-import com.ancevt.d2d2.scene.Container;
-import com.ancevt.d2d2.scene.text.Text;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveEvent;
+import com.ancevt.d2d2.event.InputEvent;
+import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.input.KeyCode;
+import com.ancevt.d2d2.scene.Color;
+import com.ancevt.d2d2.scene.Container;
+import com.ancevt.d2d2.scene.ContainerImpl;
+import com.ancevt.d2d2.scene.shape.RectangleShape;
+import com.ancevt.d2d2.scene.text.Text;
 
 import static com.ancevt.d2d2.D2D2.stage;
-import static com.ancevt.d2d2.event.Event.ADD_TO_STAGE;
 
 public class DialogWindow extends ContainerImpl {
 
@@ -58,22 +57,21 @@ public class DialogWindow extends ContainerImpl {
 
         buttonOk = new Button("OK");
         buttonOk.setXY((getWidth() - buttonOk.getWidth()) / 2 - 50, getHeight() - PADDING_CONTROLS);
-        buttonOk.addEventListener(Button.ButtonEvent.BUTTON_PRESSED, event -> ok());
+        buttonOk.addEventListener(Button.ButtonPressEvent.class, event -> ok());
         addChild(buttonOk);
 
         buttonCancel = new Button("Cancel");
         buttonCancel.setXY((getWidth() - buttonOk.getWidth()) / 2 + 50, getHeight() - PADDING_CONTROLS);
-        buttonCancel.addEventListener(Button.ButtonEvent.BUTTON_PRESSED, event -> cancel());
+        buttonCancel.addEventListener(Button.ButtonPressEvent.class, event -> cancel());
         addChild(buttonCancel);
 
-        addEventListener(this, ADD_TO_STAGE, this::add_to_stage);
+        addEventListener(this, SceneEvent.AddToScene.class, this::add_to_stage);
     }
 
-    private void add_to_stage(Event event) {
-        removeEventListener(this, ADD_TO_STAGE);
-        stage().addEventListener(this, InteractiveEvent.KEY_DOWN, e1 -> {
-            var e = (InteractiveEvent) e1;
-            switch (e.getKeyCode()) {
+    private void add_to_stage(SceneEvent.AddToScene event) {
+        removeEventListener(this, SceneEvent.AddToScene.class);
+        stage().addEventListener(this, InputEvent.KeyDown.class, e1 -> {
+            switch (e1.keyCode()) {
                 case KeyCode.ENTER -> ok();
                 case KeyCode.ESCAPE -> cancel();
             }
@@ -128,7 +126,7 @@ public class DialogWindow extends ContainerImpl {
     }
 
     public void ok() {
-        stage().removeEventListener(this, InteractiveEvent.KEY_DOWN);
+        stage().removeEventListener(this, InputEvent.KeyDown.class);
         removeFromParent();
         if (onOkFunction != null) {
             onOkFunction.run();
@@ -136,7 +134,7 @@ public class DialogWindow extends ContainerImpl {
     }
 
     public void cancel() {
-        stage().removeEventListener(this, InteractiveEvent.KEY_DOWN);
+        stage().removeEventListener(this, InputEvent.KeyDown.class);
         removeFromParent();
         if (onCancelFunction != null) {
             onCancelFunction.run();
@@ -145,8 +143,8 @@ public class DialogWindow extends ContainerImpl {
 
     public void center() {
         setXY(
-            (stage().getWidth() - getWidth()) / 2f,
-            (stage().getHeight() - getHeight()) / 2f
+                (stage().getWidth() - getWidth()) / 2f,
+                (stage().getHeight() - getHeight()) / 2f
         );
     }
 

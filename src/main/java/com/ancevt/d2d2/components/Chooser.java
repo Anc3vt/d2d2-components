@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,15 +18,14 @@
 
 package com.ancevt.d2d2.components;
 
+import com.ancevt.d2d2.event.core.Event;
+import com.ancevt.d2d2.event.core.EventPool;
+import com.ancevt.d2d2.event.core.EventPooled;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.ContainerImpl;
 import com.ancevt.d2d2.scene.text.Text;
-import com.ancevt.d2d2.event.Event;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,17 +49,17 @@ public class Chooser<T> extends ContainerImpl {
 
         buttonLeft = new ArrowButton();
         buttonLeft.setDirection(-1);
-        buttonLeft.addEventListener(ArrowButton.ArrowButtonEvent.ARROW_BUTTON_PRESS, this::buttonLeft_arrowButtonPress);
+        buttonLeft.addEventListener(ArrowButton.ArrowButtonPressEvent.class, this::buttonLeft_arrowButtonPress);
 
         buttonRight = new ArrowButton();
         buttonRight.setDirection(1);
-        buttonRight.addEventListener(ArrowButton.ArrowButtonEvent.ARROW_BUTTON_PRESS, this::buttonRight_arrowButtonPress);
+        buttonRight.addEventListener(ArrowButton.ArrowButtonPressEvent.class, this::buttonRight_arrowButtonPress);
 
         text = new Text();
         text.setFont(ComponentFont.getFontMiddle());
 
         buttonApply = new Button("Apply");
-        buttonApply.addEventListener(Button.ButtonEvent.BUTTON_PRESSED, this::applyButton_buttonPressed);
+        buttonApply.addEventListener(Button.ButtonPressEvent.class, this::applyButton_buttonPressed);
 
         addChild(text);
 
@@ -71,7 +70,7 @@ public class Chooser<T> extends ContainerImpl {
         setWidth(DEFAULT_WIDTH);
     }
 
-    private void applyButton_buttonPressed(Event event) {
+    private void applyButton_buttonPressed(Button.ButtonPressEvent e) {
         setCurrentItemAsSelected();
     }
 
@@ -79,7 +78,7 @@ public class Chooser<T> extends ContainerImpl {
         selectedItemPair = items.get(index);
         buttonApply.setEnabled(false);
         text.setColor(Color.WHITE);
-        dispatchEvent(ChooserEvent.builder().type(ChooserEvent.CHOOSER_APPLY).build());
+        dispatchEvent(ApplyEvent.create());
     }
 
     public void setWidth(float width) {
@@ -103,16 +102,12 @@ public class Chooser<T> extends ContainerImpl {
 
     private void prev() {
         setIndex(getIndex() - 1);
-        dispatchEvent(ChooserEvent.builder()
-                .type(ChooserEvent.CHOOSER_SWITCH)
-                .build());
+        dispatchEvent(SwitchEvent.create());
     }
 
     private void next() {
         setIndex(getIndex() + 1);
-        dispatchEvent(ChooserEvent.builder()
-                .type(ChooserEvent.CHOOSER_SWITCH)
-                .build());
+        dispatchEvent(SwitchEvent.create());
     }
 
     public void clear() {
@@ -215,13 +210,22 @@ public class Chooser<T> extends ContainerImpl {
         return enabled;
     }
 
-    @Data
-    @SuperBuilder
-    @EqualsAndHashCode(callSuper = true)
-    public static class ChooserEvent extends Event {
-        public static final String CHOOSER_APPLY = "chooserApply";
-        public static final String CHOOSER_SWITCH = "chooserSwitch";
+    @Getter
+    @EventPooled
+    public static class ApplyEvent extends Event {
+        public static ApplyEvent create() {
+            return EventPool.obtain(ApplyEvent.class);
+        }
     }
+
+    @Getter
+    @EventPooled
+    public static class SwitchEvent extends Event {
+        public static SwitchEvent create() {
+            return EventPool.obtain(SwitchEvent.class);
+        }
+    }
+
 
     @RequiredArgsConstructor(staticName = "of")
     @Getter

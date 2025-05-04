@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,14 +19,14 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
+import com.ancevt.d2d2.event.CommonEvent;
+import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.scene.Sprite;
-import com.ancevt.d2d2.scene.shape.RectangleShape;
 import com.ancevt.d2d2.scene.SpriteFactory;
 import com.ancevt.d2d2.scene.interactive.Combined9Sprites;
+import com.ancevt.d2d2.scene.shape.RectangleShape;
 import com.ancevt.d2d2.scene.text.Font;
 import com.ancevt.d2d2.scene.text.Text;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,15 +66,15 @@ public class DropDownList<T> extends Component {
         addChild(bg);
 
         borders = new Combined9Sprites(
-            D2D2.textureManager().getTextureClip(ComponentAssets.RECT_BORDER_9_SIDE_TOP_LEFT),
-            D2D2.textureManager().getTextureClip(ComponentAssets.RECT_BORDER_9_SIDE_TOP),
-            D2D2.textureManager().getTextureClip(ComponentAssets.RECT_BORDER_9_SIDE_TOP_RIGHT),
-            D2D2.textureManager().getTextureClip(ComponentAssets.RECT_BORDER_9_SIDE_LEFT),
-            D2D2.textureManager().getTextureClip(ComponentAssets.RECT_BORDER_9_SIDE_CENTER),
-            D2D2.textureManager().getTextureClip(ComponentAssets.RECT_BORDER_9_SIDE_RIGHT),
-            D2D2.textureManager().getTextureClip(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_LEFT),
-            D2D2.textureManager().getTextureClip(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM),
-            D2D2.textureManager().getTextureClip(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_RIGHT)
+                D2D2.textureManager().getTextureClip(ComponentAssets.RECT_BORDER_9_SIDE_TOP_LEFT),
+                D2D2.textureManager().getTextureClip(ComponentAssets.RECT_BORDER_9_SIDE_TOP),
+                D2D2.textureManager().getTextureClip(ComponentAssets.RECT_BORDER_9_SIDE_TOP_RIGHT),
+                D2D2.textureManager().getTextureClip(ComponentAssets.RECT_BORDER_9_SIDE_LEFT),
+                D2D2.textureManager().getTextureClip(ComponentAssets.RECT_BORDER_9_SIDE_CENTER),
+                D2D2.textureManager().getTextureClip(ComponentAssets.RECT_BORDER_9_SIDE_RIGHT),
+                D2D2.textureManager().getTextureClip(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_LEFT),
+                D2D2.textureManager().getTextureClip(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM),
+                D2D2.textureManager().getTextureClip(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_RIGHT)
         );
         borders.setColor(FOREGROUND_COLOR);
         addChild(borders);
@@ -86,13 +86,13 @@ public class DropDownList<T> extends Component {
         arrow = SpriteFactory.createSpriteByTextureKey(ComponentAssets.DROP_DOWN_LIST_ARROW);
         addChild(arrow);
 
-        addEventListener(Event.RESIZE, this::this_resize);
-        addEventListener(InteractiveEvent.DOWN, this::this_down);
+        addEventListener(CommonEvent.Resize.class, this::this_resize);
+        addEventListener(InputEvent.MouseDown.class, this::this_down);
 
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
-    private void this_resize(Event event) {
+    private void this_resize(CommonEvent.Resize e) {
         borders.setSize(getWidth(), getHeight());
         bg.setSize(getWidth(), getHeight());
         arrow.setXY(getWidth() - arrow.getWidth() - 10, (getHeight() - arrow.getHeight()) / 2);
@@ -104,7 +104,7 @@ public class DropDownList<T> extends Component {
 
     private long oldTime;
 
-    private void this_down(Event event) {
+    private void this_down(InputEvent.MouseDown e) {
         if (Math.abs(oldTime - System.currentTimeMillis()) > 10) {
             if (open) {
                 close();
@@ -148,13 +148,11 @@ public class DropDownList<T> extends Component {
             if (scrollPane.getY() < 0) scrollPane.setY(0);
         }
 
-        stage().removeEventListener(this, InteractiveEvent.DOWN);
-        stage().addEventListener(this, InteractiveEvent.DOWN, event -> {
-            var e = (InteractiveEvent) event;
-
-            if (e.getX() < scrollPane.getX() || e.getX() > scrollPane.getX() + scrollPane.getWidth()
-                || e.getY() < scrollPane.getY() || e.getY() > scrollPane.getY() + scrollPane.getHeight()) {
-                stage().removeEventListener(this, InteractiveEvent.DOWN);
+        stage().removeEventListener(this, InputEvent.MouseDown.class);
+        stage().addEventListener(this, InputEvent.MouseDown.class, e -> {
+            if (e.x() < scrollPane.getX() || e.x() > scrollPane.getX() + scrollPane.getWidth()
+                    || e.y() < scrollPane.getY() || e.y() > scrollPane.getY() + scrollPane.getHeight()) {
+                stage().removeEventListener(this, InputEvent.MouseDown.class);
                 close();
             }
         });
@@ -163,7 +161,7 @@ public class DropDownList<T> extends Component {
     }
 
     private void close() {
-        stage().removeEventListener(this, InteractiveEvent.DOWN);
+        stage().removeEventListener(this, InputEvent.MouseDown.class);
         oldTime = System.currentTimeMillis();
         scrollPane.removeFromParent();
         displayedItemList.forEach(Item::removeFromParent);
@@ -205,7 +203,7 @@ public class DropDownList<T> extends Component {
         text.setText(item.getText());
         selectedItem = item;
         cutText(text, getWidth());
-        dispatchEvent(Event.builder().type(Event.CHANGE).build());
+        dispatchEvent(CommonEvent.Change.create());
     }
 
     public T getSelectedItem() {
@@ -262,20 +260,20 @@ public class DropDownList<T> extends Component {
             cutText(this.text, getWidth());
             addChild(this.text);
 
-            addEventListener(Event.RESIZE, this::this_resize);
-            addEventListener(InteractiveEvent.DOWN, this::this_down);
+            addEventListener(CommonEvent.Resize.class, this::this_resize);
+            addEventListener(InputEvent.MouseDown.class, this::this_down);
 
             setSize(dropDownList.getWidth(), HEIGHT);
         }
 
-        private void this_resize(Event event) {
+        private void this_resize(CommonEvent.Resize event) {
             bg.setSize(getWidth(), getHeight());
             text.setAutosize(true);
             text.setXY(10, (getHeight() - text.getTextHeight()) / 2);
             cutText(text, getWidth());
         }
 
-        private void this_down(Event event) {
+        private void this_down(InputEvent.MouseDown event) {
             dropDownList.setItem(object);
             dropDownList.close();
         }
@@ -291,10 +289,10 @@ public class DropDownList<T> extends Component {
         @Override
         public String toString() {
             return "Item{" +
-                "text='" + text + '\'' +
-                ", object=" + object +
-                ", dropDownList=" + dropDownList +
-                '}';
+                    "text='" + text + '\'' +
+                    ", object=" + object +
+                    ", dropDownList=" + dropDownList +
+                    '}';
         }
     }
 }

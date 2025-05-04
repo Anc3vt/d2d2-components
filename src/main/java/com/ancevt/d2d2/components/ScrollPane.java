@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,9 +18,10 @@
 
 package com.ancevt.d2d2.components;
 
+import com.ancevt.d2d2.event.CommonEvent;
+import com.ancevt.d2d2.event.InputEvent;
+import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.scene.shape.RectangleShape;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,11 +53,11 @@ public class ScrollPane extends Component {
         components = new ArrayList<>();
 
         scrollbar = new Scrollbar();
-        scrollbar.addEventListener(ScrollPane.class, Event.CHANGE, this::scrollbar_change);
+        scrollbar.addEventListener(ScrollPane.class, CommonEvent.Change.class, this::scrollbar_change);
         addChild(scrollbar);
 
-        addEventListener(ScrollPane.class, Event.RESIZE, this::this_resize);
-        addEventListener(ScrollPane.class, InteractiveEvent.WHEEL, this::this_wheel);
+        addEventListener(ScrollPane.class, CommonEvent.Resize.class, this::this_resize);
+        addEventListener(ScrollPane.class, InputEvent.MouseWheel.class, this::this_wheel);
 
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         setItemHeight(DEFAULT_ITEM_HEIGHT);
@@ -66,14 +67,14 @@ public class ScrollPane extends Component {
         scrollbar.setPushEventsUp(true);
     }
 
-    private void this_resize(Event event) {
+    private void this_resize(CommonEvent.Resize event) {
         bg.setSize(getWidth(), getHeight());
         scrollbar.setX(getWidth() - scrollbar.getWidth());
         scrollbar.setHeight(getHeight());
         rebuild();
     }
 
-    private void scrollbar_change(Event event) {
+    private void scrollbar_change(CommonEvent.Change event) {
         int position = (int) ((components.size() - getHeight() / itemHeight) * scrollbar.getScrollValue());
         setScrollPositionInternal(position);
         rebuild();
@@ -92,9 +93,8 @@ public class ScrollPane extends Component {
         }
     }
 
-    private void this_wheel(Event event) {
-        var e = (InteractiveEvent) event;
-        scroll(-e.getDelta() * scrollStep);
+    private void this_wheel(InputEvent.MouseWheel event) {
+        scroll(-event.delta() * scrollStep);
     }
 
     public void clear() {
@@ -140,8 +140,8 @@ public class ScrollPane extends Component {
 
     public void addScrollableItem(Component component) {
         components.add(component);
-        component.removeEventListener(ScrollPane.class, Event.REMOVE);
-        component.addEventListener(ScrollPane.class, Event.REMOVE, event -> focus());
+        component.removeEventListener(ScrollPane.class, SceneEvent.Remove.class);
+        component.addEventListener(ScrollPane.class, SceneEvent.Remove.class, event -> focus());
         setScrollPosition(Integer.MAX_VALUE);
         scrollbar.setScrollValue(1.0f);
         rebuild();
@@ -198,8 +198,8 @@ public class ScrollPane extends Component {
             addChild(item, 0, y);
             item.move(getPadding().getLeft(), getPadding().getTop());
             item.setSize(
-                getWidth() - getPadding().getRight() - getPadding().getLeft(),
-                getItemHeight() - getPadding().getBottom() - getPadding().getTop()
+                    getWidth() - getPadding().getRight() - getPadding().getLeft(),
+                    getItemHeight() - getPadding().getBottom() - getPadding().getTop()
             );
             y += itemHeight;
         }

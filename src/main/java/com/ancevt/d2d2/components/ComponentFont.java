@@ -26,7 +26,6 @@ public class ComponentFont {
     private static final String FONT_ASSET_MIDDLE = "terminus/Terminus-16-Bold";
     private static final String FONT_ASSET_SMALL = "terminus/Terminus-12";
 
-
     //private static final String FONT_ASSET_MIDDLE_GLOW = "Terminus-16-Bold-Glow";
     private static final String FONT_ASSET_MIDDLE_GLOW = "TerminusTTF-Bold-4.49.3-16";
     private static Font fontMiddle;

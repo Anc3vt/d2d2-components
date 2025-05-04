@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,12 +19,12 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.scene.shape.RectangleShape;
+import com.ancevt.d2d2.event.CommonEvent;
+import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.interactive.InteractiveSprite;
+import com.ancevt.d2d2.scene.shape.RectangleShape;
 import com.ancevt.d2d2.scene.texture.TextureClip;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveEvent;
 
 public class Scrollbar extends Component {
 
@@ -52,24 +52,23 @@ public class Scrollbar extends Component {
         rect.setColor(Color.WHITE);
         addChild(rect);
 
-        addEventListener(Scrollbar.class, Event.RESIZE, this::this_resize);
-        addEventListener(Scrollbar.class, InteractiveEvent.HOVER, this::this_hover);
-        addEventListener(Scrollbar.class, InteractiveEvent.OUT, this::this_out);
-        addEventListener(Scrollbar.class, InteractiveEvent.WHEEL, this::this_wheel);
+        addEventListener(Scrollbar.class, CommonEvent.Resize.class, this::this_resize);
+        addEventListener(Scrollbar.class, InputEvent.MouseHover.class, this::this_hover);
+        addEventListener(Scrollbar.class, InputEvent.MouseOut.class, this::this_out);
+        addEventListener(Scrollbar.class, InputEvent.MouseWheel.class, this::this_wheel);
 
         setAlpha(MIN_ALPHA);
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
-    private void this_wheel(Event event) {
-        var e = (InteractiveEvent) event;
-        scroll(-e.getDelta());
+    private void this_wheel(InputEvent.MouseWheel event) {
+        scroll(-event.delta());
     }
 
     private void scroll(int delta) {
         rect.moveY(delta * 25);
         rect.fixBounds();
-        dispatchEvent(Event.builder().type(Event.CHANGE).build());
+        dispatchEvent(CommonEvent.Change.create());
         fadeIn();
     }
 
@@ -109,16 +108,16 @@ public class Scrollbar extends Component {
         fadeHold = FADE_HOLD;
     }
 
-    private void this_out(Event event) {
+    private void this_out(InputEvent.MouseOut event) {
         hovered = false;
     }
 
-    private void this_hover(Event event) {
+    private void this_hover(InputEvent.MouseHover event) {
         fadeIn();
         hovered = true;
     }
 
-    private void this_resize(Event event) {
+    private void this_resize(CommonEvent.Resize event) {
         _debugRect.setSize(getWidth(), getHeight());
         rect.setWidth(getWidth());
     }
@@ -164,24 +163,22 @@ public class Scrollbar extends Component {
 
             setPushEventsUp(true);
 
-            addEventListener(ScrollbarRect.class, InteractiveEvent.DOWN, this::this_down);
-            addEventListener(ScrollbarRect.class, InteractiveEvent.DRAG, this::this_drag);
-            addEventListener(ScrollbarRect.class, InteractiveEvent.WHEEL, scrollbar::dispatchEvent);
+            addEventListener(ScrollbarRect.class, InputEvent.MouseDown.class, this::this_down);
+            addEventListener(ScrollbarRect.class, InputEvent.MouseDrag.class, this::this_drag);
+            addEventListener(ScrollbarRect.class, InputEvent.MouseWheel.class, scrollbar::dispatchEvent);
         }
 
-        private void this_down(Event event) {
-            var e = (InteractiveEvent) event;
-            oldY = (int) (e.getY() + getY());
+        private void this_down(InputEvent.MouseDown e) {
+            oldY = (int) (e.y() + getY());
         }
 
-        private void this_drag(Event event) {
-            var e = (InteractiveEvent) event;
-            final int ty = (int) (e.getY() + getY());
+        private void this_drag(InputEvent.MouseDrag e) {
+            final int ty = (int) (e.y() + getY());
             moveY(ty - oldY);
             oldY = ty;
             fixBounds();
             scrollbar.fadeIn();
-            scrollbar.dispatchEvent(Event.builder().type(Event.CHANGE).build());
+            scrollbar.dispatchEvent(CommonEvent.Change.create());
         }
 
         private void fixBounds() {

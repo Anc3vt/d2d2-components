@@ -18,16 +18,16 @@
 
 package com.ancevt.d2d2.components;
 
+import com.ancevt.d2d2.event.InputEvent;
+import com.ancevt.d2d2.event.core.Event;
+import com.ancevt.d2d2.event.core.EventPool;
+import com.ancevt.d2d2.event.core.EventPooled;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.ContainerImpl;
 import com.ancevt.d2d2.scene.Sprite;
 import com.ancevt.d2d2.scene.SpriteFactory;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveEvent;
 import com.ancevt.d2d2.scene.interactive.InteractiveContainer;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.SuperBuilder;
+import lombok.Getter;
 
 import static com.ancevt.d2d2.components.ComponentAssets.ARROW_BUTTON;
 
@@ -49,7 +49,7 @@ public class ArrowButton extends ContainerImpl {
         interactiveButton = new InteractiveContainer(sprite.getWidth(), sprite.getHeight());
         addChild(interactiveButton);
 
-        interactiveButton.addEventListener(InteractiveEvent.DOWN, this::interactiveButton_down);
+        interactiveButton.addEventListener(InputEvent.MouseDown.class, this::interactiveButton_down);
 
         setEnabled(true);
     }
@@ -88,22 +88,19 @@ public class ArrowButton extends ContainerImpl {
         return direction;
     }
 
-    private void interactiveButton_down(Event event) {
-        dispatchEvent(
-                ArrowButtonEvent.builder()
-                        .type(ArrowButtonEvent.ARROW_BUTTON_PRESS)
-                        .build()
-        );
+    private void interactiveButton_down(InputEvent.MouseDown e) {
+        dispatchEvent(ArrowButtonPressEvent.create());
     }
 
     public void dispose() {
         interactiveButton.setEnabled(false);
     }
 
-    @Data
-    @SuperBuilder
-    @EqualsAndHashCode(callSuper = true)
-    public static class ArrowButtonEvent extends Event {
-        public static final String ARROW_BUTTON_PRESS = "arrowButtonPress";
+    @EventPooled
+    @Getter
+    public static class ArrowButtonPressEvent extends Event {
+        public static ArrowButtonPressEvent create() {
+            return EventPool.obtain(ArrowButtonPressEvent.class);
+        }
     }
 }

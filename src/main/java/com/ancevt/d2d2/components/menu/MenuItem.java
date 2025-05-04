@@ -2,13 +2,13 @@
  * Copyright (C) 2025 the original author or authors.
  * See the notice.md file distributed with this work for additional
  * information regarding copyright ownership.
- *
+ * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,13 +21,13 @@ package com.ancevt.d2d2.components.menu;
 import com.ancevt.d2d2.components.Component;
 import com.ancevt.d2d2.components.ComponentAssets;
 import com.ancevt.d2d2.components.ComponentFont;
+import com.ancevt.d2d2.event.CommonEvent;
+import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Sprite;
 import com.ancevt.d2d2.scene.SpriteFactory;
 import com.ancevt.d2d2.scene.shape.RectangleShape;
 import com.ancevt.d2d2.scene.text.Text;
-import com.ancevt.d2d2.event.Event;
-import com.ancevt.d2d2.event.InteractiveEvent;
 
 public class MenuItem extends Component {
 
@@ -35,7 +35,8 @@ public class MenuItem extends Component {
 
     static final float HEIGHT = 30.0f;
 
-    private static final Runnable STUB_ACTION = () -> {};
+    private static final Runnable STUB_ACTION = () -> {
+    };
 
     final RectangleShape bg;
     private final Text text;
@@ -58,22 +59,22 @@ public class MenuItem extends Component {
         text.setMulticolor(true);
         addChild(text, 10, (HEIGHT - text.getTextHeight()) / 2);
 
-        addEventListener(Event.RESIZE, this::this_resize);
-        addEventListener(InteractiveEvent.HOVER, this::this_hover);
-        addEventListener(InteractiveEvent.OUT, this::this_out);
+        addEventListener(CommonEvent.Resize.class, this::this_resize);
+        addEventListener(InputEvent.MouseHover.class, this::this_hover);
+        addEventListener(InputEvent.MouseOut.class, this::this_out);
 
         setSize(parentMenu.getWidth(), HEIGHT);
     }
 
-    private void this_hover(Event event) {
+    private void this_hover(InputEvent.MouseHover event) {
         bg.setColor(MENU_HOVER_BACKGROUND_COLOR);
     }
 
-    private void this_out(Event event) {
+    private void this_out(InputEvent.MouseOut event) {
         bg.setColor(MENU_BACKGROUND_COLOR);
     }
 
-    private void this_resize(Event event) {
+    private void this_resize(CommonEvent.Resize event) {
         bg.setSize(getWidth(), getHeight());
     }
 
