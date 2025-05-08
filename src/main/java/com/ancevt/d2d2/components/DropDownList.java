@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.ancevt.d2d2.D2D2.stage;
+import static com.ancevt.d2d2.D2D2.root;
 
 public class DropDownList<T> extends Component {
 
@@ -133,26 +133,26 @@ public class DropDownList<T> extends Component {
 
         scrollPane.setScrollPosition(0);
 
-        stage().addChild(scrollPane, getAbsoluteX(), getAbsoluteY() + getHeight());
+        root().addChild(scrollPane, getAbsoluteX(), getAbsoluteY() + getHeight());
 
-        if (y > stage().getHeight()) {
+        if (y > root().getHeight()) {
             scrollPane.setY(0);
-            scrollPane.setHeight(stage().getHeight());
+            scrollPane.setHeight(root().getHeight());
         } else {
             scrollPane.setHeight(y);
 
-            if (scrollPane.getY() + scrollPane.getHeight() > stage().getHeight()) {
+            if (scrollPane.getY() + scrollPane.getHeight() > root().getHeight()) {
                 scrollPane.setY(getAbsoluteY() - scrollPane.getHeight());
             }
 
             if (scrollPane.getY() < 0) scrollPane.setY(0);
         }
 
-        stage().removeEventListener(this, InputEvent.MouseDown.class);
-        stage().addEventListener(this, InputEvent.MouseDown.class, e -> {
+        root().removeEventListener(this, InputEvent.MouseDown.class);
+        root().addEventListener(this, InputEvent.MouseDown.class, e -> {
             if (e.x() < scrollPane.getX() || e.x() > scrollPane.getX() + scrollPane.getWidth()
                     || e.y() < scrollPane.getY() || e.y() > scrollPane.getY() + scrollPane.getHeight()) {
-                stage().removeEventListener(this, InputEvent.MouseDown.class);
+                root().removeEventListener(this, InputEvent.MouseDown.class);
                 close();
             }
         });
@@ -161,7 +161,7 @@ public class DropDownList<T> extends Component {
     }
 
     private void close() {
-        stage().removeEventListener(this, InputEvent.MouseDown.class);
+        root().removeEventListener(this, InputEvent.MouseDown.class);
         oldTime = System.currentTimeMillis();
         scrollPane.removeFromParent();
         displayedItemList.forEach(Item::removeFromParent);

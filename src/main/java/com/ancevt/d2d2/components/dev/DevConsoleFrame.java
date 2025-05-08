@@ -25,8 +25,8 @@ import com.ancevt.d2d2.components.Frame;
 import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.input.KeyCode;
-import com.ancevt.d2d2.scene.Container;
-import com.ancevt.d2d2.scene.SceneEntity;
+import com.ancevt.d2d2.scene.Group;
+import com.ancevt.d2d2.scene.Node;
 import com.ancevt.d2d2.time.Timer;
 import lombok.Getter;
 
@@ -43,7 +43,7 @@ public class DevConsoleFrame extends Frame {
     @Getter
     private final DevConsole console;
 
-    public DevConsoleFrame(BiConsumer<DevConsole, SceneEntity> debugFunction) {
+    public DevConsoleFrame(BiConsumer<DevConsole, Node> debugFunction) {
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         setTitle("DevConsole");
         setManualResizable(true);
@@ -61,7 +61,7 @@ public class DevConsoleFrame extends Frame {
         initTilda();
         onResize();
 
-        D2D2.stage().addEventListener(this, CommonEvent.Stop.class, this::stage_exitMainLoop);
+        D2D2.root().addEventListener(this, CommonEvent.Stop.class, this::stage_exitMainLoop);
 
         addEventListener(this, InputEvent.MouseUp.class, event -> console.textInput.focus());
 
@@ -112,7 +112,7 @@ public class DevConsoleFrame extends Frame {
     }
 
     private void initTilda() {
-        D2D2.stage().addEventListener(this, InputEvent.KeyDown.class, e -> {
+        D2D2.root().addEventListener(this, InputEvent.KeyDown.class, e -> {
             if (e.keyCode() == KeyCode.TILDA && e.shift()) {
                 setVisible(!isVisible());
                 Timer.setTimeout(10, t -> {
@@ -125,17 +125,17 @@ public class DevConsoleFrame extends Frame {
                         console.textInput.setText(text);
                     }
                 });
-                if (getX() > D2D2.stage().getWidth() || getX() < -getWidth()) {
+                if (getX() > D2D2.root().getWidth() || getX() < -getWidth()) {
                     setX(10);
                 }
-                if (getY() > D2D2.stage().getHeight() || getY() < 0) {
+                if (getY() > D2D2.root().getHeight() || getY() < 0) {
                     setY(10);
                 }
             }
         });
 
         if (hasParent()) {
-            Container parent = getParent();
+            Group parent = getParent();
             removeFromParent();
             parent.addChild(this);
         }
@@ -150,9 +150,9 @@ public class DevConsoleFrame extends Frame {
         console.setSize(getContentPanel().getWidth() - 20, getContentPanel().getHeight() - 48);
     }
 
-    public static DevConsole init(BiConsumer<DevConsole, SceneEntity> debugFunction) {
+    public static DevConsole init(BiConsumer<DevConsole, Node> debugFunction) {
         DevConsoleFrame devConsoleFrame = new DevConsoleFrame(debugFunction);
-        D2D2.stage().addChild(devConsoleFrame);
+        D2D2.root().addChild(devConsoleFrame);
         return devConsoleFrame.getConsole();
     }
 

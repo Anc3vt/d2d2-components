@@ -25,9 +25,9 @@ import com.ancevt.d2d2.components.TextInput;
 import com.ancevt.d2d2.components.TextInputEvent;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.input.KeyCode;
-import com.ancevt.d2d2.scene.AbstractSceneEntity;
+import com.ancevt.d2d2.scene.AbstractNode;
 import com.ancevt.d2d2.scene.Color;
-import com.ancevt.d2d2.scene.ContainerImpl;
+import com.ancevt.d2d2.scene.GroupImpl;
 import com.ancevt.d2d2.time.Timer;
 import lombok.Getter;
 
@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Chat extends ContainerImpl {
+public class Chat extends GroupImpl {
 
     private String lastText;
     private static final int INPUT_MAX_LENGTH = 100;
@@ -77,8 +77,8 @@ public class Chat extends ContainerImpl {
         displayedMessages = new CopyOnWriteArrayList<>();
         history = new ArrayList<>();
 
-        width = D2D2.stage().getWidth() / 2.0f;
-        height = D2D2.stage().getHeight() / 3.0f;
+        width = D2D2.root().getWidth() / 2.0f;
+        height = D2D2.root().getHeight() / 3.0f;
 
         textInput.setWidth(20);
         textInput.addEventListener(TextInputEvent.Enter.class, this::textInput_enter);
@@ -162,10 +162,10 @@ public class Chat extends ContainerImpl {
         if (this.inputEnabled == b) return;
         this.inputEnabled = b;
 
-        D2D2.stage().removeEventListener(this, InputEvent.KeyDown.class);
+        D2D2.root().removeEventListener(this, InputEvent.KeyDown.class);
 
         if (inputEnabled) {
-            D2D2.stage().addEventListener(InputEvent.KeyDown.class, e -> {
+            D2D2.root().addEventListener(InputEvent.KeyDown.class, e -> {
                 switch (e.keyCode()) {
                     case KeyCode.PAGE_UP -> {
                         setScroll(getScroll() - 10);
@@ -215,9 +215,9 @@ public class Chat extends ContainerImpl {
     private void redraw() {
         textInput.setXY(0, height);
 
-        textInput.setMaxSize(D2D2.stage().getWidth(), 16);
+        textInput.setMaxSize(D2D2.root().getWidth(), 16);
 
-        displayedMessages.forEach(AbstractSceneEntity::removeFromParent);
+        displayedMessages.forEach(AbstractNode::removeFromParent);
 
         int y = 0;
 

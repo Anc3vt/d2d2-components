@@ -21,17 +21,17 @@ package com.ancevt.d2d2.components.dialog;
 import com.ancevt.d2d2.components.Button;
 import com.ancevt.d2d2.components.ComponentFont;
 import com.ancevt.d2d2.event.InputEvent;
-import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.NodeEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.scene.Color;
-import com.ancevt.d2d2.scene.Container;
-import com.ancevt.d2d2.scene.ContainerImpl;
+import com.ancevt.d2d2.scene.Group;
+import com.ancevt.d2d2.scene.GroupImpl;
 import com.ancevt.d2d2.scene.shape.RectangleShape;
 import com.ancevt.d2d2.scene.text.Text;
 
-import static com.ancevt.d2d2.D2D2.stage;
+import static com.ancevt.d2d2.D2D2.root;
 
-public class DialogWindow extends ContainerImpl {
+public class DialogWindow extends GroupImpl {
 
     private static final float DEFAULT_WIDTH = 400f;
     private static final float DEFAULT_HEIGHT = 200f;
@@ -65,12 +65,12 @@ public class DialogWindow extends ContainerImpl {
         buttonCancel.addEventListener(Button.ButtonPressEvent.class, event -> cancel());
         addChild(buttonCancel);
 
-        addEventListener(this, SceneEvent.AddToScene.class, this::add_to_stage);
+        addEventListener(this, NodeEvent.AddToScene.class, this::add_to_stage);
     }
 
-    private void add_to_stage(SceneEvent.AddToScene event) {
-        removeEventListener(this, SceneEvent.AddToScene.class);
-        stage().addEventListener(this, InputEvent.KeyDown.class, e1 -> {
+    private void add_to_stage(NodeEvent.AddToScene event) {
+        removeEventListener(this, NodeEvent.AddToScene.class);
+        root().addEventListener(this, InputEvent.KeyDown.class, e1 -> {
             switch (e1.keyCode()) {
                 case KeyCode.ENTER -> ok();
                 case KeyCode.ESCAPE -> cancel();
@@ -126,7 +126,7 @@ public class DialogWindow extends ContainerImpl {
     }
 
     public void ok() {
-        stage().removeEventListener(this, InputEvent.KeyDown.class);
+        root().removeEventListener(this, InputEvent.KeyDown.class);
         removeFromParent();
         if (onOkFunction != null) {
             onOkFunction.run();
@@ -134,7 +134,7 @@ public class DialogWindow extends ContainerImpl {
     }
 
     public void cancel() {
-        stage().removeEventListener(this, InputEvent.KeyDown.class);
+        root().removeEventListener(this, InputEvent.KeyDown.class);
         removeFromParent();
         if (onCancelFunction != null) {
             onCancelFunction.run();
@@ -143,12 +143,12 @@ public class DialogWindow extends ContainerImpl {
 
     public void center() {
         setXY(
-                (stage().getWidth() - getWidth()) / 2f,
-                (stage().getHeight() - getHeight()) / 2f
+                (root().getWidth() - getWidth()) / 2f,
+                (root().getHeight() - getHeight()) / 2f
         );
     }
 
-    public static DialogWindow show(String text, Container cont) {
+    public static DialogWindow show(String text, Group cont) {
         DialogWindow dialogWindow = new DialogWindow();
         dialogWindow.setText(text);
         cont.addChild(dialogWindow);

@@ -23,19 +23,19 @@ import com.ancevt.d2d2.event.core.Event;
 import com.ancevt.d2d2.event.core.EventPool;
 import com.ancevt.d2d2.event.core.EventPooled;
 import com.ancevt.d2d2.scene.Color;
-import com.ancevt.d2d2.scene.ContainerImpl;
+import com.ancevt.d2d2.scene.GroupImpl;
 import com.ancevt.d2d2.scene.Sprite;
 import com.ancevt.d2d2.scene.SpriteFactory;
-import com.ancevt.d2d2.scene.interactive.InteractiveContainer;
+import com.ancevt.d2d2.scene.interactive.InteractiveGroup;
 import lombok.Getter;
 
 import static com.ancevt.d2d2.components.ComponentAssets.ARROW_BUTTON;
 
-public class ArrowButton extends ContainerImpl {
+public class ArrowButton extends GroupImpl {
 
     private final Sprite sprite;
     private final Sprite shadow;
-    private final InteractiveContainer interactiveButton;
+    private final InteractiveGroup interactiveButton;
     private int direction;
 
     public ArrowButton() {
@@ -46,7 +46,7 @@ public class ArrowButton extends ContainerImpl {
         addChild(shadow, 1, 1);
         addChild(sprite);
 
-        interactiveButton = new InteractiveContainer(sprite.getWidth(), sprite.getHeight());
+        interactiveButton = new InteractiveGroup(sprite.getWidth(), sprite.getHeight());
         addChild(interactiveButton);
 
         interactiveButton.addEventListener(InputEvent.MouseDown.class, this::interactiveButton_down);

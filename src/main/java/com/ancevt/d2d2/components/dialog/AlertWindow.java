@@ -21,16 +21,16 @@ package com.ancevt.d2d2.components.dialog;
 import com.ancevt.d2d2.components.Button;
 import com.ancevt.d2d2.components.ComponentFont;
 import com.ancevt.d2d2.event.InputEvent;
-import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.NodeEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.scene.Color;
-import com.ancevt.d2d2.scene.ContainerImpl;
+import com.ancevt.d2d2.scene.GroupImpl;
 import com.ancevt.d2d2.scene.shape.RectangleShape;
 import com.ancevt.d2d2.scene.text.Text;
 
-import static com.ancevt.d2d2.D2D2.stage;
+import static com.ancevt.d2d2.D2D2.root;
 
-public class AlertWindow extends ContainerImpl {
+public class AlertWindow extends GroupImpl {
 
     private static final float DEFAULT_WIDTH = 400f;
     private static final float DEFAULT_HEIGHT = 200f;
@@ -57,12 +57,12 @@ public class AlertWindow extends ContainerImpl {
 
         buttonOk.addEventListener(Button.ButtonPressEvent.class, event -> close());
 
-        addEventListener(this, SceneEvent.AddToScene.class, this::add_to_stage);
+        addEventListener(this, NodeEvent.AddToScene.class, this::add_to_stage);
     }
 
-    private void add_to_stage(SceneEvent.AddToScene event) {
-        removeEventListener(this, SceneEvent.AddToScene.class);
-        stage().addEventListener(this, InputEvent.KeyDown.class, e1 -> {
+    private void add_to_stage(NodeEvent.AddToScene event) {
+        removeEventListener(this, NodeEvent.AddToScene.class);
+        root().addEventListener(this, InputEvent.KeyDown.class, e1 -> {
             if (e1.keyCode() == KeyCode.ENTER) {
                 close();
             }
@@ -109,7 +109,7 @@ public class AlertWindow extends ContainerImpl {
     }
 
     public void close() {
-        stage().removeEventListener(this, InputEvent.KeyDown.class);
+        root().removeEventListener(this, InputEvent.KeyDown.class);
         removeFromParent();
         if (onCloseFunction != null) {
             onCloseFunction.run();
@@ -118,12 +118,12 @@ public class AlertWindow extends ContainerImpl {
 
     public void center() {
         setXY(
-                (stage().getWidth() - getWidth()) / 2f,
-                (stage().getHeight() - getHeight()) / 2f
+                (root().getWidth() - getWidth()) / 2f,
+                (root().getHeight() - getHeight()) / 2f
         );
     }
 
-    public static AlertWindow show(String text, ContainerImpl doc) {
+    public static AlertWindow show(String text, GroupImpl doc) {
         AlertWindow alertWindow = new AlertWindow();
         alertWindow.setText(text);
         doc.addChild(alertWindow);

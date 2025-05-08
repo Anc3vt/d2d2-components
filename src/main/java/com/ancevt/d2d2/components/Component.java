@@ -20,21 +20,21 @@ package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.InputEvent;
-import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.NodeEvent;
 import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.scene.Color;
-import com.ancevt.d2d2.scene.Container;
-import com.ancevt.d2d2.scene.SceneEntity;
-import com.ancevt.d2d2.scene.interactive.InteractiveContainer;
+import com.ancevt.d2d2.scene.Group;
+import com.ancevt.d2d2.scene.Node;
+import com.ancevt.d2d2.scene.interactive.InteractiveGroup;
 import com.ancevt.d2d2.scene.shape.BorderedRectangle;
 import com.ancevt.d2d2.time.Timer;
 import lombok.Getter;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.ancevt.d2d2.D2D2.stage;
+import static com.ancevt.d2d2.D2D2.root;
 
-abstract public class Component extends InteractiveContainer {
+abstract public class Component extends InteractiveGroup {
 
     public static final Color FOREGROUND_COLOR = Color.GRAY;
     public static final Color BACKGROUND_COLOR = Color.BLACK;
@@ -124,13 +124,13 @@ abstract public class Component extends InteractiveContainer {
 
                 Timer.setTimeout(1000, t -> {
                     if (!tooltipCancelHover.get() && isHovering()) {
-                        stage().addChild(tooltip, Mouse.getX(), Mouse.getY());
-                        if (tooltip.getX() + tooltip.getWidth() > stage().getWidth()) {
-                            tooltip.setX(stage().getWidth() - tooltip.getWidth());
+                        root().addChild(tooltip, Mouse.getX(), Mouse.getY());
+                        if (tooltip.getX() + tooltip.getWidth() > root().getWidth()) {
+                            tooltip.setX(root().getWidth() - tooltip.getWidth());
                         }
 
-                        if (tooltip.getY() + tooltip.getHeight() > stage().getHeight()) {
-                            tooltip.setY(stage().getHeight() - tooltip.getHeight());
+                        if (tooltip.getY() + tooltip.getHeight() > root().getHeight()) {
+                            tooltip.setY(root().getHeight() - tooltip.getHeight());
                         }
 
                         tooltip.removeEventListener(Component.class + "" + Tooltip.class, InputEvent.MouseOut.class);
@@ -213,7 +213,7 @@ abstract public class Component extends InteractiveContainer {
     }
 
     public void disposeOnRemoveFromStage() {
-        addEventListener(Component.class, SceneEvent.RemoveFromScene.class, event -> dispose());
+        addEventListener(Component.class, NodeEvent.RemoveFromScene.class, event -> dispose());
     }
 
     public void setMinWidth(float value) {
@@ -243,10 +243,10 @@ abstract public class Component extends InteractiveContainer {
     }
 
     public Frame getFrame() {
-        Container container = this;
-        while (container != null) {
-            if (container instanceof Frame frame) return frame;
-            container = container.getParent();
+        Group group = this;
+        while (group != null) {
+            if (group instanceof Frame frame) return frame;
+            group = group.getParent();
         }
 
         return null;
@@ -258,7 +258,7 @@ abstract public class Component extends InteractiveContainer {
         super.dispose();
 
         for (int i = 0; i < getNumChildren(); i++) {
-            SceneEntity child = getChild(i);
+            Node child = getChild(i);
             if (child instanceof Component component) {
                 component.dispose();
             }

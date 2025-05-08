@@ -18,16 +18,12 @@
 
 package com.ancevt.d2d2.components.effect;
 
-import com.ancevt.d2d2.scene.Color;
-import com.ancevt.d2d2.scene.ContainerImpl;
-import com.ancevt.d2d2.scene.Colored;
-import com.ancevt.d2d2.scene.SceneEntity;
-import com.ancevt.d2d2.scene.SpriteImpl;
+import com.ancevt.d2d2.scene.*;
 import com.ancevt.d2d2.scene.text.Text;
 
-public class Glow8Shadows extends ContainerImpl {
+public class Glow8Shadows extends GroupImpl {
 
-    private final SceneEntity[] elements;
+    private final Node[] elements;
 
     public Glow8Shadows(Colored source, Color color, float distance, float alpha, float offsetX, float offsetY) {
         float[][] coords = {
@@ -41,9 +37,7 @@ public class Glow8Shadows extends ContainerImpl {
             {-1.0f, -1.0f}
         };
 
-
-        SpriteImpl sprite = null;
-
+        Sprite sprite = null;
 
         elements = new Colored[8];
         for (int i = 0; i < coords.length; i++) {

@@ -19,7 +19,7 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.event.CommonEvent;
-import com.ancevt.d2d2.scene.Container;
+import com.ancevt.d2d2.scene.Group;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -73,7 +73,7 @@ public class FrameManager {
         activeFrame = frame;
 
         if(activeFrame != null) {
-            Container parent = activeFrame.getParent();
+            Group parent = activeFrame.getParent();
             if(parent != null) {
                 parent.removeChild(activeFrame);
                 parent.addChild(activeFrame);

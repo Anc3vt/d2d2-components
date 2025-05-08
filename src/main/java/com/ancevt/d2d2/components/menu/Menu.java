@@ -21,13 +21,13 @@ package com.ancevt.d2d2.components.menu;
 import com.ancevt.d2d2.components.Component;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.input.Mouse;
-import com.ancevt.d2d2.scene.SceneEntity;
+import com.ancevt.d2d2.scene.Node;
 import com.ancevt.d2d2.scene.shape.RectangleShape;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ancevt.d2d2.D2D2.stage;
+import static com.ancevt.d2d2.D2D2.root;
 
 public class Menu extends Component {
 
@@ -96,19 +96,19 @@ public class Menu extends Component {
         update();
         float x = Mouse.getX();
         float y = Mouse.getY() + 1;
-        stage().addChild(this, x, y);
+        root().addChild(this, x, y);
 
-        if (getX() + getWidth() > stage().getWidth()) {
-            setX(stage().getWidth() - getWidth());
+        if (getX() + getWidth() > root().getWidth()) {
+            setX(root().getWidth() - getWidth());
         }
 
-        if (getY() + getHeight() > stage().getHeight()) {
+        if (getY() + getHeight() > root().getHeight()) {
             setY(y - getHeight());
         }
 
-        stage().addEventListener(this, InputEvent.MouseDown.class, event -> {
+        root().addEventListener(this, InputEvent.MouseDown.class, event -> {
             deactivate(this);
-            stage().removeEventListener(this, InputEvent.MouseDown.class);
+            root().removeEventListener(this, InputEvent.MouseDown.class);
         });
 
         activeRootMenu = this;
@@ -120,13 +120,13 @@ public class Menu extends Component {
         update();
         float x = fromItem.getAbsoluteX() + fromItem.getWidth();
         float y = fromItem.getAbsoluteY();
-        stage().addChild(this, x, y);
+        root().addChild(this, x, y);
 
-        if (getY() + getHeight() > stage().getHeight()) {
+        if (getY() + getHeight() > root().getHeight()) {
             setY(y - getHeight() + MenuItem.HEIGHT);
         }
 
-        if (getX() + getWidth() > stage().getWidth() || fromItem.getParentMenu().backwardDirection) {
+        if (getX() + getWidth() > root().getWidth() || fromItem.getParentMenu().backwardDirection) {
             setX(fromItem.getParentMenu().getX() - getWidth());
             backwardDirection = true;
         }
@@ -149,7 +149,7 @@ public class Menu extends Component {
 
     @Override
     public void update() {
-        displayedItems.forEach(SceneEntity::removeFromParent);
+        displayedItems.forEach(Node::removeFromParent);
         displayedItems.clear();
 
         float y = 0;

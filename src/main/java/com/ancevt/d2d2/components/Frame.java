@@ -20,7 +20,7 @@ package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.InputEvent;
-import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.NodeEvent;
 import com.ancevt.d2d2.event.core.Event;
 import com.ancevt.d2d2.event.core.EventPool;
 import com.ancevt.d2d2.event.core.EventPooled;
@@ -31,7 +31,7 @@ import com.ancevt.d2d2.scene.interactive.DragUtil;
 import com.ancevt.d2d2.scene.shape.RectangleShape;
 import lombok.Getter;
 
-import static com.ancevt.d2d2.D2D2.stage;
+import static com.ancevt.d2d2.D2D2.root;
 
 public class Frame extends Component {
 
@@ -98,7 +98,7 @@ public class Frame extends Component {
 
         setComponentFocusRectVisibleEnabled(false);
 
-        addEventListener(Frame.class, SceneEvent.AddToScene.class, this::this_addToStage);
+        addEventListener(Frame.class, NodeEvent.AddToScene.class, this::this_addToStage);
         addEventListener(Frame.class, CommonEvent.Resize.class, this::this_resize);
         addEventListener(Frame.class, CommonEvent.Activate.class, this::this_activate);
         addEventListener(Frame.class, CommonEvent.Deactivate.class, this::this_deactivate);
@@ -139,13 +139,13 @@ public class Frame extends Component {
         this.manualResizable = manualResizable;
 
         if (manualResizable) {
-            addEventListener("manualResize", SceneEvent.LoopUpdate.class, this::this_manualResizeEachFrame);
+            addEventListener("manualResize", NodeEvent.LoopUpdate.class, this::this_manualResizeEachFrame);
             addEventListener("manualResize", InputEvent.MouseDown.class, this::this_manualResizeDown);
             addEventListener("manualResize", InputEvent.MouseUp.class, this::this_manualResizeUp);
             addEventListener("manualResize", InputEvent.MouseDrag.class, this::this_manualResizeDrag);
             addEventListener("manualResize", InputEvent.MouseOut.class, this::this_manualResizeOut);
         } else {
-            removeEventListener("manualResize", SceneEvent.LoopUpdate.class);
+            removeEventListener("manualResize", NodeEvent.LoopUpdate.class);
             removeEventListener("manualResize", InputEvent.MouseDown.class);
             removeEventListener("manualResize", InputEvent.MouseUp.class);
             removeEventListener("manualResize", InputEvent.MouseDrag.class);
@@ -302,13 +302,13 @@ public class Frame extends Component {
     }
 
     private void this_addToStage(Event event) {
-        removeEventListener(Frame.class, SceneEvent.AddToScene.class);
+        removeEventListener(Frame.class, NodeEvent.AddToScene.class);
         FrameManager.getInstance().activateFrame(this);
         //center();
     }
 
     public void center() {
-        setXY((stage().getWidth() - getWidth()) / 2, (stage().getHeight() - getHeight()) / 2);
+        setXY((root().getWidth() - getWidth()) / 2, (root().getHeight() - getHeight()) / 2);
     }
 
     private void this_resize(Event event) {

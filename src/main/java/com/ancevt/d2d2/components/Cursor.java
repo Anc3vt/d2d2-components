@@ -19,8 +19,8 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.scene.ContainerImpl;
-import com.ancevt.d2d2.scene.SceneEntity;
+import com.ancevt.d2d2.scene.GroupImpl;
+import com.ancevt.d2d2.scene.Node;
 import com.ancevt.d2d2.scene.Sprite;
 import com.ancevt.d2d2.scene.SpriteFactory;
 import com.ancevt.d2d2.input.Mouse;
@@ -36,41 +36,41 @@ public class Cursor {
     public static final int MODE_RESIZE = 2;
 
     @Getter
-    private static SceneEntity idleCursor;
-    private static SceneEntity textCursor;
+    private static Node idleCursor;
+    private static Node textCursor;
     @Getter
-    private static SceneEntity resizeCursor;
+    private static Node resizeCursor;
 
     @Getter
     private static int mode;
 
-    public static void setIdleCursor(SceneEntity cursor) {
+    public static void setIdleCursor(Node cursor) {
         D2D2.setCursor(cursor);
         Cursor.idleCursor = cursor;
     }
 
-    public static void setTextCursor(SceneEntity cursor) {
+    public static void setTextCursor(Node cursor) {
         Cursor.textCursor = cursor;
     }
 
-    public static SceneEntity getTextCursor() {
+    public static Node getTextCursor() {
         return Cursor.textCursor;
     }
 
-    private static void setResizeCursor(SceneEntity resizeCursor) {
+    private static void setResizeCursor(Node resizeCursor) {
         Cursor.resizeCursor = resizeCursor;
     }
 
     public static void setDefaultCursorTheme() {
         setIdleCursor(SpriteFactory.createSpriteByTextureKey(ComponentAssets.MOUSE_CURSOR_IDLE));
 
-        ContainerImpl resizeCursorContainer = new ContainerImpl();
+        GroupImpl resizeCursorContainer = new GroupImpl();
         Sprite resizeCursorSprite = SpriteFactory.createSpriteByTextureKey(ComponentAssets.MOUSE_CURSOR_RESIZE);
         resizeCursorSprite.setXY(-resizeCursorSprite.getWidth() / 2, -resizeCursorSprite.getHeight() / 2);
         resizeCursorContainer.addChild(resizeCursorSprite);
         setResizeCursor(resizeCursorContainer);
 
-        ContainerImpl container = new ContainerImpl();
+        GroupImpl container = new GroupImpl();
         Sprite textCursorSprite = SpriteFactory.createSpriteByTextureKey(ComponentAssets.MOUSE_CURSOR_TEXT);
         container.addChild(textCursorSprite, -textCursorSprite.getWidth() / 2, -textCursorSprite.getHeight() / 2);
         setTextCursor(container);

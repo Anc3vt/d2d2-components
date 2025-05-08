@@ -22,8 +22,8 @@ import com.ancevt.commons.string.ConvertableString;
 import com.ancevt.commons.string.StringLimiter;
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.scene.Color;
-import com.ancevt.d2d2.scene.Container;
-import com.ancevt.d2d2.scene.SceneEntity;
+import com.ancevt.d2d2.scene.Group;
+import com.ancevt.d2d2.scene.Node;
 import com.ancevt.d2d2.scene.text.Text;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,22 +33,22 @@ import java.util.function.BiConsumer;
 
 public class DevConsole extends Console {
 
-    private Container currentContainer = D2D2.stage();
+    private Group currentGroup = D2D2.root();
 
     @Getter
     @Setter
-    private BiConsumer<DevConsole, SceneEntity> debugFunction = (devConsole, o) -> {
+    private BiConsumer<DevConsole, Node> debugFunction = (devConsole, o) -> {
     };
 
     private DevConsole() {
         addVariableListener("console.height", (varName, value) -> setHeight(value.toFloatOrDefault(getHeight())));
-        addVariableListener("stage.bgcolor", (varName, value) -> D2D2.stage().setBackgroundColor(Color.of(value.toString())));
+        addVariableListener("stage.bgcolor", (varName, value) -> D2D2.root().setBackgroundColor(Color.of(value.toString())));
         addVariableListener("cid", (varName, value) -> {
             int id = value.toIntOrDefault(0);
 
-            Container.findDisplayObjectById(D2D2.stage(), id).ifPresentOrElse(
+            Group.findDisplayObjectById(D2D2.root(), id).ifPresentOrElse(
                     o -> {
-                        currentContainer = (Container) o;
+                        currentGroup = (Group) o;
                         println(getPrompt().get());
                     },
                     () -> println("No such display object with id: " + id, Color.DARK_RED)
@@ -58,9 +58,9 @@ public class DevConsole extends Console {
         setPrompt(() -> {
             StringBuilder sb = new StringBuilder();
             sb.append("<666666>");
-            sb.append(currentContainer.getName());
+            sb.append(currentGroup.getName());
             sb.append("<8080FF>(");
-            sb.append(currentContainer.getDisplayObjectId());
+            sb.append(currentGroup.getDisplayObjectId());
             sb.append(")");
             sb.append("<666666>> ");
             return sb.toString();
@@ -68,12 +68,12 @@ public class DevConsole extends Console {
 
         addCommand("tree", "t", args -> {
             String typeFilters = args.get(String.class, "-t", "");
-            println(treeString(currentContainer, typeFilters), Color.GRAY);
+            println(treeString(currentGroup, typeFilters), Color.GRAY);
         });
 
         addCommand("cname", "c", args -> {
             String name = args.next(String.class, "");
-            Container.findDisplayObjectByName(D2D2.stage(), name).ifPresentOrElse(
+            Group.findDisplayObjectByName(D2D2.root(), name).ifPresentOrElse(
                     o -> {
                         setVar("cid", "" + o.getDisplayObjectId());
                     },
@@ -115,9 +115,9 @@ public class DevConsole extends Console {
 
             ConvertableString cs = ConvertableString.convert(args.next(String.class, "0"));
 
-            int id = cs.toIntOrSupply(() -> Container.findDisplayObjectByName(D2D2.stage(), cs.toString()).get().getDisplayObjectId());
+            int id = cs.toIntOrSupply(() -> Group.findDisplayObjectByName(D2D2.root(), cs.toString()).get().getDisplayObjectId());
 
-            Container.findDisplayObjectById(D2D2.stage(), id)
+            Group.findDisplayObjectById(D2D2.root(), id)
                     .ifPresentOrElse(
                             o -> {
                                 debugFunction.accept(this, o);
@@ -135,19 +135,20 @@ public class DevConsole extends Console {
         });
 
         setMulticolorEnabled(true);
+
     }
 
-    public String treeString(Container container, String typeFilters) {
-        TreeNode<SceneEntity> root = processFillNode(container, typeFilters);
+    public String treeString(Group group, String typeFilters) {
+        TreeNode<Node> root = processFillNode(group, typeFilters);
 
         return root.toTreeString(treeNode -> {
-            SceneEntity o = treeNode.getValue();
+            Node o = treeNode.getValue();
 
             String classSimpleName = o.getClass().getSimpleName();
 
             StringBuilder sb = new StringBuilder();
 
-            if (o instanceof Container) {
+            if (o instanceof Group) {
                 sb.append("<FF8000>");
             } else {
                 sb.append("<FFFFFF>");
@@ -159,7 +160,7 @@ public class DevConsole extends Console {
             sb.append(" <228022>");
             sb.append(o.getName());
 
-            if (o instanceof Container c) {
+            if (o instanceof Group c) {
                 sb.append(" <FFFFFF>size: <FF8000>");
                 sb.append(c.getNumChildren());
             }
@@ -174,13 +175,13 @@ public class DevConsole extends Console {
         });
     }
 
-    private TreeNode<SceneEntity> processFillNode(SceneEntity o, String typeFilters) {
-        TreeNode<SceneEntity> node = TreeNode.of(o);
+    private TreeNode<Node> processFillNode(Node o, String typeFilters) {
+        TreeNode<Node> node = TreeNode.of(o);
 
-        if (o instanceof Container c && c != this && c.getClass() != DevConsoleFrame.class) {
+        if (o instanceof Group c && c != this && c.getClass() != DevConsoleFrame.class) {
             int num = c.getNumChildren();
             for (int i = 0; i < num; i++) {
-                SceneEntity child = c.getChild(i);
+                Node child = c.getChild(i);
                 if (checkTypeFiltersForClass(child.getClass(), typeFilters)) {
                     node.add(processFillNode(child, typeFilters));
                 }
@@ -214,10 +215,10 @@ public class DevConsole extends Console {
     }
 
 
-    public static DevConsole init(BiConsumer<DevConsole, SceneEntity> debugFunction) {
+    public static DevConsole init(BiConsumer<DevConsole, Node> debugFunction) {
         DevConsole devConsole = new DevConsole();
         devConsole.setDebugFunction(debugFunction);
-        D2D2.stage().addChild(devConsole, 10, 10);
+        D2D2.root().addChild(devConsole, 10, 10);
         return devConsole;
     }
 
