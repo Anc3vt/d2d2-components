@@ -232,7 +232,7 @@ public class Console extends Chat implements Disposable {
         if (maximized) {
             root.addEventListener(this, CommonEvent.Resize.class, this::stage_resize);
             stage_resize(null);
-            root.setXY(PADDING, PADDING);
+            root.setPosition(PADDING, PADDING);
         }
     }
 

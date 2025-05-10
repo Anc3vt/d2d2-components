@@ -118,8 +118,8 @@ public class Menu extends Component {
 
     public Menu activate(MenuItem fromItem) {
         update();
-        float x = fromItem.getAbsoluteX() + fromItem.getWidth();
-        float y = fromItem.getAbsoluteY();
+        float x = fromItem.getGlobalX() + fromItem.getWidth();
+        float y = fromItem.getGlobalY();
         root().addChild(this, x, y);
 
         if (getY() + getHeight() > root().getHeight()) {

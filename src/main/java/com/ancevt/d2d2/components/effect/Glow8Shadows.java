@@ -58,7 +58,7 @@ public class Glow8Shadows extends GroupImpl {
                 sprite = sprite.cloneSprite();
             }
 
-            sprite.setXY(currentCoords[0] * distance, currentCoords[1] * distance);
+            sprite.setPosition(currentCoords[0] * distance, currentCoords[1] * distance);
             sprite.move(offsetX, offsetY);
             sprite.setColor(color);
             sprite.setAlpha(alpha);

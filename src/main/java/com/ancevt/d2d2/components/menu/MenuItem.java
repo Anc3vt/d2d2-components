@@ -131,7 +131,7 @@ public class MenuItem extends Component {
     @Override
     public void update() {
         if (childMenuArrow != null) {
-            childMenuArrow.setXY(getWidth() - childMenuArrow.getWidth() - 5, (HEIGHT - childMenuArrow.getHeight()) / 2);
+            childMenuArrow.setPosition(getWidth() - childMenuArrow.getWidth() - 5, (HEIGHT - childMenuArrow.getHeight()) / 2);
         }
         text.setWidth(getWidth());
     }

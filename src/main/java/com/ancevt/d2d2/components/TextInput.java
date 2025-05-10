@@ -66,7 +66,7 @@ public class TextInput extends Component {
         addChild(text);
 
         caret = new Caret(this);
-        caret.setXY(text.getX(), 4);
+        caret.setPosition(text.getX(), 4);
 
         focusRect = new Combined9Sprites(new String[]{
                 ComponentAssets.RECT_BORDER_9_SIDE_TOP_LEFT,
@@ -129,7 +129,7 @@ public class TextInput extends Component {
     private void this_resize(CommonEvent.Resize event) {
         caret.setHeight(getHeight() - getHeight() / 3f);
         caret.setY((getHeight() - caret.getHeight()) / 2);
-        text.setXY(padding.getLeft(), (getHeight() - text.getCharHeight()) / 2 + 2);
+        text.setPosition(padding.getLeft(), (getHeight() - text.getCharHeight()) / 2 + 2);
         text.setWidth(getWidth() - padding.getLeft() - padding.getRight());
         focusRect.setSize(getWidth(), getHeight());
     }
@@ -288,7 +288,7 @@ public class TextInput extends Component {
     private void this_down(InputEvent.MouseDown e) {
         float x = e.x() - padding.getLeft();
         float c = text.getCharWidth();
-        float s = text.getAbsoluteScaleX();
+        float s = text.getGlobalScaleX();
         setCaretPosition((int) ((x / c) / s));
     }
 
@@ -473,7 +473,7 @@ public class TextInput extends Component {
         }
 
         @Override
-        public void onLoopUpdate() {
+        public void onTick() {
             if (uiTextInput.isEnabled()) {
                 blinkCounter--;
                 if (blinkCounter <= 0) {

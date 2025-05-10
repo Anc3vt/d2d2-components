@@ -20,7 +20,7 @@ package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.CommonEvent;
-import com.ancevt.d2d2.event.NodeEvent;
+import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Sprite;
 import com.ancevt.d2d2.scene.SpriteFactory;
@@ -79,14 +79,14 @@ public class Tooltip extends Component {
         addChild(text, 10, 10);
 
         addEventListener(Tooltip.class, CommonEvent.Resize.class, this::this_resize);
-        addEventListener(Tooltip.class, NodeEvent.AddToScene.class, this::this_addToStage);
+        addEventListener(Tooltip.class, SceneEvent.AddToScene.class, this::this_addToStage);
 
         setPushEventsUp(false);
 
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
-    private void this_addToStage(NodeEvent.AddToScene event) {
+    private void this_addToStage(SceneEvent.AddToScene event) {
         if (tooltip != null && tooltip != this) tooltip.removeFromParent();
     }
 

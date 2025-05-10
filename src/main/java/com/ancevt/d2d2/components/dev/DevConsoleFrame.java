@@ -86,7 +86,7 @@ public class DevConsoleFrame extends Frame {
                     convert(map.get("h")).toFloatOrDefault(DEFAULT_HEIGHT)
             );
 
-            setXY(
+            this.setPosition(
                     convert(map.get("x")).toFloatOrDefault(40),
                     convert(map.get("y")).toFloatOrDefault(40)
             );

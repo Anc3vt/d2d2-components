@@ -20,7 +20,7 @@ package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.InputEvent;
-import com.ancevt.d2d2.event.NodeEvent;
+import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.event.core.Event;
 import com.ancevt.d2d2.event.core.EventPool;
 import com.ancevt.d2d2.event.core.EventPooled;
@@ -98,7 +98,7 @@ public class Frame extends Component {
 
         setComponentFocusRectVisibleEnabled(false);
 
-        addEventListener(Frame.class, NodeEvent.AddToScene.class, this::this_addToStage);
+        addEventListener(Frame.class, SceneEvent.AddToScene.class, this::this_addToStage);
         addEventListener(Frame.class, CommonEvent.Resize.class, this::this_resize);
         addEventListener(Frame.class, CommonEvent.Activate.class, this::this_activate);
         addEventListener(Frame.class, CommonEvent.Deactivate.class, this::this_deactivate);
@@ -139,13 +139,13 @@ public class Frame extends Component {
         this.manualResizable = manualResizable;
 
         if (manualResizable) {
-            addEventListener("manualResize", NodeEvent.LoopUpdate.class, this::this_manualResizeEachFrame);
+            addEventListener("manualResize", SceneEvent.Tick.class, this::this_manualResizeEachFrame);
             addEventListener("manualResize", InputEvent.MouseDown.class, this::this_manualResizeDown);
             addEventListener("manualResize", InputEvent.MouseUp.class, this::this_manualResizeUp);
             addEventListener("manualResize", InputEvent.MouseDrag.class, this::this_manualResizeDrag);
             addEventListener("manualResize", InputEvent.MouseOut.class, this::this_manualResizeOut);
         } else {
-            removeEventListener("manualResize", NodeEvent.LoopUpdate.class);
+            removeEventListener("manualResize", SceneEvent.Tick.class);
             removeEventListener("manualResize", InputEvent.MouseDown.class);
             removeEventListener("manualResize", InputEvent.MouseUp.class);
             removeEventListener("manualResize", InputEvent.MouseDrag.class);
@@ -183,10 +183,10 @@ public class Frame extends Component {
         float mouseY = Mouse.getY();
 
         if (manualResizeRight) {
-            setWidth(mouseX - getAbsoluteX() + 1);
+            setWidth(mouseX - getGlobalX() + 1);
         }
         if (manualResizeBottom) {
-            setHeight(mouseY - getAbsoluteY() + 1);
+            setHeight(mouseY - getGlobalY() + 1);
         }
         if (manualResizeLeft) {
             float oldWidth = getWidth();
@@ -246,10 +246,10 @@ public class Frame extends Component {
         float mouseX = Mouse.getX();
         float mouseY = Mouse.getY();
 
-        return mouseX > getAbsoluteX() + RESIZE_SPREAD &&
-                mouseX < getAbsoluteX() + getWidth() - RESIZE_SPREAD &&
-                mouseY > getAbsoluteY() + RESIZE_SPREAD &&
-                mouseY < getAbsoluteY() + getHeight() - RESIZE_SPREAD;
+        return mouseX > getGlobalX() + RESIZE_SPREAD &&
+                mouseX < getGlobalX() + getWidth() - RESIZE_SPREAD &&
+                mouseY > getGlobalY() + RESIZE_SPREAD &&
+                mouseY < getGlobalY() + getHeight() - RESIZE_SPREAD;
 
     }
 
@@ -257,8 +257,8 @@ public class Frame extends Component {
         float mouseX = Mouse.getX();
         float mouseY = Mouse.getY();
 
-        return mouseY > getAbsoluteY() && mouseY < getAbsoluteY() + getHeight() &&
-                mouseX >= getAbsoluteX() + getWidth() - RESIZE_SPREAD && mouseX <= getAbsoluteX() + getWidth();
+        return mouseY > getGlobalY() && mouseY < getGlobalY() + getHeight() &&
+                mouseX >= getGlobalX() + getWidth() - RESIZE_SPREAD && mouseX <= getGlobalX() + getWidth();
     }
 
     private boolean isResizeCursorOnBottomRight() {
@@ -269,8 +269,8 @@ public class Frame extends Component {
         float mouseX = Mouse.getX();
         float mouseY = Mouse.getY();
 
-        return mouseX > getAbsoluteX() && mouseX < getAbsoluteX() + getWidth() &&
-                mouseY >= getAbsoluteY() + getHeight() - RESIZE_SPREAD && mouseY <= getAbsoluteY() + getHeight();
+        return mouseX > getGlobalX() && mouseX < getGlobalX() + getWidth() &&
+                mouseY >= getGlobalY() + getHeight() - RESIZE_SPREAD && mouseY <= getGlobalY() + getHeight();
     }
 
     private boolean isResizeCursorOnBottomLeft() {
@@ -281,8 +281,8 @@ public class Frame extends Component {
         float mouseX = Mouse.getX();
         float mouseY = Mouse.getY();
 
-        return mouseY > getAbsoluteY() && mouseY < getAbsoluteY() + getHeight() &&
-                mouseX > getAbsoluteX() && mouseX < getAbsoluteX() + RESIZE_SPREAD;
+        return mouseY > getGlobalY() && mouseY < getGlobalY() + getHeight() &&
+                mouseX > getGlobalX() && mouseX < getGlobalX() + RESIZE_SPREAD;
     }
 
     private boolean isResizeCursorOnTopLeft() {
@@ -293,8 +293,8 @@ public class Frame extends Component {
         float mouseX = Mouse.getX();
         float mouseY = Mouse.getY();
 
-        return mouseX > getAbsoluteX() && mouseX < getAbsoluteX() + getWidth() &&
-                mouseY > getAbsoluteY() && mouseY < getAbsoluteY() + RESIZE_SPREAD;
+        return mouseX > getGlobalX() && mouseX < getGlobalX() + getWidth() &&
+                mouseY > getGlobalY() && mouseY < getGlobalY() + RESIZE_SPREAD;
     }
 
     private boolean isResizeCursorOnTopRight() {
@@ -302,13 +302,13 @@ public class Frame extends Component {
     }
 
     private void this_addToStage(Event event) {
-        removeEventListener(Frame.class, NodeEvent.AddToScene.class);
+        removeEventListener(Frame.class, SceneEvent.AddToScene.class);
         FrameManager.getInstance().activateFrame(this);
         //center();
     }
 
     public void center() {
-        setXY((root().getWidth() - getWidth()) / 2, (root().getHeight() - getHeight()) / 2);
+        this.setPosition((root().getWidth() - getWidth()) / 2, (root().getHeight() - getHeight()) / 2);
     }
 
     private void this_resize(Event event) {
@@ -317,7 +317,7 @@ public class Frame extends Component {
         frameTitle.setAlpha(backgroundAlpha);
 
         bg1.setSize(getWidth(), getHeight() - frameTitle.getHeight());
-        bg1.setXY(0, frameTitle.getHeight());
+        bg1.setPosition(0, frameTitle.getHeight());
         bg1.setColor(colorBackground1);
         bg1.setAlpha(backgroundAlpha);
 

@@ -95,8 +95,8 @@ public class DropDownList<T> extends Component {
     private void this_resize(CommonEvent.Resize e) {
         borders.setSize(getWidth(), getHeight());
         bg.setSize(getWidth(), getHeight());
-        arrow.setXY(getWidth() - arrow.getWidth() - 10, (getHeight() - arrow.getHeight()) / 2);
-        text.setXY(10, (getHeight() - text.getTextHeight()) / 2);
+        arrow.setPosition(getWidth() - arrow.getWidth() - 10, (getHeight() - arrow.getHeight()) / 2);
+        text.setPosition(10, (getHeight() - text.getTextHeight()) / 2);
         //bitmapText.setWidth(getWidth() - 10 - arrow.getWidth() - 10 - 10);
         text.setAutosize(true);
         cutText(text, getWidth());
@@ -122,7 +122,7 @@ public class DropDownList<T> extends Component {
         scrollPane.setPadding(new Padding(0, 0, 0, 0));
 
         arrow.setScaleY(-1.0f);
-        arrow.setXY(getWidth() - arrow.getWidth() - 10, (getHeight() - arrow.getHeight()) / 2 + arrow.getHeight());
+        arrow.setPosition(getWidth() - arrow.getWidth() - 10, (getHeight() - arrow.getHeight()) / 2 + arrow.getHeight());
 
         float y = 0;
         for (Item<T> item : itemList) {
@@ -133,7 +133,7 @@ public class DropDownList<T> extends Component {
 
         scrollPane.setScrollPosition(0);
 
-        root().addChild(scrollPane, getAbsoluteX(), getAbsoluteY() + getHeight());
+        root().addChild(scrollPane, getGlobalX(), getGlobalY() + getHeight());
 
         if (y > root().getHeight()) {
             scrollPane.setY(0);
@@ -142,7 +142,7 @@ public class DropDownList<T> extends Component {
             scrollPane.setHeight(y);
 
             if (scrollPane.getY() + scrollPane.getHeight() > root().getHeight()) {
-                scrollPane.setY(getAbsoluteY() - scrollPane.getHeight());
+                scrollPane.setY(getGlobalY() - scrollPane.getHeight());
             }
 
             if (scrollPane.getY() < 0) scrollPane.setY(0);
@@ -167,7 +167,7 @@ public class DropDownList<T> extends Component {
         displayedItemList.forEach(Item::removeFromParent);
         displayedItemList.clear();
         arrow.setScaleY(1.0f);
-        arrow.setXY(getWidth() - arrow.getWidth() - 10, (getHeight() - arrow.getHeight()) / 2);
+        arrow.setPosition(getWidth() - arrow.getWidth() - 10, (getHeight() - arrow.getHeight()) / 2);
         open = false;
     }
 
@@ -269,7 +269,7 @@ public class DropDownList<T> extends Component {
         private void this_resize(CommonEvent.Resize event) {
             bg.setSize(getWidth(), getHeight());
             text.setAutosize(true);
-            text.setXY(10, (getHeight() - text.getTextHeight()) / 2);
+            text.setPosition(10, (getHeight() - text.getTextHeight()) / 2);
             cutText(text, getWidth());
         }
 

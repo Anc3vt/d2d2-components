@@ -281,7 +281,7 @@ public class ButtonEx extends Component implements Colored {
             float sh = iconSprite.getHeight() * iconSprite.getScaleY();
             float w = getWidth();
             float h = getHeight();
-            iconSprite.setXY((w - sw) / 2, (h - sh) / 2);
+            iconSprite.setPosition((w - sw) / 2, (h - sh) / 2);
         }
         if (text != null) {
             text.setSize(getWidth(), getHeight());
@@ -289,7 +289,7 @@ public class ButtonEx extends Component implements Colored {
             float h = getHeight();
             float tw = text.getTextWidth();
             float th = text.getCharHeight();
-            text.setXY((w - tw) / 2, (h - th) / 2 - 3);
+            text.setPosition((w - tw) / 2, (h - th) / 2 - 3);
         }
     }
 }

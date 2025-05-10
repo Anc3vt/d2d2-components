@@ -66,7 +66,7 @@ public class Cursor {
 
         GroupImpl resizeCursorContainer = new GroupImpl();
         Sprite resizeCursorSprite = SpriteFactory.createSpriteByTextureKey(ComponentAssets.MOUSE_CURSOR_RESIZE);
-        resizeCursorSprite.setXY(-resizeCursorSprite.getWidth() / 2, -resizeCursorSprite.getHeight() / 2);
+        resizeCursorSprite.setPosition(-resizeCursorSprite.getWidth() / 2, -resizeCursorSprite.getHeight() / 2);
         resizeCursorContainer.addChild(resizeCursorSprite);
         setResizeCursor(resizeCursorContainer);
 

@@ -77,10 +77,10 @@ public class ArrowButton extends GroupImpl {
         } else {
             sprite.setScaleX(1f);
             shadow.setScaleX(1f);
-            sprite.setXY(0f, 0f);
+            sprite.setPosition(0f, 0f);
         }
 
-        shadow.setXY(sprite.getX(), sprite.getY());
+        shadow.setPosition(sprite.getX(), sprite.getY());
         shadow.move(1f, 1f);
     }
 

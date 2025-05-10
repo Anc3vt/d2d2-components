@@ -213,7 +213,7 @@ public class Chat extends GroupImpl {
     }
 
     private void redraw() {
-        textInput.setXY(0, height);
+        textInput.setPosition(0, height);
 
         textInput.setMaxSize(D2D2.root().getWidth(), 16);
 
@@ -362,8 +362,8 @@ public class Chat extends GroupImpl {
     }
 
     @Override
-    public void onExitFrame() {
-        super.onExitFrame();
+    public void onPostFrame() {
+        super.onPostFrame();
 
         if (autoHide) {
             alphaTime--;

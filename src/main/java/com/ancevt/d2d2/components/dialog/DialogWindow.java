@@ -21,7 +21,7 @@ package com.ancevt.d2d2.components.dialog;
 import com.ancevt.d2d2.components.Button;
 import com.ancevt.d2d2.components.ComponentFont;
 import com.ancevt.d2d2.event.InputEvent;
-import com.ancevt.d2d2.event.NodeEvent;
+import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Group;
@@ -56,20 +56,20 @@ public class DialogWindow extends GroupImpl {
         addChild(text, PADDING, PADDING);
 
         buttonOk = new Button("OK");
-        buttonOk.setXY((getWidth() - buttonOk.getWidth()) / 2 - 50, getHeight() - PADDING_CONTROLS);
+        buttonOk.setPosition((getWidth() - buttonOk.getWidth()) / 2 - 50, getHeight() - PADDING_CONTROLS);
         buttonOk.addEventListener(Button.ButtonPressEvent.class, event -> ok());
         addChild(buttonOk);
 
         buttonCancel = new Button("Cancel");
-        buttonCancel.setXY((getWidth() - buttonOk.getWidth()) / 2 + 50, getHeight() - PADDING_CONTROLS);
+        buttonCancel.setPosition((getWidth() - buttonOk.getWidth()) / 2 + 50, getHeight() - PADDING_CONTROLS);
         buttonCancel.addEventListener(Button.ButtonPressEvent.class, event -> cancel());
         addChild(buttonCancel);
 
-        addEventListener(this, NodeEvent.AddToScene.class, this::add_to_stage);
+        addEventListener(this, SceneEvent.AddToScene.class, this::add_to_stage);
     }
 
-    private void add_to_stage(NodeEvent.AddToScene event) {
-        removeEventListener(this, NodeEvent.AddToScene.class);
+    private void add_to_stage(SceneEvent.AddToScene event) {
+        removeEventListener(this, SceneEvent.AddToScene.class);
         root().addEventListener(this, InputEvent.KeyDown.class, e1 -> {
             switch (e1.keyCode()) {
                 case KeyCode.ENTER -> ok();
@@ -142,7 +142,7 @@ public class DialogWindow extends GroupImpl {
     }
 
     public void center() {
-        setXY(
+        setPosition(
                 (root().getWidth() - getWidth()) / 2f,
                 (root().getHeight() - getHeight()) / 2f
         );

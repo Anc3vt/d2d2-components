@@ -140,7 +140,7 @@ public class Button extends Component {
     private void fixTextXY() {
         float w = text.getTextWidth() - 5;
         float h = text.getFont().getZeroCharHeight();
-        text.setXY((getWidth() - w) / 2, (getHeight() - h) / 2);
+        text.setPosition((getWidth() - w) / 2, (getHeight() - h) / 2);
     }
 
     @Override

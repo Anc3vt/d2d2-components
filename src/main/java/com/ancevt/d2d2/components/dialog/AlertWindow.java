@@ -21,7 +21,7 @@ package com.ancevt.d2d2.components.dialog;
 import com.ancevt.d2d2.components.Button;
 import com.ancevt.d2d2.components.ComponentFont;
 import com.ancevt.d2d2.event.InputEvent;
-import com.ancevt.d2d2.event.NodeEvent;
+import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.GroupImpl;
@@ -52,16 +52,16 @@ public class AlertWindow extends GroupImpl {
         addChild(text, PADDING, PADDING);
 
         Button buttonOk = new Button("OK");
-        buttonOk.setXY((getWidth() - buttonOk.getWidth()) / 2, getHeight() - PADDING_CONTROLS);
+        buttonOk.setPosition((getWidth() - buttonOk.getWidth()) / 2, getHeight() - PADDING_CONTROLS);
         addChild(buttonOk);
 
         buttonOk.addEventListener(Button.ButtonPressEvent.class, event -> close());
 
-        addEventListener(this, NodeEvent.AddToScene.class, this::add_to_stage);
+        addEventListener(this, SceneEvent.AddToScene.class, this::add_to_stage);
     }
 
-    private void add_to_stage(NodeEvent.AddToScene event) {
-        removeEventListener(this, NodeEvent.AddToScene.class);
+    private void add_to_stage(SceneEvent.AddToScene event) {
+        removeEventListener(this, SceneEvent.AddToScene.class);
         root().addEventListener(this, InputEvent.KeyDown.class, e1 -> {
             if (e1.keyCode() == KeyCode.ENTER) {
                 close();
@@ -117,7 +117,7 @@ public class AlertWindow extends GroupImpl {
     }
 
     public void center() {
-        setXY(
+        setPosition(
                 (root().getWidth() - getWidth()) / 2f,
                 (root().getHeight() - getHeight()) / 2f
         );

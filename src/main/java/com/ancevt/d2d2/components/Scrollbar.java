@@ -88,8 +88,8 @@ public class Scrollbar extends Component {
     }
 
     @Override
-    public void onExitFrame() {
-        super.onExitFrame();
+    public void onPostFrame() {
+        super.onPostFrame();
 
         if (fadeHold > 0) {
             setAlpha(getAlpha() + ALPHA_SPEED);
