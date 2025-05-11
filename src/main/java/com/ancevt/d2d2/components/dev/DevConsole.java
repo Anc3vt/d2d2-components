@@ -60,7 +60,7 @@ public class DevConsole extends Console {
             sb.append("<666666>");
             sb.append(currentGroup.getName());
             sb.append("<8080FF>(");
-            sb.append(currentGroup.getDisplayObjectId());
+            sb.append(currentGroup.getNodeId());
             sb.append(")");
             sb.append("<666666>> ");
             return sb.toString();
@@ -75,7 +75,7 @@ public class DevConsole extends Console {
             String name = args.next(String.class, "");
             Group.findDisplayObjectByName(D2D2.root(), name).ifPresentOrElse(
                     o -> {
-                        setVar("cid", "" + o.getDisplayObjectId());
+                        setVar("cid", "" + o.getNodeId());
                     },
                     () -> println("No such display object with name: " + name, Color.DARK_RED)
             );
@@ -115,7 +115,7 @@ public class DevConsole extends Console {
 
             ConvertableString cs = ConvertableString.convert(args.next(String.class, "0"));
 
-            int id = cs.toIntOrSupply(() -> Group.findDisplayObjectByName(D2D2.root(), cs.toString()).get().getDisplayObjectId());
+            int id = cs.toIntOrSupply(() -> Group.findDisplayObjectByName(D2D2.root(), cs.toString()).get().getNodeId());
 
             Group.findDisplayObjectById(D2D2.root(), id)
                     .ifPresentOrElse(
@@ -156,7 +156,7 @@ public class DevConsole extends Console {
 
             sb.append(classSimpleName);
             sb.append(" <8080FF>");
-            sb.append(o.getDisplayObjectId());
+            sb.append(o.getNodeId());
             sb.append(" <228022>");
             sb.append(o.getName());
 
