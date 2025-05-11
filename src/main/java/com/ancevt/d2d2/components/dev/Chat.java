@@ -362,8 +362,8 @@ public class Chat extends GroupImpl {
     }
 
     @Override
-    public void onPostFrame() {
-        super.onPostFrame();
+    public void postFrame() {
+        super.postFrame();
 
         if (autoHide) {
             alphaTime--;

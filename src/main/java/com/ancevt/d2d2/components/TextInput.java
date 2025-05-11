@@ -473,7 +473,7 @@ public class TextInput extends Component {
         }
 
         @Override
-        public void onTick() {
+        public void tick() {
             if (uiTextInput.isEnabled()) {
                 blinkCounter--;
                 if (blinkCounter <= 0) {
