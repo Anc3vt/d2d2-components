@@ -175,7 +175,7 @@ public class TextInput extends Component {
     }
 
     private void this_keyType(InputEvent.KeyType e) {
-        String keyType = e.keyType();
+        String keyType = e.getKeyType();
         if (!text.getFont().isCharSupported(keyType.charAt(0))) return;
 
         if (textString.length() * text.getCharWidth() < getWidth() - 10) {
@@ -188,7 +188,7 @@ public class TextInput extends Component {
     }
 
     private void this_keyDown(InputEvent.KeyDown e) {
-        switch (e.keyCode()) {
+        switch (e.getKeyCode()) {
 
             case KeyCode.RIGHT -> {
                 setCaretPosition(getCaretPosition() + 1);
@@ -213,7 +213,7 @@ public class TextInput extends Component {
                 }
             }
             case KeyCode.BACKSPACE -> {
-                if (e.control()) removeWord();
+                if (e.isControl()) removeWord();
                 else removeChar();
             }
             case KeyCode.DELETE -> {
@@ -228,13 +228,13 @@ public class TextInput extends Component {
 
             case KeyCode.ENTER,
                  KeyCode.RIGHT_ENTER -> {
-                dispatchEvent(TextInputEvent.Enter.create(getText(), e.keyCode()));
+                dispatchEvent(TextInputEvent.Enter.create(getText(), e.getKeyCode()));
                 setCaretPosition(Integer.MAX_VALUE);
             }
         }
 
-        if (e.control()) {
-            switch (e.character()) {
+        if (e.isControl()) {
+            switch (e.getCharacter()) {
                 case 'X' -> {
                     Clipboard.set(getText());
                     setText("");
@@ -253,7 +253,7 @@ public class TextInput extends Component {
             }
         }
 
-        dispatchEvent(TextInputEvent.TextInputKeyDown.create(getText(), e.keyCode()));
+        dispatchEvent(TextInputEvent.TextInputKeyDown.create(getText(), e.getKeyCode()));
     }
 
     @Override
@@ -286,7 +286,7 @@ public class TextInput extends Component {
     }
 
     private void this_down(InputEvent.MouseDown e) {
-        float x = e.x() - padding.getLeft();
+        float x = e.getX() - padding.getLeft();
         float c = text.getCharWidth();
         float s = text.getGlobalScaleX();
         setCaretPosition((int) ((x / c) / s));

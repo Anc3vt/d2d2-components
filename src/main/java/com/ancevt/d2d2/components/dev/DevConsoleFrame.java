@@ -113,7 +113,7 @@ public class DevConsoleFrame extends Frame {
 
     private void initTilda() {
         D2D2.root().addEventListener(this, InputEvent.KeyDown.class, e -> {
-            if (e.keyCode() == KeyCode.TILDA && e.shift()) {
+            if (e.getKeyCode() == KeyCode.TILDA && e.isShift()) {
                 setVisible(!isVisible());
                 Timer.setTimeout(10, t -> {
                     String text = console.textInput.getText();

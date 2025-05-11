@@ -62,7 +62,7 @@ public class Scrollbar extends Component {
     }
 
     private void this_wheel(InputEvent.MouseWheel event) {
-        scroll(-event.delta());
+        scroll(-event.getDelta());
     }
 
     private void scroll(int delta) {
@@ -169,11 +169,11 @@ public class Scrollbar extends Component {
         }
 
         private void this_down(InputEvent.MouseDown e) {
-            oldY = (int) (e.y() + getY());
+            oldY = (int) (e.getY() + getY());
         }
 
         private void this_drag(InputEvent.MouseDrag e) {
-            final int ty = (int) (e.y() + getY());
+            final int ty = (int) (e.getY() + getY());
             moveY(ty - oldY);
             oldY = ty;
             fixBounds();

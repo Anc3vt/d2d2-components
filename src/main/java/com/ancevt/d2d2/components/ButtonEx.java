@@ -96,7 +96,7 @@ public class ButtonEx extends Component implements Colored {
         });
 
         addEventListener(Button.class, InputEvent.MouseUp.class, e -> {
-            if (e.onArea()) {
+            if (e.isOnArea()) {
                 dispatchEvent(CommonEvent.Action.create());
             }
 
@@ -104,7 +104,7 @@ public class ButtonEx extends Component implements Colored {
             if (text != null) text.moveY(0);
             if (iconSprite != null) iconSprite.moveY(0);
             update();
-            bg.setColor(e.onArea() ? colorHoverBackground : colorBackground);
+            bg.setColor(e.isOnArea() ? colorHoverBackground : colorBackground);
         });
 
         addEventListener(Button.class, InputEvent.MouseHover.class, event -> bg.setColor(colorHoverBackground));

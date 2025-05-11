@@ -91,7 +91,7 @@ abstract public class Component extends InteractiveGroup {
     }
 
     private void this_focusIn(InputEvent.FocusIn e) {
-        if (componentFocusRectEnabled && !e.byMouseDown() && !componentFocusRect.hasParent())
+        if (componentFocusRectEnabled && !e.isByMouseDown() && !componentFocusRect.hasParent())
             addChild(componentFocusRect);
 
         FrameManager.getInstance().activateFrame(getFrame());

@@ -63,7 +63,7 @@ public class AlertWindow extends GroupImpl {
     private void add_to_stage(SceneEvent.AddToScene event) {
         removeEventListener(this, SceneEvent.AddToScene.class);
         root().addEventListener(this, InputEvent.KeyDown.class, e1 -> {
-            if (e1.keyCode() == KeyCode.ENTER) {
+            if (e1.getKeyCode() == KeyCode.ENTER) {
                 close();
             }
         });

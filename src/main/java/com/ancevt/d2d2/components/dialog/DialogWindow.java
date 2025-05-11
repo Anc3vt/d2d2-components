@@ -71,7 +71,7 @@ public class DialogWindow extends GroupImpl {
     private void add_to_stage(SceneEvent.AddToScene event) {
         removeEventListener(this, SceneEvent.AddToScene.class);
         root().addEventListener(this, InputEvent.KeyDown.class, e1 -> {
-            switch (e1.keyCode()) {
+            switch (e1.getKeyCode()) {
                 case KeyCode.ENTER -> ok();
                 case KeyCode.ESCAPE -> cancel();
             }

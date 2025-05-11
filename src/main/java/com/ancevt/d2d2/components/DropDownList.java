@@ -150,8 +150,8 @@ public class DropDownList<T> extends Component {
 
         root().removeEventListener(this, InputEvent.MouseDown.class);
         root().addEventListener(this, InputEvent.MouseDown.class, e -> {
-            if (e.x() < scrollPane.getX() || e.x() > scrollPane.getX() + scrollPane.getWidth()
-                    || e.y() < scrollPane.getY() || e.y() > scrollPane.getY() + scrollPane.getHeight()) {
+            if (e.getX() < scrollPane.getX() || e.getX() > scrollPane.getX() + scrollPane.getWidth()
+                    || e.getY() < scrollPane.getY() || e.getY() > scrollPane.getY() + scrollPane.getHeight()) {
                 root().removeEventListener(this, InputEvent.MouseDown.class);
                 close();
             }

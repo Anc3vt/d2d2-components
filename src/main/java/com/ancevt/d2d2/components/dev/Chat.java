@@ -166,7 +166,7 @@ public class Chat extends GroupImpl {
 
         if (inputEnabled) {
             D2D2.root().addEventListener(InputEvent.KeyDown.class, e -> {
-                switch (e.keyCode()) {
+                switch (e.getKeyCode()) {
                     case KeyCode.PAGE_UP -> {
                         setScroll(getScroll() - 10);
                     }

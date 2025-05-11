@@ -94,7 +94,7 @@ public class ScrollPane extends Component {
     }
 
     private void this_wheel(InputEvent.MouseWheel event) {
-        scroll(-event.delta() * scrollStep);
+        scroll(-event.getDelta() * scrollStep);
     }
 
     public void clear() {
