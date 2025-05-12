@@ -44,7 +44,8 @@ public class Checkbox extends Component {
 
     public Checkbox(String text) {
         this();
-        label = new Text(text);
+        label = new Text();
+        label.setText(text);
         label.setFont(ComponentFont.getFontMiddle());
         addChild(label, sprite.getWidth() + PADDING, 0);
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
@@ -65,7 +66,8 @@ public class Checkbox extends Component {
             }
         } else {
             if (label == null) {
-                label = new Text(text);
+                label = new Text();
+                label.setText(text);
                 label.setFont(ComponentFont.getFontMiddle());
                 addChild(label, sprite.getWidth() + PADDING, 0);
             }

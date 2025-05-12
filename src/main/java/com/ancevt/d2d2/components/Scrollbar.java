@@ -157,7 +157,7 @@ public class Scrollbar extends Component {
         }
 
         public ScrollbarRect(Scrollbar scrollbar) {
-            super(get1x1Texture());
+            setTextureClip(get1x1Texture());
             this.scrollbar = scrollbar;
             setHeight(DEFAULT_HEIGHT);
 

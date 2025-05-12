@@ -73,7 +73,8 @@ public class Tooltip extends Component {
         sprite = SpriteFactory.createEmptySprite();
         addChild(sprite, 10, 10);
 
-        text = new Text(ComponentFont.getFontMiddle());
+        text = new Text();
+        text.setFont(ComponentFont.getFontMiddle());
         text.setMulticolor(true);
         text.setAutosize(true);
         addChild(text, 10, 10);
