@@ -46,7 +46,7 @@ public class DevConsole extends Console {
         addVariableListener("cid", (varName, value) -> {
             int id = value.toIntOrDefault(0);
 
-            Group.findDisplayObjectById(D2D2.root(), id).ifPresentOrElse(
+            Group.findNodeById(D2D2.root(), id).ifPresentOrElse(
                     o -> {
                         currentGroup = (Group) o;
                         println(getPrompt().get());
@@ -73,7 +73,7 @@ public class DevConsole extends Console {
 
         addCommand("cname", "c", args -> {
             String name = args.next(String.class, "");
-            Group.findDisplayObjectByName(D2D2.root(), name).ifPresentOrElse(
+            Group.findNodeByName(D2D2.root(), name).ifPresentOrElse(
                     o -> {
                         setVar("cid", "" + o.getNodeId());
                     },
@@ -115,9 +115,9 @@ public class DevConsole extends Console {
 
             ConvertableString cs = ConvertableString.convert(args.next(String.class, "0"));
 
-            int id = cs.toIntOrSupply(() -> Group.findDisplayObjectByName(D2D2.root(), cs.toString()).get().getNodeId());
+            int id = cs.toIntOrSupply(() -> Group.findNodeByName(D2D2.root(), cs.toString()).get().getNodeId());
 
-            Group.findDisplayObjectById(D2D2.root(), id)
+            Group.findNodeById(D2D2.root(), id)
                     .ifPresentOrElse(
                             o -> {
                                 debugFunction.accept(this, o);
