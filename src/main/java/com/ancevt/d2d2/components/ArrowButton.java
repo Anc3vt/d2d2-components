@@ -56,7 +56,7 @@ public class ArrowButton extends GroupImpl {
 
     @Override
     public float getWidth() {
-        return sprite.getTextureClip().getWidth();
+        return sprite.getTextureRegion().getWidth();
     }
 
     public void setEnabled(boolean enabled) {
@@ -73,7 +73,7 @@ public class ArrowButton extends GroupImpl {
         if (direction == -1) {
             sprite.setScaleX(-1f);
             shadow.setScaleX(-1f);
-            sprite.setX(sprite.getTextureClip().getWidth());
+            sprite.setX(sprite.getTextureRegion().getWidth());
         } else {
             sprite.setScaleX(1f);
             shadow.setScaleX(1f);

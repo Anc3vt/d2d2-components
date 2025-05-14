@@ -19,7 +19,7 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.scene.texture.TextureClip;
+import com.ancevt.d2d2.scene.texture.TextureRegion;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -94,7 +94,7 @@ public class ComponentAssets {
         }
     }
 
-    public static TextureClip getTexture(String textureKey) {
-        return D2D2.textureManager().getTextureClip(textureKey);
+    public static TextureRegion getTexture(String textureKey) {
+        return D2D2.textureManager().getTextureRegion(textureKey);
     }
 }

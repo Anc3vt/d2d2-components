@@ -27,7 +27,7 @@ import com.ancevt.d2d2.scene.SpriteFactory;
 import com.ancevt.d2d2.scene.interactive.Combined9Sprites;
 import com.ancevt.d2d2.scene.shape.RectangleShape;
 import com.ancevt.d2d2.scene.text.Text;
-import com.ancevt.d2d2.scene.texture.TextureClip;
+import com.ancevt.d2d2.scene.texture.TextureRegion;
 
 
 public class Tooltip extends Component {
@@ -52,15 +52,15 @@ public class Tooltip extends Component {
         setEnabled(false);
 
         borders = new Combined9Sprites(
-                D2D2.textureManager().getTextureClip(ComponentAssets.RECT_BORDER_9_SIDE_TOP_LEFT),
-                D2D2.textureManager().getTextureClip(ComponentAssets.RECT_BORDER_9_SIDE_TOP),
-                D2D2.textureManager().getTextureClip(ComponentAssets.RECT_BORDER_9_SIDE_TOP_RIGHT),
-                D2D2.textureManager().getTextureClip(ComponentAssets.RECT_BORDER_9_SIDE_LEFT),
-                D2D2.textureManager().getTextureClip(ComponentAssets.RECT_BORDER_9_SIDE_CENTER),
-                D2D2.textureManager().getTextureClip(ComponentAssets.RECT_BORDER_9_SIDE_RIGHT),
-                D2D2.textureManager().getTextureClip(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_LEFT),
-                D2D2.textureManager().getTextureClip(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM),
-                D2D2.textureManager().getTextureClip(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_RIGHT)
+                D2D2.textureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_TOP_LEFT),
+                D2D2.textureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_TOP),
+                D2D2.textureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_TOP_RIGHT),
+                D2D2.textureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_LEFT),
+                D2D2.textureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_CENTER),
+                D2D2.textureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_RIGHT),
+                D2D2.textureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_LEFT),
+                D2D2.textureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM),
+                D2D2.textureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_RIGHT)
         );
         borders.setColor(FOREGROUND_COLOR);
         addChild(borders);
@@ -104,13 +104,13 @@ public class Tooltip extends Component {
         return spriteBg.isVisible();
     }
 
-    public void setImage(TextureClip textureClip) {
-        sprite.setTextureClip(textureClip);
+    public void setImage(TextureRegion textureRegion) {
+        sprite.setTextureRegion(textureRegion);
         rebuild();
     }
 
-    public TextureClip getImage() {
-        return sprite.getTextureClip();
+    public TextureRegion getImage() {
+        return sprite.getTextureRegion();
     }
 
     public void setText(String text) {
@@ -119,8 +119,8 @@ public class Tooltip extends Component {
     }
 
     private void rebuild() {
-        float spriteWidth = sprite.getTextureClip() == null ? 0.0f : sprite.getWidth() * sprite.getScaleX();
-        float spriteHeight = sprite.getTextureClip() == null ? 0.0f : sprite.getHeight() * sprite.getScaleY();
+        float spriteWidth = sprite.getTextureRegion() == null ? 0.0f : sprite.getWidth() * sprite.getScaleX();
+        float spriteHeight = sprite.getTextureRegion() == null ? 0.0f : sprite.getHeight() * sprite.getScaleY();
 
         text.setX(10 + spriteWidth + 10);
 
@@ -136,7 +136,7 @@ public class Tooltip extends Component {
 
         handleMaxSize();
 
-        if (sprite.getTextureClip() != null && isImageBackgroundVisible()) {
+        if (sprite.getTextureRegion() != null && isImageBackgroundVisible()) {
             spriteBg.setRepeat((sprite.getWidth() * sprite.getScaleX()) / 8, (sprite.getHeight() * sprite.getScaleY()) / 8);
         }
 
@@ -165,7 +165,7 @@ public class Tooltip extends Component {
     private void handleMaxSize() {
         sprite.setScale(10f);
 
-        if (sprite.getTextureClip() != null) {
+        if (sprite.getTextureRegion() != null) {
             if (maxImageWidth != 0) {
                 while (sprite.getWidth() * sprite.getScaleX() > maxImageWidth) {
                     sprite.scale(0.99f, 0.99f);

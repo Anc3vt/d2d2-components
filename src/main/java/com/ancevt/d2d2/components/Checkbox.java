@@ -112,7 +112,7 @@ public class Checkbox extends Component {
     public void setChecked(boolean checked) {
         if (checked == isChecked()) return;
         this.checked = checked;
-        sprite.setTextureClip(checked ? CHECKBOX_CHECKED : CHECKBOX_UNCHECKED);
+        sprite.setTextureRegion(checked ? CHECKBOX_CHECKED : CHECKBOX_UNCHECKED);
     }
 
     public boolean isChecked() {
