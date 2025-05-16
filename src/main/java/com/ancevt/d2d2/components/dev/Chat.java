@@ -226,7 +226,7 @@ public class Chat extends GroupImpl {
             chatMessage.setMulticolorEnabled(multicolorEnabled);
             displayedMessages.add(chatMessage);
 
-            chatMessage.text.setWidth(getWidth());
+            chatMessage.bitmapText.setWidth(getWidth());
 
             addChild(chatMessage, 0, y);
             y += (int) chatMessage.getHeight();

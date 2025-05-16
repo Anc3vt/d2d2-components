@@ -21,8 +21,8 @@ package com.ancevt.d2d2.components.dev;
 import com.ancevt.d2d2.components.ComponentFont;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.GroupImpl;
-import com.ancevt.d2d2.scene.text.Font;
-import com.ancevt.d2d2.scene.text.Text;
+import com.ancevt.d2d2.scene.text.BitmapFont;
+import com.ancevt.d2d2.scene.text.BitmapText;
 import lombok.Getter;
 
 public class ChatMessage extends GroupImpl {
@@ -36,7 +36,7 @@ public class ChatMessage extends GroupImpl {
     private final String textString;
     @Getter
     private final Color textColor;
-    final Text text;
+    final BitmapText bitmapText;
 
     @Getter
     private boolean multicolorEnabled;
@@ -45,26 +45,26 @@ public class ChatMessage extends GroupImpl {
         this.id = id;
         textString = messageText;
         this.textColor = textColor;
-        text = new Text();
-        text.setText(messageText);
-        text.setFont(getFont());
-        text.setSpacing(-0.5f);
-        text.setWidth(DEFAULT_WIDTH);
-        text.setHeight(DEFAULT_HEIGHT);
-        text.setColor(textColor);
-        text.setVertexBleedingFix(0);
-        text.setWordWrap(false);
+        bitmapText = new BitmapText();
+        bitmapText.setText(messageText);
+        bitmapText.setBitmapFont(getFont());
+        bitmapText.setSpacing(-0.5f);
+        bitmapText.setWidth(DEFAULT_WIDTH);
+        bitmapText.setHeight(DEFAULT_HEIGHT);
+        bitmapText.setColor(textColor);
+        bitmapText.setVertexBleedingFix(0);
+        bitmapText.setWordWrap(false);
 
 
-        addChild(text);
+        addChild(bitmapText);
     }
 
     public void setMulticolorEnabled(boolean multicolorEnabled) {
-        text.setMulticolor(multicolorEnabled);
+        bitmapText.setMulticolor(multicolorEnabled);
         this.multicolorEnabled = multicolorEnabled;
     }
 
-    public Font getFont() {
+    public BitmapFont getFont() {
         return ComponentFont.getFontMiddleGlow();
     }
 
@@ -72,8 +72,8 @@ public class ChatMessage extends GroupImpl {
     public String toString() {
         return "ChatMessage{" +
             "id=" + id +
-            ", text='" + text + '\'' +
-            ", textUiText=" + text +
+            ", text='" + bitmapText + '\'' +
+            ", textUiText=" + bitmapText +
             ", textColor=" + textColor +
             '}';
     }

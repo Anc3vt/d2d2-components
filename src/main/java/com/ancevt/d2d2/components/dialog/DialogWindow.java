@@ -27,7 +27,7 @@ import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Group;
 import com.ancevt.d2d2.scene.GroupImpl;
 import com.ancevt.d2d2.scene.shape.RectangleShape;
-import com.ancevt.d2d2.scene.text.Text;
+import com.ancevt.d2d2.scene.text.BitmapText;
 
 import static com.ancevt.d2d2.D2D2.root;
 
@@ -39,7 +39,7 @@ public class DialogWindow extends GroupImpl {
     private static final float PADDING_CONTROLS = 30f;
 
     private final RectangleShape bg;
-    private final Text text;
+    private final BitmapText bitmapText;
     private final Button buttonOk;
     private final Button buttonCancel;
     private Runnable onOkFunction;
@@ -50,10 +50,10 @@ public class DialogWindow extends GroupImpl {
         bg.setAlpha(0.95f);
         addChild(bg);
 
-        text = new Text();
-        text.setFont(ComponentFont.getFontMiddle());
-        text.setSize(bg.getWidth() - PADDING * 2, bg.getHeight() - PADDING_CONTROLS);
-        addChild(text, PADDING, PADDING);
+        bitmapText = new BitmapText();
+        bitmapText.setBitmapFont(ComponentFont.getFontMiddle());
+        bitmapText.setSize(bg.getWidth() - PADDING * 2, bg.getHeight() - PADDING_CONTROLS);
+        addChild(bitmapText, PADDING, PADDING);
 
         buttonOk = new Button("OK");
         buttonOk.setPosition((getWidth() - buttonOk.getWidth()) / 2 - 50, getHeight() - PADDING_CONTROLS);
@@ -95,11 +95,11 @@ public class DialogWindow extends GroupImpl {
     }
 
     public void setText(Object text) {
-        this.text.setText(text + "");
+        this.bitmapText.setText(text + "");
     }
 
     public String getText() {
-        return text.getText();
+        return bitmapText.getText();
     }
 
     public void setSize(float w, float h) {
@@ -109,12 +109,12 @@ public class DialogWindow extends GroupImpl {
 
     private void setWidth(float w) {
         bg.setWidth(w);
-        text.setWidth(w - PADDING * 2f);
+        bitmapText.setWidth(w - PADDING * 2f);
     }
 
     private void setHeight(float h) {
         bg.setHeight(h);
-        text.setHeight(h - PADDING_CONTROLS - PADDING * 2f);
+        bitmapText.setHeight(h - PADDING_CONTROLS - PADDING * 2f);
     }
 
     public float getWidth() {

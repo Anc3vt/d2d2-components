@@ -21,7 +21,7 @@ package com.ancevt.d2d2.components;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.scene.Sprite;
 import com.ancevt.d2d2.scene.SpriteFactory;
-import com.ancevt.d2d2.scene.text.Text;
+import com.ancevt.d2d2.scene.text.BitmapText;
 
 import static com.ancevt.d2d2.components.ComponentAssets.CHECKBOX_CHECKED;
 import static com.ancevt.d2d2.components.ComponentAssets.CHECKBOX_UNCHECKED;
@@ -32,7 +32,7 @@ public class Checkbox extends Component {
     private static final float DEFAULT_WIDTH = 200.0f;
     private static final float DEFAULT_HEIGHT = 30.0f;
 
-    private Text label;
+    private BitmapText label;
     private final Sprite sprite;
     private boolean checked;
 
@@ -44,9 +44,9 @@ public class Checkbox extends Component {
 
     public Checkbox(String text) {
         this();
-        label = new Text();
+        label = new BitmapText();
         label.setText(text);
-        label.setFont(ComponentFont.getFontMiddle());
+        label.setBitmapFont(ComponentFont.getFontMiddle());
         addChild(label, sprite.getWidth() + PADDING, 0);
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
@@ -66,9 +66,9 @@ public class Checkbox extends Component {
             }
         } else {
             if (label == null) {
-                label = new Text();
+                label = new BitmapText();
                 label.setText(text);
-                label.setFont(ComponentFont.getFontMiddle());
+                label.setBitmapFont(ComponentFont.getFontMiddle());
                 addChild(label, sprite.getWidth() + PADDING, 0);
             }
         }
@@ -95,7 +95,7 @@ public class Checkbox extends Component {
     private void fixMarkup() {
         sprite.setPosition(PADDING, (getHeight() - sprite.getHeight()) / 2);
         if (label != null) {
-            float h = label.getFont().getZeroCharHeight();
+            float h = label.getBitmapFont().getZeroCharHeight();
             label.setPosition(PADDING + sprite.getWidth() + PADDING, (getHeight() - h) / 2 + 1);
             label.setSize(getWidth() - PADDING - sprite.getWidth() - PADDING, h);
         }

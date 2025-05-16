@@ -27,7 +27,7 @@ import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Sprite;
 import com.ancevt.d2d2.scene.SpriteFactory;
 import com.ancevt.d2d2.scene.shape.RectangleShape;
-import com.ancevt.d2d2.scene.text.Text;
+import com.ancevt.d2d2.scene.text.BitmapText;
 
 public class MenuItem extends Component {
 
@@ -39,7 +39,7 @@ public class MenuItem extends Component {
     };
 
     final RectangleShape bg;
-    private final Text text;
+    private final BitmapText bitmapText;
 
     private Sprite childMenuArrow;
     private Menu childMenu;
@@ -54,10 +54,10 @@ public class MenuItem extends Component {
 
         action = STUB_ACTION;
 
-        text = new Text();
-        text.setFont(ComponentFont.getFontMiddle());
-        text.setMulticolor(true);
-        addChild(text, 10, (HEIGHT - text.getTextHeight()) / 2);
+        bitmapText = new BitmapText();
+        bitmapText.setBitmapFont(ComponentFont.getFontMiddle());
+        bitmapText.setMulticolor(true);
+        addChild(bitmapText, 10, (HEIGHT - bitmapText.getTextHeight()) / 2);
 
         addEventListener(CommonEvent.Resize.class, this::this_resize);
         addEventListener(InputEvent.MouseHover.class, this::this_hover);
@@ -79,15 +79,15 @@ public class MenuItem extends Component {
     }
 
     public void setText(Object text) {
-        this.text.setText("" + text);
+        this.bitmapText.setText("" + text);
     }
 
     public String getText() {
-        return text.getText();
+        return bitmapText.getText();
     }
 
     public String getPlainText() {
-        return text.getPlainText();
+        return bitmapText.getPlainText();
     }
 
     public void setAction(Runnable action) {
@@ -133,6 +133,6 @@ public class MenuItem extends Component {
         if (childMenuArrow != null) {
             childMenuArrow.setPosition(getWidth() - childMenuArrow.getWidth() - 5, (HEIGHT - childMenuArrow.getHeight()) / 2);
         }
-        text.setWidth(getWidth());
+        bitmapText.setWidth(getWidth());
     }
 }

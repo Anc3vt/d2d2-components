@@ -23,7 +23,7 @@ import com.ancevt.d2d2.event.core.EventPool;
 import com.ancevt.d2d2.event.core.EventPooled;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.GroupImpl;
-import com.ancevt.d2d2.scene.text.Text;
+import com.ancevt.d2d2.scene.text.BitmapText;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -36,7 +36,7 @@ public class Chooser<T> extends GroupImpl {
 
     private final ArrowButton buttonLeft;
     private final ArrowButton buttonRight;
-    private final Text text;
+    private final BitmapText bitmapText;
     private final List<Pair<String, T>> items;
     private final Button buttonApply;
     private int index;
@@ -55,13 +55,13 @@ public class Chooser<T> extends GroupImpl {
         buttonRight.setDirection(1);
         buttonRight.addEventListener(ArrowButton.ArrowButtonPressEvent.class, this::buttonRight_arrowButtonPress);
 
-        text = new Text();
-        text.setFont(ComponentFont.getFontMiddle());
+        bitmapText = new BitmapText();
+        bitmapText.setBitmapFont(ComponentFont.getFontMiddle());
 
         buttonApply = new Button("Apply");
         buttonApply.addEventListener(Button.ButtonPressEvent.class, this::applyButton_buttonPressed);
 
-        addChild(text);
+        addChild(bitmapText);
 
         addChild(buttonLeft);
         addChild(buttonRight);
@@ -77,7 +77,7 @@ public class Chooser<T> extends GroupImpl {
     private void setCurrentItemAsSelected() {
         selectedItemPair = items.get(index);
         buttonApply.setEnabled(false);
-        text.setColor(Color.WHITE);
+        bitmapText.setColor(Color.WHITE);
         dispatchEvent(ApplyEvent.create());
     }
 
@@ -152,14 +152,14 @@ public class Chooser<T> extends GroupImpl {
             buttonRight.setEnabled(true);
         }
 
-        text.setText(items.get(index).getFirst());
-        text.setWidth(getWidth());
+        bitmapText.setText(items.get(index).getFirst());
+        bitmapText.setWidth(getWidth());
 
         float width = getWidth() - buttonLeft.getWidth() * 3;
 
-        if (text.getTextWidth() > width) {
-            String text = this.text.getText();
-            int l = (int) (width / this.text.getCharWidth()) - 5;
+        if (bitmapText.getTextWidth() > width) {
+            String text = this.bitmapText.getText();
+            int l = (int) (width / this.bitmapText.getCharWidth()) - 5;
             if (l <= text.length()) {
                 try {
                     text = text.substring(0, l).concat("...");
@@ -167,14 +167,14 @@ public class Chooser<T> extends GroupImpl {
                     text = "[!]";
                 }
             }
-            this.text.setText(text);
+            this.bitmapText.setText(text);
         }
 
-        float w = text.getTextWidth() + 8;
-        text.setX((getWidth() - w) / 2);
+        float w = bitmapText.getTextWidth() + 8;
+        bitmapText.setX((getWidth() - w) / 2);
 
         buttonApply.setEnabled(selectedItemPair != items.get(index));
-        text.setColor(selectedItemPair == items.get(index) ? Color.LIGHT_GREEN : Color.WHITE);
+        bitmapText.setColor(selectedItemPair == items.get(index) ? Color.LIGHT_GREEN : Color.WHITE);
     }
 
     public int getIndex() {

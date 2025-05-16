@@ -19,7 +19,7 @@
 package com.ancevt.d2d2.components.effect;
 
 import com.ancevt.d2d2.scene.*;
-import com.ancevt.d2d2.scene.text.Text;
+import com.ancevt.d2d2.scene.text.BitmapText;
 
 public class Glow8Shadows extends GroupImpl {
 
@@ -45,10 +45,10 @@ public class Glow8Shadows extends GroupImpl {
 
 
             if (sprite == null) {
-                if (source instanceof Text text) {
-                    text = text.cloneBitmapText();
-                    text.setCacheAsSprite(true);
-                    sprite = text.cachedSprite();
+                if (source instanceof BitmapText bitmapText) {
+                    bitmapText = bitmapText.cloneBitmapText();
+                    bitmapText.setCacheAsSprite(true);
+                    sprite = bitmapText.cachedSprite();
                 } else if (source instanceof SpriteImpl s) {
                     sprite = s.cloneSprite();
                 } else {
