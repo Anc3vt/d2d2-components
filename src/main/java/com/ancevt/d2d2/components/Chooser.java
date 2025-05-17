@@ -22,7 +22,7 @@ import com.ancevt.d2d2.event.core.Event;
 import com.ancevt.d2d2.event.core.EventPool;
 import com.ancevt.d2d2.event.core.EventPooled;
 import com.ancevt.d2d2.scene.Color;
-import com.ancevt.d2d2.scene.GroupImpl;
+import com.ancevt.d2d2.scene.BasicGroup;
 import com.ancevt.d2d2.scene.text.BitmapText;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Chooser<T> extends GroupImpl {
+public class Chooser<T> extends BasicGroup {
 
     private static final float DEFAULT_WIDTH = 180;
 

@@ -25,13 +25,13 @@ import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Group;
-import com.ancevt.d2d2.scene.GroupImpl;
+import com.ancevt.d2d2.scene.BasicGroup;
 import com.ancevt.d2d2.scene.shape.RectangleShape;
 import com.ancevt.d2d2.scene.text.BitmapText;
 
 import static com.ancevt.d2d2.D2D2.root;
 
-public class DialogWindow extends GroupImpl {
+public class DialogWindow extends BasicGroup {
 
     private static final float DEFAULT_WIDTH = 400f;
     private static final float DEFAULT_HEIGHT = 200f;

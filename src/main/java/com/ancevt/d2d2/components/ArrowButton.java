@@ -23,7 +23,7 @@ import com.ancevt.d2d2.event.core.Event;
 import com.ancevt.d2d2.event.core.EventPool;
 import com.ancevt.d2d2.event.core.EventPooled;
 import com.ancevt.d2d2.scene.Color;
-import com.ancevt.d2d2.scene.GroupImpl;
+import com.ancevt.d2d2.scene.BasicGroup;
 import com.ancevt.d2d2.scene.Sprite;
 import com.ancevt.d2d2.scene.SpriteFactory;
 import com.ancevt.d2d2.scene.interactive.InteractiveGroup;
@@ -31,7 +31,7 @@ import lombok.Getter;
 
 import static com.ancevt.d2d2.components.ComponentAssets.ARROW_BUTTON;
 
-public class ArrowButton extends GroupImpl {
+public class ArrowButton extends BasicGroup {
 
     private final Sprite sprite;
     private final Sprite shadow;

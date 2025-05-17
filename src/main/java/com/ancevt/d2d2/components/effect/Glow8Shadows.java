@@ -21,7 +21,7 @@ package com.ancevt.d2d2.components.effect;
 import com.ancevt.d2d2.scene.*;
 import com.ancevt.d2d2.scene.text.BitmapText;
 
-public class Glow8Shadows extends GroupImpl {
+public class Glow8Shadows extends BasicGroup {
 
     private final Node[] elements;
 
@@ -49,7 +49,7 @@ public class Glow8Shadows extends GroupImpl {
                     bitmapText = bitmapText.cloneBitmapText();
                     bitmapText.setCacheAsSprite(true);
                     sprite = bitmapText.cachedSprite();
-                } else if (source instanceof SpriteImpl s) {
+                } else if (source instanceof BasicSprite s) {
                     sprite = s.cloneSprite();
                 } else {
                     throw new IllegalArgumentException("Could not glow8 display object type: " + source.getClass().getName());

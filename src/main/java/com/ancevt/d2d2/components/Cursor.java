@@ -19,7 +19,7 @@
 package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.D2D2;
-import com.ancevt.d2d2.scene.GroupImpl;
+import com.ancevt.d2d2.scene.BasicGroup;
 import com.ancevt.d2d2.scene.Node;
 import com.ancevt.d2d2.scene.Sprite;
 import com.ancevt.d2d2.scene.SpriteFactory;
@@ -64,13 +64,13 @@ public class Cursor {
     public static void setDefaultCursorTheme() {
         setIdleCursor(SpriteFactory.createSpriteByTextureKey(ComponentAssets.MOUSE_CURSOR_IDLE));
 
-        GroupImpl resizeCursorContainer = new GroupImpl();
+        BasicGroup resizeCursorContainer = new BasicGroup();
         Sprite resizeCursorSprite = SpriteFactory.createSpriteByTextureKey(ComponentAssets.MOUSE_CURSOR_RESIZE);
         resizeCursorSprite.setPosition(-resizeCursorSprite.getWidth() / 2, -resizeCursorSprite.getHeight() / 2);
         resizeCursorContainer.addChild(resizeCursorSprite);
         setResizeCursor(resizeCursorContainer);
 
-        GroupImpl container = new GroupImpl();
+        BasicGroup container = new BasicGroup();
         Sprite textCursorSprite = SpriteFactory.createSpriteByTextureKey(ComponentAssets.MOUSE_CURSOR_TEXT);
         container.addChild(textCursorSprite, -textCursorSprite.getWidth() / 2, -textCursorSprite.getHeight() / 2);
         setTextCursor(container);

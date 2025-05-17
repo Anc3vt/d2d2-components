@@ -20,12 +20,12 @@ package com.ancevt.d2d2.components.dev;
 
 import com.ancevt.d2d2.components.ComponentFont;
 import com.ancevt.d2d2.scene.Color;
-import com.ancevt.d2d2.scene.GroupImpl;
+import com.ancevt.d2d2.scene.BasicGroup;
 import com.ancevt.d2d2.scene.text.BitmapFont;
 import com.ancevt.d2d2.scene.text.BitmapText;
 import lombok.Getter;
 
-public class ChatMessage extends GroupImpl {
+public class ChatMessage extends BasicGroup {
 
     private static final float DEFAULT_WIDTH = 1000;
     public static final float DEFAULT_HEIGHT = 16;

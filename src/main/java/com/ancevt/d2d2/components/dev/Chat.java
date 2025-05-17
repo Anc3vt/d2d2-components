@@ -27,7 +27,7 @@ import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.scene.AbstractNode;
 import com.ancevt.d2d2.scene.Color;
-import com.ancevt.d2d2.scene.GroupImpl;
+import com.ancevt.d2d2.scene.BasicGroup;
 import com.ancevt.d2d2.time.Timer;
 import lombok.Getter;
 
@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Chat extends GroupImpl {
+public class Chat extends BasicGroup {
 
     private String lastText;
     private static final int INPUT_MAX_LENGTH = 100;

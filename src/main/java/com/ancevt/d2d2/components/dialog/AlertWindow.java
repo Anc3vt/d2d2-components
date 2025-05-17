@@ -24,13 +24,13 @@ import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.SceneEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.scene.Color;
-import com.ancevt.d2d2.scene.GroupImpl;
+import com.ancevt.d2d2.scene.BasicGroup;
 import com.ancevt.d2d2.scene.shape.RectangleShape;
 import com.ancevt.d2d2.scene.text.BitmapText;
 
 import static com.ancevt.d2d2.D2D2.root;
 
-public class AlertWindow extends GroupImpl {
+public class AlertWindow extends BasicGroup {
 
     private static final float DEFAULT_WIDTH = 400f;
     private static final float DEFAULT_HEIGHT = 200f;
@@ -123,7 +123,7 @@ public class AlertWindow extends GroupImpl {
         );
     }
 
-    public static AlertWindow show(String text, GroupImpl doc) {
+    public static AlertWindow show(String text, BasicGroup doc) {
         AlertWindow alertWindow = new AlertWindow();
         alertWindow.setText(text);
         doc.addChild(alertWindow);
