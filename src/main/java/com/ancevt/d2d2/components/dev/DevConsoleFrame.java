@@ -61,7 +61,7 @@ public class DevConsoleFrame extends Frame {
         initTilda();
         onResize();
 
-        D2D2.root().addEventListener(this, CommonEvent.Stop.class, this::stage_exitMainLoop);
+        D2D2.stage().addEventListener(this, CommonEvent.Stop.class, this::stage_exitMainLoop);
 
         addEventListener(this, InputEvent.MouseUp.class, event -> console.textInput.focus());
 
@@ -112,7 +112,7 @@ public class DevConsoleFrame extends Frame {
     }
 
     private void initTilda() {
-        D2D2.root().addEventListener(this, InputEvent.KeyDown.class, e -> {
+        D2D2.stage().addEventListener(this, InputEvent.KeyDown.class, e -> {
             if (e.getKeyCode() == KeyCode.TILDA && e.isShift()) {
                 setVisible(!isVisible());
                 Timer.setTimeout(10, t -> {
@@ -125,10 +125,10 @@ public class DevConsoleFrame extends Frame {
                         console.textInput.setText(text);
                     }
                 });
-                if (getX() > D2D2.root().getWidth() || getX() < -getWidth()) {
+                if (getX() > D2D2.stage().getWidth() || getX() < -getWidth()) {
                     setX(10);
                 }
-                if (getY() > D2D2.root().getHeight() || getY() < 0) {
+                if (getY() > D2D2.stage().getHeight() || getY() < 0) {
                     setY(10);
                 }
             }
@@ -152,7 +152,7 @@ public class DevConsoleFrame extends Frame {
 
     public static DevConsole init(BiConsumer<DevConsole, Node> debugFunction) {
         DevConsoleFrame devConsoleFrame = new DevConsoleFrame(debugFunction);
-        D2D2.root().addChild(devConsoleFrame);
+        D2D2.stage().addChild(devConsoleFrame);
         return devConsoleFrame.getConsole();
     }
 

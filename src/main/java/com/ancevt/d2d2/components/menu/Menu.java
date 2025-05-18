@@ -27,7 +27,7 @@ import com.ancevt.d2d2.scene.shape.RectangleShape;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ancevt.d2d2.D2D2.root;
+import static com.ancevt.d2d2.D2D2.stage;
 
 public class Menu extends Component {
 
@@ -96,19 +96,19 @@ public class Menu extends Component {
         update();
         float x = Mouse.getX();
         float y = Mouse.getY() + 1;
-        root().addChild(this, x, y);
+        stage().addChild(this, x, y);
 
-        if (getX() + getWidth() > root().getWidth()) {
-            setX(root().getWidth() - getWidth());
+        if (getX() + getWidth() > stage().getWidth()) {
+            setX(stage().getWidth() - getWidth());
         }
 
-        if (getY() + getHeight() > root().getHeight()) {
+        if (getY() + getHeight() > stage().getHeight()) {
             setY(y - getHeight());
         }
 
-        root().addEventListener(this, InputEvent.MouseDown.class, event -> {
+        stage().addEventListener(this, InputEvent.MouseDown.class, event -> {
             deactivate(this);
-            root().removeEventListener(this, InputEvent.MouseDown.class);
+            stage().removeEventListener(this, InputEvent.MouseDown.class);
         });
 
         activeRootMenu = this;
@@ -120,13 +120,13 @@ public class Menu extends Component {
         update();
         float x = fromItem.getGlobalX() + fromItem.getWidth();
         float y = fromItem.getGlobalY();
-        root().addChild(this, x, y);
+        stage().addChild(this, x, y);
 
-        if (getY() + getHeight() > root().getHeight()) {
+        if (getY() + getHeight() > stage().getHeight()) {
             setY(y - getHeight() + MenuItem.HEIGHT);
         }
 
-        if (getX() + getWidth() > root().getWidth() || fromItem.getParentMenu().backwardDirection) {
+        if (getX() + getWidth() > stage().getWidth() || fromItem.getParentMenu().backwardDirection) {
             setX(fromItem.getParentMenu().getX() - getWidth());
             backwardDirection = true;
         }

@@ -28,7 +28,7 @@ import com.ancevt.d2d2.common.Disposable;
 import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.scene.Color;
-import com.ancevt.d2d2.scene.Root;
+import com.ancevt.d2d2.scene.Stage;
 import com.ancevt.util.args.Args;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -75,8 +75,8 @@ public class Console extends Chat implements Disposable {
         setInputEnabled(true);
         addEventListener(ChatEvent.TextEnter.class, this::this_chatTextEnter);
         addEventListener(ChatEvent.InputClose.class, this::this_chatInputClose);
-        D2D2.root().addEventListener(this, CommonEvent.Start.class, this::stage_startMainLoop);
-        D2D2.root().addEventListener(this, CommonEvent.Stop.class, this::stage_exitMainLoop);
+        D2D2.stage().addEventListener(this, CommonEvent.Start.class, this::stage_startMainLoop);
+        D2D2.stage().addEventListener(this, CommonEvent.Stop.class, this::stage_exitMainLoop);
         openInput();
         loadOutputHistory();
 
@@ -226,19 +226,19 @@ public class Console extends Chat implements Disposable {
         if (this.maximized == maximized) return;
         this.maximized = maximized;
 
-        Root root = D2D2.root();
-        root.removeEventListener(this, CommonEvent.Resize.class);
+        Stage stage = D2D2.stage();
+        stage.removeEventListener(this, CommonEvent.Resize.class);
 
         if (maximized) {
-            root.addEventListener(this, CommonEvent.Resize.class, this::stage_resize);
+            stage.addEventListener(this, CommonEvent.Resize.class, this::stage_resize);
             stage_resize(null);
-            root.setPosition(PADDING, PADDING);
+            stage.setPosition(PADDING, PADDING);
         }
     }
 
     private void stage_resize(CommonEvent.Resize e) {
-        setWidth(D2D2.root().getWidth() - PADDING * 2);
-        setHeight(D2D2.root().getHeight() - PADDING * 2);
+        setWidth(D2D2.stage().getWidth() - PADDING * 2);
+        setHeight(D2D2.stage().getHeight() - PADDING * 2);
     }
 
     private void this_chatInputClose(ChatEvent.InputClose e) {
@@ -326,9 +326,9 @@ public class Console extends Chat implements Disposable {
 
     @Override
     public void dispose() {
-        D2D2.root().removeEventListener(this, InputEvent.KeyDown.class);
-        D2D2.root().removeEventListener(this, CommonEvent.Start.class);
-        D2D2.root().removeEventListener(this, CommonEvent.Stop.class);
+        D2D2.stage().removeEventListener(this, InputEvent.KeyDown.class);
+        D2D2.stage().removeEventListener(this, CommonEvent.Start.class);
+        D2D2.stage().removeEventListener(this, CommonEvent.Stop.class);
         disposed = true;
     }
 

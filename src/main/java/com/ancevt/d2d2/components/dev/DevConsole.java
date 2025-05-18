@@ -33,7 +33,7 @@ import java.util.function.BiConsumer;
 
 public class DevConsole extends Console {
 
-    private Group currentGroup = D2D2.root();
+    private Group currentGroup = D2D2.stage();
 
     @Getter
     @Setter
@@ -42,11 +42,11 @@ public class DevConsole extends Console {
 
     private DevConsole() {
         addVariableListener("console.height", (varName, value) -> setHeight(value.toFloatOrDefault(getHeight())));
-        addVariableListener("stage.bgcolor", (varName, value) -> D2D2.root().setBackgroundColor(Color.of(value.toString())));
+        addVariableListener("stage.bgcolor", (varName, value) -> D2D2.stage().setBackgroundColor(Color.of(value.toString())));
         addVariableListener("cid", (varName, value) -> {
             int id = value.toIntOrDefault(0);
 
-            Group.findNodeById(D2D2.root(), id).ifPresentOrElse(
+            Group.findNodeById(D2D2.stage(), id).ifPresentOrElse(
                     o -> {
                         currentGroup = (Group) o;
                         println(getPrompt().get());
@@ -73,7 +73,7 @@ public class DevConsole extends Console {
 
         addCommand("cname", "c", args -> {
             String name = args.next(String.class, "");
-            Group.findNodeByName(D2D2.root(), name).ifPresentOrElse(
+            Group.findNodeByName(D2D2.stage(), name).ifPresentOrElse(
                     o -> {
                         setVar("cid", "" + o.getNodeId());
                     },
@@ -115,9 +115,9 @@ public class DevConsole extends Console {
 
             ConvertableString cs = ConvertableString.convert(args.next(String.class, "0"));
 
-            int id = cs.toIntOrSupply(() -> Group.findNodeByName(D2D2.root(), cs.toString()).get().getNodeId());
+            int id = cs.toIntOrSupply(() -> Group.findNodeByName(D2D2.stage(), cs.toString()).get().getNodeId());
 
-            Group.findNodeById(D2D2.root(), id)
+            Group.findNodeById(D2D2.stage(), id)
                     .ifPresentOrElse(
                             o -> {
                                 debugFunction.accept(this, o);
@@ -218,7 +218,7 @@ public class DevConsole extends Console {
     public static DevConsole init(BiConsumer<DevConsole, Node> debugFunction) {
         DevConsole devConsole = new DevConsole();
         devConsole.setDebugFunction(debugFunction);
-        D2D2.root().addChild(devConsole, 10, 10);
+        D2D2.stage().addChild(devConsole, 10, 10);
         return devConsole;
     }
 
