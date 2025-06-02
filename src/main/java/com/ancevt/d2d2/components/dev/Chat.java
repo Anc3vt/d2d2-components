@@ -122,7 +122,7 @@ public class Chat extends BasicGroup {
         }
 
         textInput.clear();
-        closeInput();
+        //closeInput();
     }
 
     private void textInput_textChange(TextInputEvent.TextChange e) {
