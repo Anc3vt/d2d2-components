@@ -20,7 +20,7 @@ package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.InputEvent;
-import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.NodeEvent;
 import com.ancevt.d2d2.input.Mouse;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Group;
@@ -213,7 +213,7 @@ abstract public class Component extends InteractiveGroup {
     }
 
     public void disposeOnRemoveFromStage() {
-        addEventListener(Component.class, SceneEvent.RemoveFromScene.class, event -> dispose());
+        addEventListener(Component.class, NodeEvent.RemoveFromScene.class, event -> dispose());
     }
 
     public void setMinWidth(float value) {

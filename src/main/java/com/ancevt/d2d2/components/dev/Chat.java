@@ -26,8 +26,8 @@ import com.ancevt.d2d2.components.TextInputEvent;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.scene.AbstractNode;
-import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.BasicGroup;
+import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.time.Timer;
 import lombok.Getter;
 
@@ -90,6 +90,8 @@ public class Chat extends BasicGroup {
         loadInputHistory();
 
         redraw();
+
+        stage.onPostFrame(e -> postFrame());
     }
 
     private void textInput_keyDown(TextInputEvent.TextInputKeyDown e) {
@@ -227,9 +229,10 @@ public class Chat extends BasicGroup {
             displayedMessages.add(chatMessage);
 
             chatMessage.bitmapText.setWidth(getWidth());
+            chatMessage.bitmapText.setHeight(20);
 
             addChild(chatMessage, 0, y);
-            y += (int) chatMessage.getHeight();
+            y += 16;
         }
     }
 
@@ -361,10 +364,7 @@ public class Chat extends BasicGroup {
         });
     }
 
-    @Override
     public void postFrame() {
-        super.postFrame();
-
         if (autoHide) {
             alphaTime--;
             if (alphaTime <= 0) {

@@ -20,7 +20,7 @@ package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.InputEvent;
-import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.NodeEvent;
 import com.ancevt.d2d2.scene.shape.RectangleShape;
 
 import java.util.ArrayList;
@@ -140,8 +140,8 @@ public class ScrollPane extends Component {
 
     public void addScrollableItem(Component component) {
         components.add(component);
-        component.removeEventListener(ScrollPane.class, SceneEvent.Remove.class);
-        component.addEventListener(ScrollPane.class, SceneEvent.Remove.class, event -> focus());
+        component.removeEventListener(ScrollPane.class, NodeEvent.Remove.class);
+        component.addEventListener(ScrollPane.class, NodeEvent.Remove.class, event -> focus());
         setScrollPosition(Integer.MAX_VALUE);
         scrollbar.setScrollValue(1.0f);
         rebuild();

@@ -56,7 +56,7 @@ public class TextInput extends Component {
         bg = new RectangleShape(DEFAULT_WIDTH, DEFAULT_HEIGHT, colorBackground);
         selection = new RectangleShape(0, DEFAULT_HEIGHT - 8, colorSelection);
         bitmapText = new BitmapText();
-        bitmapText.setAutosize(true);
+        bitmapText.setAutoSize(true);
         bitmapText.setBitmapFont(ComponentFont.getFontMiddle());
 
         bg.setAlpha(backgroundAlpha);
@@ -470,9 +470,10 @@ public class TextInput extends Component {
         public Caret(TextInput uiTextInput) {
             super(1, DEFAULT_HEIGHT - 8, Color.WHITE);
             this.uiTextInput = uiTextInput;
+
+            stage.onTick(e -> tick());
         }
 
-        @Override
         public void tick() {
             if (uiTextInput.isEnabled()) {
                 blinkCounter--;

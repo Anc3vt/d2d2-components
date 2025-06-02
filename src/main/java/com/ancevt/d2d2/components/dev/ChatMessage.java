@@ -55,7 +55,6 @@ public class ChatMessage extends BasicGroup {
         bitmapText.setVertexBleedingFix(0);
         bitmapText.setWordWrap(false);
 
-
         addChild(bitmapText);
     }
 

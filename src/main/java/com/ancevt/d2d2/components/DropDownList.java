@@ -98,7 +98,7 @@ public class DropDownList<T> extends Component {
         arrow.setPosition(getWidth() - arrow.getWidth() - 10, (getHeight() - arrow.getHeight()) / 2);
         bitmapText.setPosition(10, (getHeight() - bitmapText.getTextHeight()) / 2);
         //bitmapText.setWidth(getWidth() - 10 - arrow.getWidth() - 10 - 10);
-        bitmapText.setAutosize(true);
+        bitmapText.setAutoSize(true);
         cutText(bitmapText, getWidth());
     }
 
@@ -268,7 +268,7 @@ public class DropDownList<T> extends Component {
 
         private void this_resize(CommonEvent.Resize event) {
             bg.setSize(getWidth(), getHeight());
-            bitmapText.setAutosize(true);
+            bitmapText.setAutoSize(true);
             bitmapText.setPosition(10, (getHeight() - bitmapText.getTextHeight()) / 2);
             cutText(bitmapText, getWidth());
         }

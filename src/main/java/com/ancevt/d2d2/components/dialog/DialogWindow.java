@@ -21,7 +21,7 @@ package com.ancevt.d2d2.components.dialog;
 import com.ancevt.d2d2.components.Button;
 import com.ancevt.d2d2.components.ComponentFont;
 import com.ancevt.d2d2.event.InputEvent;
-import com.ancevt.d2d2.event.SceneEvent;
+import com.ancevt.d2d2.event.NodeEvent;
 import com.ancevt.d2d2.input.KeyCode;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Group;
@@ -65,11 +65,11 @@ public class DialogWindow extends BasicGroup {
         buttonCancel.addEventListener(Button.ButtonPressEvent.class, event -> cancel());
         addChild(buttonCancel);
 
-        addEventListener(this, SceneEvent.AddToScene.class, this::add_to_stage);
+        addEventListener(this, NodeEvent.AddToScene.class, this::add_to_stage);
     }
 
-    private void add_to_stage(SceneEvent.AddToScene event) {
-        removeEventListener(this, SceneEvent.AddToScene.class);
+    private void add_to_stage(NodeEvent.AddToScene event) {
+        removeEventListener(this, NodeEvent.AddToScene.class);
         stage().addEventListener(this, InputEvent.KeyDown.class, e1 -> {
             switch (e1.getKeyCode()) {
                 case KeyCode.ENTER -> ok();

@@ -59,6 +59,8 @@ public class Scrollbar extends Component {
 
         setAlpha(MIN_ALPHA);
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+
+        stage.onPostFrame(e -> postFrame());
     }
 
     private void this_wheel(InputEvent.MouseWheel event) {
@@ -87,10 +89,7 @@ public class Scrollbar extends Component {
         return rect.getY() / (getHeight() - rect.getHeight());
     }
 
-    @Override
     public void postFrame() {
-        super.postFrame();
-
         if (fadeHold > 0) {
             setAlpha(getAlpha() + ALPHA_SPEED);
             if (getAlpha() >= MAX_ALPHA) setAlpha(MAX_ALPHA);
