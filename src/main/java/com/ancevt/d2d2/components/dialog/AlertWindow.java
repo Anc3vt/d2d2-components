@@ -28,7 +28,7 @@ import com.ancevt.d2d2.scene.BasicGroup;
 import com.ancevt.d2d2.scene.shape.RectangleShape;
 import com.ancevt.d2d2.scene.text.BitmapText;
 
-import static com.ancevt.d2d2.D2D2.stage;
+import static com.ancevt.d2d2.D2D2.getStage;
 
 public class AlertWindow extends BasicGroup {
 
@@ -62,7 +62,7 @@ public class AlertWindow extends BasicGroup {
 
     private void add_to_stage(NodeEvent.AddToScene event) {
         removeEventListener(this, NodeEvent.AddToScene.class);
-        stage().addEventListener(this, InputEvent.KeyDown.class, e1 -> {
+        getStage().addEventListener(this, InputEvent.KeyDown.class, e1 -> {
             if (e1.getKeyCode() == KeyCode.ENTER) {
                 close();
             }
@@ -109,7 +109,7 @@ public class AlertWindow extends BasicGroup {
     }
 
     public void close() {
-        stage().removeEventListener(this, InputEvent.KeyDown.class);
+        getStage().removeEventListener(this, InputEvent.KeyDown.class);
         removeFromParent();
         if (onCloseFunction != null) {
             onCloseFunction.run();
@@ -118,8 +118,8 @@ public class AlertWindow extends BasicGroup {
 
     public void center() {
         setPosition(
-                (stage().getWidth() - getWidth()) / 2f,
-                (stage().getHeight() - getHeight()) / 2f
+                (getStage().getWidth() - getWidth()) / 2f,
+                (getStage().getHeight() - getHeight()) / 2f
         );
     }
 

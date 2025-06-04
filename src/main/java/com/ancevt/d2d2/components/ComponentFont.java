@@ -34,7 +34,7 @@ public class ComponentFont {
 
     public static BitmapFont getFontMiddle() {
         if (bitmapFontMiddle == null) {
-            bitmapFontMiddle = D2D2.bitmapFontManager().loadBitmapFont(FONT_ASSET_MIDDLE + ".png", FONT_ASSET_MIDDLE + ".bmf");
+            bitmapFontMiddle = D2D2.getBitmapFontManager().loadBitmapFont(FONT_ASSET_MIDDLE + ".png", FONT_ASSET_MIDDLE + ".bmf");
             bitmapFontMiddle.setPaddingTop(-3f);
         }
         return bitmapFontMiddle;
@@ -42,7 +42,7 @@ public class ComponentFont {
 
     public static BitmapFont getFontMiddleGlow() {
         if (bitmapFontMiddleGlow == null) {
-            bitmapFontMiddleGlow = D2D2.bitmapFontManager().loadBitmapFont(FONT_ASSET_MIDDLE_GLOW + ".png", FONT_ASSET_MIDDLE_GLOW + ".bmf");
+            bitmapFontMiddleGlow = D2D2.getBitmapFontManager().loadBitmapFont(FONT_ASSET_MIDDLE_GLOW + ".png", FONT_ASSET_MIDDLE_GLOW + ".bmf");
             bitmapFontMiddleGlow.setPaddingTop(-3f);
         }
         return bitmapFontMiddleGlow;
@@ -50,7 +50,7 @@ public class ComponentFont {
 
     public static BitmapFont getFontSmall() {
         if (bitmapFontSmall == null) {
-            bitmapFontSmall = D2D2.bitmapFontManager().loadBitmapFont(FONT_ASSET_SMALL + ".png", FONT_ASSET_SMALL + ".bmf");
+            bitmapFontSmall = D2D2.getBitmapFontManager().loadBitmapFont(FONT_ASSET_SMALL + ".png", FONT_ASSET_SMALL + ".bmf");
             bitmapFontSmall.setPaddingTop(-1f);
         }
         return bitmapFontSmall;

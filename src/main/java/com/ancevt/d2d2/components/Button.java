@@ -24,7 +24,6 @@ import com.ancevt.d2d2.event.core.EventPool;
 import com.ancevt.d2d2.event.core.EventPooled;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Sprite;
-import com.ancevt.d2d2.scene.SpriteFactory;
 import com.ancevt.d2d2.scene.text.BitmapText;
 import lombok.Getter;
 

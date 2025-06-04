@@ -152,7 +152,7 @@ public class Scrollbar extends Component {
 
         private static TextureRegion get1x1Texture() {
             if (textureRegion != null) return textureRegion;
-            return textureRegion = D2D2.textureManager().loadTexture(ASSET_1X1).createTextureRegion();
+            return textureRegion = D2D2.getTextureManager().loadTexture(ASSET_1X1).createTextureRegion();
         }
 
         public ScrollbarRect(Scrollbar scrollbar) {

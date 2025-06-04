@@ -20,7 +20,6 @@ package com.ancevt.d2d2.components;
 
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.scene.Sprite;
-import com.ancevt.d2d2.scene.SpriteFactory;
 import com.ancevt.d2d2.scene.text.BitmapText;
 
 import static com.ancevt.d2d2.components.ComponentAssets.CHECKBOX_CHECKED;
@@ -112,7 +111,7 @@ public class Checkbox extends Component {
     public void setChecked(boolean checked) {
         if (checked == isChecked()) return;
         this.checked = checked;
-        sprite.setTextureRegion(checked ? CHECKBOX_CHECKED : CHECKBOX_UNCHECKED);
+        //sprite.setTextureRegion(checked ? CHECKBOX_CHECKED : CHECKBOX_UNCHECKED);
     }
 
     public boolean isChecked() {

@@ -29,7 +29,7 @@ import com.ancevt.d2d2.scene.BasicGroup;
 import com.ancevt.d2d2.scene.shape.RectangleShape;
 import com.ancevt.d2d2.scene.text.BitmapText;
 
-import static com.ancevt.d2d2.D2D2.stage;
+import static com.ancevt.d2d2.D2D2.getStage;
 
 public class DialogWindow extends BasicGroup {
 
@@ -70,7 +70,7 @@ public class DialogWindow extends BasicGroup {
 
     private void add_to_stage(NodeEvent.AddToScene event) {
         removeEventListener(this, NodeEvent.AddToScene.class);
-        stage().addEventListener(this, InputEvent.KeyDown.class, e1 -> {
+        getStage().addEventListener(this, InputEvent.KeyDown.class, e1 -> {
             switch (e1.getKeyCode()) {
                 case KeyCode.ENTER -> ok();
                 case KeyCode.ESCAPE -> cancel();
@@ -126,7 +126,7 @@ public class DialogWindow extends BasicGroup {
     }
 
     public void ok() {
-        stage().removeEventListener(this, InputEvent.KeyDown.class);
+        getStage().removeEventListener(this, InputEvent.KeyDown.class);
         removeFromParent();
         if (onOkFunction != null) {
             onOkFunction.run();
@@ -134,7 +134,7 @@ public class DialogWindow extends BasicGroup {
     }
 
     public void cancel() {
-        stage().removeEventListener(this, InputEvent.KeyDown.class);
+        getStage().removeEventListener(this, InputEvent.KeyDown.class);
         removeFromParent();
         if (onCancelFunction != null) {
             onCancelFunction.run();
@@ -143,8 +143,8 @@ public class DialogWindow extends BasicGroup {
 
     public void center() {
         setPosition(
-                (stage().getWidth() - getWidth()) / 2f,
-                (stage().getHeight() - getHeight()) / 2f
+                (getStage().getWidth() - getWidth()) / 2f,
+                (getStage().getHeight() - getHeight()) / 2f
         );
     }
 

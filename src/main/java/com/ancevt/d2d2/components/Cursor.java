@@ -22,7 +22,6 @@ import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.scene.BasicGroup;
 import com.ancevt.d2d2.scene.Node;
 import com.ancevt.d2d2.scene.Sprite;
-import com.ancevt.d2d2.scene.SpriteFactory;
 import com.ancevt.d2d2.input.Mouse;
 import lombok.AccessLevel;
 import lombok.Getter;

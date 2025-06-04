@@ -23,7 +23,6 @@ import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.NodeEvent;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Sprite;
-import com.ancevt.d2d2.scene.SpriteFactory;
 import com.ancevt.d2d2.scene.interactive.Combined9Sprites;
 import com.ancevt.d2d2.scene.shape.RectangleShape;
 import com.ancevt.d2d2.scene.text.BitmapText;
@@ -52,15 +51,15 @@ public class Tooltip extends Component {
         setEnabled(false);
 
         borders = new Combined9Sprites(
-                D2D2.textureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_TOP_LEFT),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_TOP),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_TOP_RIGHT),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_LEFT),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_CENTER),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_RIGHT),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_LEFT),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_RIGHT)
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_TOP_LEFT),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_TOP),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_TOP_RIGHT),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_LEFT),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_CENTER),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_RIGHT),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_LEFT),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_RIGHT)
         );
         borders.setColor(FOREGROUND_COLOR);
         addChild(borders);

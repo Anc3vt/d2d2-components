@@ -32,7 +32,7 @@ import com.ancevt.d2d2.scene.interactive.DragUtil;
 import com.ancevt.d2d2.scene.shape.RectangleShape;
 import lombok.Getter;
 
-import static com.ancevt.d2d2.D2D2.stage;
+import static com.ancevt.d2d2.D2D2.getStage;
 
 public class Frame extends Component {
 
@@ -309,7 +309,7 @@ public class Frame extends Component {
     }
 
     public void center() {
-        this.setPosition((stage().getWidth() - getWidth()) / 2, (stage().getHeight() - getHeight()) / 2);
+        this.setPosition((getStage().getWidth() - getWidth()) / 2, (getStage().getHeight() - getHeight()) / 2);
     }
 
     private void this_resize(Event event) {

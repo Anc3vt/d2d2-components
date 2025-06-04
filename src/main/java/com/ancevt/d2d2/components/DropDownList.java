@@ -22,7 +22,6 @@ import com.ancevt.d2d2.D2D2;
 import com.ancevt.d2d2.event.CommonEvent;
 import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.scene.Sprite;
-import com.ancevt.d2d2.scene.SpriteFactory;
 import com.ancevt.d2d2.scene.interactive.Combined9Sprites;
 import com.ancevt.d2d2.scene.shape.RectangleShape;
 import com.ancevt.d2d2.scene.text.BitmapFont;
@@ -33,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.ancevt.d2d2.D2D2.stage;
+import static com.ancevt.d2d2.D2D2.getStage;
 
 public class DropDownList<T> extends Component {
 
@@ -66,15 +65,15 @@ public class DropDownList<T> extends Component {
         addChild(bg);
 
         borders = new Combined9Sprites(
-                D2D2.textureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_TOP_LEFT),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_TOP),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_TOP_RIGHT),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_LEFT),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_CENTER),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_RIGHT),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_LEFT),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_RIGHT)
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_TOP_LEFT),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_TOP),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_TOP_RIGHT),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_LEFT),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_CENTER),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_RIGHT),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_LEFT),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_BOTTOM_RIGHT)
         );
         borders.setColor(FOREGROUND_COLOR);
         addChild(borders);
@@ -133,26 +132,26 @@ public class DropDownList<T> extends Component {
 
         scrollPane.setScrollPosition(0);
 
-        stage().addChild(scrollPane, getGlobalX(), getGlobalY() + getHeight());
+        getStage().addChild(scrollPane, getGlobalX(), getGlobalY() + getHeight());
 
-        if (y > stage().getHeight()) {
+        if (y > getStage().getHeight()) {
             scrollPane.setY(0);
-            scrollPane.setHeight(stage().getHeight());
+            scrollPane.setHeight(getStage().getHeight());
         } else {
             scrollPane.setHeight(y);
 
-            if (scrollPane.getY() + scrollPane.getHeight() > stage().getHeight()) {
+            if (scrollPane.getY() + scrollPane.getHeight() > getStage().getHeight()) {
                 scrollPane.setY(getGlobalY() - scrollPane.getHeight());
             }
 
             if (scrollPane.getY() < 0) scrollPane.setY(0);
         }
 
-        stage().removeEventListener(this, InputEvent.MouseDown.class);
-        stage().addEventListener(this, InputEvent.MouseDown.class, e -> {
+        getStage().removeEventListener(this, InputEvent.MouseDown.class);
+        getStage().addEventListener(this, InputEvent.MouseDown.class, e -> {
             if (e.getX() < scrollPane.getX() || e.getX() > scrollPane.getX() + scrollPane.getWidth()
                     || e.getY() < scrollPane.getY() || e.getY() > scrollPane.getY() + scrollPane.getHeight()) {
-                stage().removeEventListener(this, InputEvent.MouseDown.class);
+                getStage().removeEventListener(this, InputEvent.MouseDown.class);
                 close();
             }
         });
@@ -161,7 +160,7 @@ public class DropDownList<T> extends Component {
     }
 
     private void close() {
-        stage().removeEventListener(this, InputEvent.MouseDown.class);
+        getStage().removeEventListener(this, InputEvent.MouseDown.class);
         oldTime = System.currentTimeMillis();
         scrollPane.removeFromParent();
         displayedItemList.forEach(Item::removeFromParent);

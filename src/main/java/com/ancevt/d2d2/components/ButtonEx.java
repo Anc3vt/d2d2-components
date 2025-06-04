@@ -24,7 +24,6 @@ import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Colored;
 import com.ancevt.d2d2.scene.Sprite;
-import com.ancevt.d2d2.scene.SpriteFactory;
 import com.ancevt.d2d2.scene.interactive.Combined9Sprites;
 import com.ancevt.d2d2.scene.text.BitmapText;
 import com.ancevt.d2d2.scene.texture.TextureRegion;
@@ -53,30 +52,30 @@ public class ButtonEx extends Component implements Colored {
         setPushEventsUp(false);
 
         bg = new Combined9Sprites(
-                D2D2.textureManager().getTextureRegion(ComponentAssets.BUTTON_9_SIDE_TOP_LEFT),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.BUTTON_9_SIDE_TOP),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.BUTTON_9_SIDE_TOP_RIGHT),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.BUTTON_9_SIDE_LEFT),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.BUTTON_9_SIDE_CENTER),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.BUTTON_9_SIDE_RIGHT),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.BUTTON_9_SIDE_BOTTOM_LEFT),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.BUTTON_9_SIDE_BOTTOM),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.BUTTON_9_SIDE_BOTTOM_RIGHT)
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.BUTTON_9_SIDE_TOP_LEFT),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.BUTTON_9_SIDE_TOP),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.BUTTON_9_SIDE_TOP_RIGHT),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.BUTTON_9_SIDE_LEFT),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.BUTTON_9_SIDE_CENTER),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.BUTTON_9_SIDE_RIGHT),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.BUTTON_9_SIDE_BOTTOM_LEFT),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.BUTTON_9_SIDE_BOTTOM),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.BUTTON_9_SIDE_BOTTOM_RIGHT)
         );
 
         bg.setEnabled(false);
         addChild(bg);
 
         selectedBorder = new Combined9Sprites(
-                D2D2.textureManager().getTextureRegion(ComponentAssets.BORDER_9_SIDE_TOP_LEFT),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.BORDER_9_SIDE_TOP),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.BORDER_9_SIDE_TOP_RIGHT),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.BORDER_9_SIDE_LEFT),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.BORDER_9_SIDE_CENTER),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.BORDER_9_SIDE_RIGHT),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.BORDER_9_SIDE_BOTTOM_LEFT),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.BORDER_9_SIDE_BOTTOM),
-                D2D2.textureManager().getTextureRegion(ComponentAssets.BORDER_9_SIDE_BOTTOM_RIGHT)
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.BORDER_9_SIDE_TOP_LEFT),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.BORDER_9_SIDE_TOP),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.BORDER_9_SIDE_TOP_RIGHT),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.BORDER_9_SIDE_LEFT),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.BORDER_9_SIDE_CENTER),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.BORDER_9_SIDE_RIGHT),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.BORDER_9_SIDE_BOTTOM_LEFT),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.BORDER_9_SIDE_BOTTOM),
+                D2D2.getTextureManager().getTextureRegion(ComponentAssets.BORDER_9_SIDE_BOTTOM_RIGHT)
         );
 
         selectedBorder.setEnabled(false);

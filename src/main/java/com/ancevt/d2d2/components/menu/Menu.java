@@ -27,7 +27,7 @@ import com.ancevt.d2d2.scene.shape.RectangleShape;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ancevt.d2d2.D2D2.stage;
+import static com.ancevt.d2d2.D2D2.getStage;
 
 public class Menu extends Component {
 
@@ -96,19 +96,19 @@ public class Menu extends Component {
         update();
         float x = Mouse.getX();
         float y = Mouse.getY() + 1;
-        stage().addChild(this, x, y);
+        getStage().addChild(this, x, y);
 
-        if (getX() + getWidth() > stage().getWidth()) {
-            setX(stage().getWidth() - getWidth());
+        if (getX() + getWidth() > getStage().getWidth()) {
+            setX(getStage().getWidth() - getWidth());
         }
 
-        if (getY() + getHeight() > stage().getHeight()) {
+        if (getY() + getHeight() > getStage().getHeight()) {
             setY(y - getHeight());
         }
 
-        stage().addEventListener(this, InputEvent.MouseDown.class, event -> {
+        getStage().addEventListener(this, InputEvent.MouseDown.class, event -> {
             deactivate(this);
-            stage().removeEventListener(this, InputEvent.MouseDown.class);
+            getStage().removeEventListener(this, InputEvent.MouseDown.class);
         });
 
         activeRootMenu = this;
@@ -120,13 +120,13 @@ public class Menu extends Component {
         update();
         float x = fromItem.getGlobalX() + fromItem.getWidth();
         float y = fromItem.getGlobalY();
-        stage().addChild(this, x, y);
+        getStage().addChild(this, x, y);
 
-        if (getY() + getHeight() > stage().getHeight()) {
+        if (getY() + getHeight() > getStage().getHeight()) {
             setY(y - getHeight() + MenuItem.HEIGHT);
         }
 
-        if (getX() + getWidth() > stage().getWidth() || fromItem.getParentMenu().backwardDirection) {
+        if (getX() + getWidth() > getStage().getWidth() || fromItem.getParentMenu().backwardDirection) {
             setX(fromItem.getParentMenu().getX() - getWidth());
             backwardDirection = true;
         }

@@ -26,13 +26,13 @@ import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Group;
 import com.ancevt.d2d2.scene.Node;
 import com.ancevt.d2d2.scene.interactive.InteractiveGroup;
-import com.ancevt.d2d2.scene.shape.BorderedRectangle;
+import com.ancevt.d2d2.scene.shape.BorderedRectangleShape;
 import com.ancevt.d2d2.time.Timer;
 import lombok.Getter;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static com.ancevt.d2d2.D2D2.stage;
+import static com.ancevt.d2d2.D2D2.getStage;
 
 abstract public class Component extends InteractiveGroup {
 
@@ -57,7 +57,7 @@ abstract public class Component extends InteractiveGroup {
     private static final float DEFAULT_PADDING_RIGHT = 2.0f;
     private static final float DEFAULT_PADDING_BOTTOM = 2.0f;
 
-    private final BorderedRectangle componentFocusRect;
+    private final BorderedRectangleShape componentFocusRect;
     private boolean componentFocusRectEnabled;
     @Getter
     private Padding padding;
@@ -78,7 +78,7 @@ abstract public class Component extends InteractiveGroup {
 
         componentFocusRectEnabled = false;
 
-        componentFocusRect = new BorderedRectangle(0, 0, null, FOCUS_RECT_COLOR);
+        componentFocusRect = new BorderedRectangleShape(0, 0, null, FOCUS_RECT_COLOR);
         componentFocusRect.setBorderWidth(FOCUS_RECT_BORDER_WIDTH);
         componentFocusRect.setAlpha(FOCUS_RECT_ALPHA);
 
@@ -124,13 +124,13 @@ abstract public class Component extends InteractiveGroup {
 
                 Timer.setTimeout(1000, t -> {
                     if (!tooltipCancelHover.get() && isHovering()) {
-                        stage().addChild(tooltip, Mouse.getX(), Mouse.getY());
-                        if (tooltip.getX() + tooltip.getWidth() > stage().getWidth()) {
-                            tooltip.setX(stage().getWidth() - tooltip.getWidth());
+                        getStage().addChild(tooltip, Mouse.getX(), Mouse.getY());
+                        if (tooltip.getX() + tooltip.getWidth() > getStage().getWidth()) {
+                            tooltip.setX(getStage().getWidth() - tooltip.getWidth());
                         }
 
-                        if (tooltip.getY() + tooltip.getHeight() > stage().getHeight()) {
-                            tooltip.setY(stage().getHeight() - tooltip.getHeight());
+                        if (tooltip.getY() + tooltip.getHeight() > getStage().getHeight()) {
+                            tooltip.setY(getStage().getHeight() - tooltip.getHeight());
                         }
 
                         tooltip.removeEventListener(Component.class + "" + Tooltip.class, InputEvent.MouseOut.class);

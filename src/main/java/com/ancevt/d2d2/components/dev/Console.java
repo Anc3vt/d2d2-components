@@ -75,8 +75,8 @@ public class Console extends Chat implements Disposable {
         setInputEnabled(true);
         addEventListener(ChatEvent.TextEnter.class, this::this_chatTextEnter);
         addEventListener(ChatEvent.InputClose.class, this::this_chatInputClose);
-        D2D2.stage().addEventListener(this, CommonEvent.Start.class, this::stage_startMainLoop);
-        D2D2.stage().addEventListener(this, CommonEvent.Stop.class, this::stage_exitMainLoop);
+        D2D2.getStage().addEventListener(this, CommonEvent.Start.class, this::stage_startMainLoop);
+        D2D2.getStage().addEventListener(this, CommonEvent.Stop.class, this::stage_exitMainLoop);
         openInput();
         loadOutputHistory();
 
@@ -226,7 +226,7 @@ public class Console extends Chat implements Disposable {
         if (this.maximized == maximized) return;
         this.maximized = maximized;
 
-        Stage stage = D2D2.stage();
+        Stage stage = D2D2.getStage();
         stage.removeEventListener(this, CommonEvent.Resize.class);
 
         if (maximized) {
@@ -237,8 +237,8 @@ public class Console extends Chat implements Disposable {
     }
 
     private void stage_resize(CommonEvent.Resize e) {
-        setWidth(D2D2.stage().getWidth() - PADDING * 2);
-        setHeight(D2D2.stage().getHeight() - PADDING * 2);
+        setWidth(D2D2.getStage().getWidth() - PADDING * 2);
+        setHeight(D2D2.getStage().getHeight() - PADDING * 2);
     }
 
     private void this_chatInputClose(ChatEvent.InputClose e) {
@@ -326,9 +326,9 @@ public class Console extends Chat implements Disposable {
 
     @Override
     public void dispose() {
-        D2D2.stage().removeEventListener(this, InputEvent.KeyDown.class);
-        D2D2.stage().removeEventListener(this, CommonEvent.Start.class);
-        D2D2.stage().removeEventListener(this, CommonEvent.Stop.class);
+        D2D2.getStage().removeEventListener(this, InputEvent.KeyDown.class);
+        D2D2.getStage().removeEventListener(this, CommonEvent.Start.class);
+        D2D2.getStage().removeEventListener(this, CommonEvent.Stop.class);
         disposed = true;
     }
 

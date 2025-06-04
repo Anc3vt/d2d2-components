@@ -86,7 +86,7 @@ public class ComponentAssets {
 
     public static void init() {
         if (!initialized) {
-            D2D2.textureManager().loadTextureDataInfo("d2d2-components.inf");
+            D2D2.getTextureManager().loadTextureDataInfo("d2d2-components.inf");
             //Cursor.setDefaultCursorTheme();
             initialized = true;
         } else {
@@ -95,6 +95,6 @@ public class ComponentAssets {
     }
 
     public static TextureRegion getTexture(String textureKey) {
-        return D2D2.textureManager().getTextureRegion(textureKey);
+        return D2D2.getTextureManager().getTextureRegion(textureKey);
     }
 }
