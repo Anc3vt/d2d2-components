@@ -44,7 +44,7 @@ public class Cursor {
     private static int mode;
 
     public static void setIdleCursor(Node cursor) {
-        D2D2.setCursor(cursor);
+        //D2D2.setCursor(cursor);
         Cursor.idleCursor = cursor;
     }
 
@@ -82,9 +82,9 @@ public class Cursor {
         mode = MODE_RESIZE;
         if (resizeCursor != null) {
             Mouse.setVisible(false);
-            D2D2.setCursor(resizeCursor);
+            //D2D2.setCursor(resizeCursor);
         } else {
-            D2D2.setCursor(null);
+            //D2D2.setCursor(null);
             Mouse.setVisible(true);
         }
     }
@@ -94,9 +94,9 @@ public class Cursor {
         mode = MODE_IDLE;
         if (idleCursor != null) {
             Mouse.setVisible(false);
-            D2D2.setCursor(getIdleCursor());
+            //D2D2.setCursor(getIdleCursor());
         } else {
-            D2D2.setCursor(null);
+            //D2D2.setCursor(null);
             Mouse.setVisible(true);
         }
     }
@@ -106,9 +106,9 @@ public class Cursor {
         mode = MODE_TEXT;
         if (textCursor != null) {
             Mouse.setVisible(false);
-            D2D2.setCursor(getTextCursor());
+            //D2D2.setCursor(getTextCursor());
         } else {
-            D2D2.setCursor(null);
+            //D2D2.setCursor(null);
             Mouse.setVisible(true);
         }
     }
