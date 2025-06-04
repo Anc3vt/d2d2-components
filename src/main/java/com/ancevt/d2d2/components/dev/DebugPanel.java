@@ -281,7 +281,7 @@ public class DebugPanel extends InteractiveGroup {
 
         public Button(Object text) {
             super(DEFAULT_WIDTH, DEFAULT_HEIGHT, Color.of(0x112233), Color.WHITE);
-            interactiveButton = InteractiveGroup.create(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+            interactiveButton = new InteractiveGroup(DEFAULT_WIDTH, DEFAULT_HEIGHT);
             BitmapText bitmapText = new BitmapText();
             bitmapText.setText(String.valueOf(text));
             interactiveButton.onMouseDown(e -> {

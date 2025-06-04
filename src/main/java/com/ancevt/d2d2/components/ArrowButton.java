@@ -22,8 +22,8 @@ import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.event.core.Event;
 import com.ancevt.d2d2.event.core.EventPool;
 import com.ancevt.d2d2.event.core.EventPooled;
-import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.BasicGroup;
+import com.ancevt.d2d2.scene.Color;
 import com.ancevt.d2d2.scene.Sprite;
 import com.ancevt.d2d2.scene.interactive.InteractiveGroup;
 import lombok.Getter;
@@ -45,7 +45,7 @@ public class ArrowButton extends BasicGroup {
         addChild(shadow, 1, 1);
         addChild(sprite);
 
-        interactiveButton = InteractiveGroup.create(sprite.getWidth(), sprite.getHeight());
+        interactiveButton = new InteractiveGroup(sprite.getWidth(), sprite.getHeight());
         addChild(interactiveButton);
 
         interactiveButton.addEventListener(InputEvent.MouseDown.class, this::interactiveButton_down);
