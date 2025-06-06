@@ -156,7 +156,7 @@ public class Frame extends Component {
 
     private void this_manualResizeOut(InputEvent.MouseOut event) {
         Cursor.switchToIdle();
-        frameTitle.setEnabled(true);
+        frameTitle.setInteractionEnabled(true);
     }
 
     private void this_manualResizeDown(InputEvent.MouseDown event) {
@@ -215,31 +215,31 @@ public class Frame extends Component {
     private void this_manualResizeEachFrame(Event event) {
         if (isResizeCursorOnBottomRight()) {
             Cursor.switchToResize(45.0f);
-            frameTitle.setEnabled(true);
+            frameTitle.setInteractionEnabled(true);
         } else if (isResizeCursorOnBottomLeft()) {
             Cursor.switchToResize(140.0f);
-            frameTitle.setEnabled(true);
+            frameTitle.setInteractionEnabled(true);
         } else if (isResizeCursorOnTopLeft()) {
             Cursor.switchToResize(220.f);
-            frameTitle.setEnabled(false);
+            frameTitle.setInteractionEnabled(false);
         } else if (isResizeCursorOnTopRight()) {
             Cursor.switchToResize(320.0f);
-            frameTitle.setEnabled(false);
+            frameTitle.setInteractionEnabled(false);
         } else if (isResizeCursorOnRight()) {
             Cursor.switchToResize(0.0f);
-            frameTitle.setEnabled(true);
+            frameTitle.setInteractionEnabled(true);
         } else if (isResizeCursorOnBottom()) {
             Cursor.switchToResize(90.0f);
-            frameTitle.setEnabled(true);
+            frameTitle.setInteractionEnabled(true);
         } else if (isResizeCursorOnLeft()) {
-            frameTitle.setEnabled(true);
+            frameTitle.setInteractionEnabled(true);
             Cursor.switchToResize(180.0f);
         } else if (isResizeCursorOnTop()) {
             Cursor.switchToResize(270.0f);
-            frameTitle.setEnabled(false);
+            frameTitle.setInteractionEnabled(false);
         } else if (isResizeCursorInCenter()) {
             Cursor.switchToIdle();
-            frameTitle.setEnabled(true);
+            frameTitle.setInteractionEnabled(true);
         }
     }
 

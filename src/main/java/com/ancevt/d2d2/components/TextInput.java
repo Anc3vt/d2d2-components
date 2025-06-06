@@ -96,7 +96,7 @@ public class TextInput extends Component {
         addEventListener(TextInput.class, CommonEvent.Resize.class, this::this_resize);
 
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        setEnabled(true);
+        this.setInteractionEnabled(true);
     }
 
     public void setBitmapFont(BitmapFont bitmapFont) {
@@ -108,7 +108,7 @@ public class TextInput extends Component {
     }
 
     private void this_hover(InputEvent.MouseHover event) {
-        if (isEnabled()) Cursor.switchToText();
+        if (isInteractionEnabled()) Cursor.switchToText();
     }
 
     private void this_out(InputEvent.MouseOut event) {
@@ -257,10 +257,10 @@ public class TextInput extends Component {
     }
 
     @Override
-    public void setEnabled(boolean enabled) {
-        if (enabled == isEnabled()) return;
+    public void setInteractionEnabled(boolean enabled) {
+        if (enabled == isInteractionEnabled()) return;
 
-        super.setEnabled(enabled);
+        super.setInteractionEnabled(enabled);
         bitmapText.setColor(enabled ? Component.TEXT_COLOR : Component.TEXT_COLOR_DISABLED);
     }
 
@@ -475,7 +475,7 @@ public class TextInput extends Component {
         }
 
         public void tick() {
-            if (uiTextInput.isEnabled()) {
+            if (uiTextInput.isInteractionEnabled()) {
                 blinkCounter--;
                 if (blinkCounter <= 0) {
                     blinkCounter = BLINK_DELAY;

@@ -59,12 +59,12 @@ public class ArrowButton extends BasicGroup {
     }
 
     public void setEnabled(boolean enabled) {
-        interactiveButton.setEnabled(enabled);
+        interactiveButton.setInteractionEnabled(enabled);
         sprite.setColor(enabled ? Color.WHITE : Color.GRAY);
     }
 
     public boolean isEnabled() {
-        return interactiveButton.isEnabled();
+        return interactiveButton.isInteractionEnabled();
     }
 
     public void setDirection(int direction) {
@@ -92,7 +92,7 @@ public class ArrowButton extends BasicGroup {
     }
 
     public void dispose() {
-        interactiveButton.setEnabled(false);
+        interactiveButton.setInteractionEnabled(false);
     }
 
     @EventPooled

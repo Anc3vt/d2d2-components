@@ -48,7 +48,7 @@ public class Tooltip extends Component {
         bg = new RectangleShape(1, 1, BACKGROUND_COLOR);
         addChild(bg);
 
-        setEnabled(false);
+        setInteractionEnabled(false);
 
         borders = new Combined9Sprites(
                 D2D2.getTextureManager().getTextureRegion(ComponentAssets.RECT_BORDER_9_SIDE_TOP_LEFT),

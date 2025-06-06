@@ -74,7 +74,7 @@ abstract public class Component extends InteractiveGroup {
             ComponentAssets.init();
         }
 
-        super.setEnabled(true);
+        super.setInteractionEnabled(true);
 
         componentFocusRectEnabled = false;
 

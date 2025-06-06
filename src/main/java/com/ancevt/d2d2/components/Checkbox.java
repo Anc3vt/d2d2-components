@@ -22,7 +22,6 @@ import com.ancevt.d2d2.event.InputEvent;
 import com.ancevt.d2d2.scene.Sprite;
 import com.ancevt.d2d2.scene.text.BitmapText;
 
-import static com.ancevt.d2d2.components.ComponentAssets.CHECKBOX_CHECKED;
 import static com.ancevt.d2d2.components.ComponentAssets.CHECKBOX_UNCHECKED;
 
 public class Checkbox extends Component {
@@ -53,7 +52,7 @@ public class Checkbox extends Component {
     }
 
     private void this_down(InputEvent.MouseDown e) {
-        if (!isEnabled()) return;
+        if (!isInteractionEnabled()) return;
         setChecked(!isChecked());
     }
 
@@ -119,9 +118,9 @@ public class Checkbox extends Component {
     }
 
     @Override
-    public void setEnabled(boolean enabled) {
-        if (enabled == isEnabled()) return;
-        super.setEnabled(enabled);
+    public void setInteractionEnabled(boolean enabled) {
+        if (enabled == isInteractionEnabled()) return;
+        super.setInteractionEnabled(enabled);
         if (label != null) {
             label.setColor(enabled ? TEXT_COLOR : TEXT_COLOR_DISABLED);
         }

@@ -76,7 +76,7 @@ public class Chooser<T> extends BasicGroup {
 
     private void setCurrentItemAsSelected() {
         selectedItemPair = items.get(index);
-        buttonApply.setEnabled(false);
+        buttonApply.setInteractionEnabled(false);
         bitmapText.setColor(Color.WHITE);
         dispatchEvent(ApplyEvent.create());
     }
@@ -173,7 +173,7 @@ public class Chooser<T> extends BasicGroup {
         float w = bitmapText.getTextWidth() + 8;
         bitmapText.setX((getWidth() - w) / 2);
 
-        buttonApply.setEnabled(selectedItemPair != items.get(index));
+        buttonApply.setInteractionEnabled(selectedItemPair != items.get(index));
         bitmapText.setColor(selectedItemPair == items.get(index) ? Color.LIGHT_GREEN : Color.WHITE);
     }
 
@@ -203,7 +203,7 @@ public class Chooser<T> extends BasicGroup {
 
     public void setEnabled(boolean b) {
         enabled = b;
-        buttonApply.setEnabled(b);
+        buttonApply.setInteractionEnabled(b);
     }
 
     public boolean isEnabled() {

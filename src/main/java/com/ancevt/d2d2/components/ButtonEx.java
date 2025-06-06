@@ -63,7 +63,7 @@ public class ButtonEx extends Component implements Colored {
                 D2D2.getTextureManager().getTextureRegion(ComponentAssets.BUTTON_9_SIDE_BOTTOM_RIGHT)
         );
 
-        bg.setEnabled(false);
+        bg.setInteractionEnabled(false);
         addChild(bg);
 
         selectedBorder = new Combined9Sprites(
@@ -78,7 +78,7 @@ public class ButtonEx extends Component implements Colored {
                 D2D2.getTextureManager().getTextureRegion(ComponentAssets.BORDER_9_SIDE_BOTTOM_RIGHT)
         );
 
-        selectedBorder.setEnabled(false);
+        selectedBorder.setInteractionEnabled(false);
         selectedBorder.setVisible(false);
         selectedBorder.setColor(colorTogglePushedInBorder);
         addChild(selectedBorder);
@@ -153,7 +153,7 @@ public class ButtonEx extends Component implements Colored {
 
     public void setColorBackground(Color colorBackground) {
         this.colorBackground = colorBackground;
-        if (isEnabled()) bg.setColor(colorBackground);
+        if (isInteractionEnabled()) bg.setColor(colorBackground);
     }
 
     public Color getColorBackgroundDisabled() {
@@ -162,7 +162,7 @@ public class ButtonEx extends Component implements Colored {
 
     public void setColorBackgroundDisabled(Color colorBackgroundDisabled) {
         this.colorBackgroundDisabled = colorBackgroundDisabled;
-        if (!isEnabled()) bg.setColor(colorBackgroundDisabled);
+        if (!isInteractionEnabled()) bg.setColor(colorBackgroundDisabled);
     }
 
     public Color getColorText() {
@@ -171,7 +171,7 @@ public class ButtonEx extends Component implements Colored {
 
     public void setColorText(Color colorText) {
         this.colorText = colorText;
-        if (isEnabled() && bitmapText != null) bitmapText.setColor(colorText);
+        if (isInteractionEnabled() && bitmapText != null) bitmapText.setColor(colorText);
     }
 
     public Color getColorTextDisabled() {
@@ -180,7 +180,7 @@ public class ButtonEx extends Component implements Colored {
 
     public void setColorTextDisabled(Color colorTextDisabled) {
         this.colorTextDisabled = colorTextDisabled;
-        if (!isEnabled() && bitmapText != null) bitmapText.setColor(colorTextDisabled);
+        if (!isInteractionEnabled() && bitmapText != null) bitmapText.setColor(colorTextDisabled);
     }
 
     public void setToggleMode(boolean toggleMode) {
@@ -203,18 +203,18 @@ public class ButtonEx extends Component implements Colored {
     }
 
     @Override
-    public void setEnabled(boolean enabled) {
-        super.setEnabled(enabled);
+    public void setInteractionEnabled(boolean enabled) {
+        super.setInteractionEnabled(enabled);
         setCorrespondingColors();
     }
 
     private void setCorrespondingColors() {
-        if (bitmapText != null) bitmapText.setColor(isEnabled() ? colorText : colorTextDisabled);
+        if (bitmapText != null) bitmapText.setColor(isInteractionEnabled() ? colorText : colorTextDisabled);
         if (iconSprite != null) {
-            iconSprite.setColor(isEnabled() ? Color.WHITE : Color.DARK_GRAY);
-            iconSprite.setAlpha(isEnabled() ? 1.0f : 0.5f);
+            iconSprite.setColor(isInteractionEnabled() ? Color.WHITE : Color.DARK_GRAY);
+            iconSprite.setAlpha(isInteractionEnabled() ? 1.0f : 0.5f);
         }
-        bg.setColor(isEnabled() ? colorBackground : colorBackgroundDisabled);
+        bg.setColor(isInteractionEnabled() ? colorBackground : colorBackgroundDisabled);
     }
 
     public void setText(String text) {

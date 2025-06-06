@@ -11,9 +11,7 @@ import com.ancevt.d2d2.scene.text.BitmapText;
 import com.ancevt.d2d2.time.Timer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import lombok.SneakyThrows;
+import lombok.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +33,9 @@ public class DebugPanel extends InteractiveGroup {
     private static final int MIN_HEIGHT = 20;
 
     private static final Map<String, DebugPanel> debugPanels = new HashMap<>();
+
+    @Setter
+    @Getter
     private static boolean enabled;
     private final String systemPropertyName;
     private final Timer timer;
