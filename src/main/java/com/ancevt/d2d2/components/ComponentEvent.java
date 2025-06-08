@@ -21,4 +21,11 @@ public abstract class ComponentEvent extends Event {
             return EventPool.obtain(FocusOut.class);
         }
     }
+
+    @EventPooled
+    public static final class Action extends ComponentEvent {
+        public static Action create() {
+            return EventPool.obtain(Action.class);
+        }
+    }
 }
